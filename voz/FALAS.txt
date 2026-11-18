@@ -1,0 +1,1612 @@
+# LISTA DE FALAS DOS JOGOS
+# Uma linha por arquivo de áudio, no formato:  arquivo <TAB> texto falado
+#
+# Para trocar a voz (ElevenLabs ou outra):
+#  1. Gere um áudio para cada texto abaixo.
+#  2. Salve com o MESMO nome do arquivo, extensão .m4a, dentro da pasta voz/
+#  3. Pronto. Os jogos usam o que estiver lá, sem mexer em código.
+#
+# Total: 1602 falas
+
+v0946.m4a	" Consertar é de gente corajosa.
+v0947.m4a	" Duas palavrinhas que abrem qualquer pote.
+v0948.m4a	" Falar o nome do sentimento faz ele ficar menorzinho.
+v0949.m4a	"Desculpa, você tá bem?
+v0950.m4a	"Eu tô com raiva!
+v0951.m4a	"Me ajuda, por favor.
+v0952.m4a	(prefers-reduced-motion:
+v0953.m4a	)) falar(
+v0954.m4a	). addEventListener(
+v0955.m4a	). classList. add(
+v0956.m4a	). classList. contains(
+v0957.m4a	). classList. remove(
+v0958.m4a	). classList. toggle(
+v0959.m4a	). querySelector(
+v0960.m4a	+ nome +
+v0961.m4a	+(J. flash*. 55)+
+v0962.m4a	+S. nome+
+v0963.m4a	+id). classList.
+v0964.m4a	, cabelo:
+v0965.m4a	, calma:
+v0966.m4a	, cara:
+v0967.m4a	, como:
+v0968.m4a	, cor:
+v0969.m4a	, desc:
+v0970.m4a	, emo:
+v0971.m4a	, extras: 0, palavras:
+v0972.m4a	, extras: 2, palavras:
+v0973.m4a	, extras: 3, palavras:
+v0974.m4a	, fill:
+v0975.m4a	, gesto:
+v0976.m4a	, medo:
+v0977.m4a	, nome:
+v0978.m4a	, ops: [
+v0979.m4a	, pele:
+v0980.m4a	, pose:
+v0981.m4a	, raiva:
+v0982.m4a	, tristeza:
+v0983.m4a	, vestido:
+v0984.m4a	. split(
+v0985.m4a	. swatch
+v0986.m4a	A
+v0987.m4a	A Alegria dá vontade de pular!
+v0988.m4a	A Calma! É assim que o corpo fica depois que a gente respira.
+v0989.m4a	A próxima letra é o A.
+v0990.m4a	A próxima letra é o B.
+v0991.m4a	A próxima letra é o C.
+v0992.m4a	A próxima letra é o D.
+v0993.m4a	A próxima letra é o E.
+v0994.m4a	A próxima letra é o F.
+v0995.m4a	A próxima letra é o G.
+v0996.m4a	A próxima letra é o I.
+v0997.m4a	A próxima letra é o L.
+v0998.m4a	A próxima letra é o M.
+v0999.m4a	A próxima letra é o N.
+v1000.m4a	A próxima letra é o O.
+v1001.m4a	A próxima letra é o P.
+v1002.m4a	A próxima letra é o R.
+v1003.m4a	A próxima letra é o S.
+v1004.m4a	A próxima letra é o T.
+v1005.m4a	A próxima letra é o U.
+v1006.m4a	A próxima letra é o V.
+v1007.m4a	A tartaruga entra no casquinho e para tudo.
+v1008.m4a	A torre de Nina caiu no chão.
+v1009.m4a	ALEGRIA
+v1010.m4a	Aaah! O monstro!
+v1011.m4a	Achou! A Alegria deixa a barriga quentinha.
+v1012.m4a	Agora a palavra mais mágica de todas.
+v1013.m4a	Agora solta o ar bem devagar na velinha!
+v1014.m4a	Agora solta o ar devagar!
+v1015.m4a	Agora solta o ar devagar.
+v1016.m4a	Agora vamos respirar.
+v1017.m4a	Agora você conhece o nome dos sentimentos.
+v1018.m4a	Agora é a sua vez.
+v1019.m4a	Ahhh, que ódio!
+v1020.m4a	Ainda não é essa.
+v1021.m4a	Ainda!
+v1022.m4a	Ainda! Agora ela diz assim:
+v1023.m4a	Ainda.
+v1024.m4a	Alegria
+v1025.m4a	Alegria!
+v1026.m4a	Aperta a estrela dourada pra ela aparecer.
+v1027.m4a	Até eu!
+v1028.m4a	Aí dá pra montar de novo.
+v1029.m4a	Aí ela pensou assim:
+v1030.m4a	Aí é a barriga.
+v1031.m4a	Aí é a cabeça.
+v1032.m4a	Aí é hora de parar e respirar.
+v1033.m4a	Aí é o peito.
+v1034.m4a	Aí é os pés.
+v1035.m4a	B
+v1036.m4a	BO
+v1037.m4a	BOLA
+v1038.m4a	BOLO
+v1039.m4a	Bo
+v1040.m4a	Bola
+v1041.m4a	Bola! Você escreveu Bola sozinha!
+v1042.m4a	Bolo
+v1043.m4a	Bolo! Você escreveu Bolo sozinha!
+v1044.m4a	C
+v1045.m4a	CA
+v1046.m4a	CALMA
+v1047.m4a	CASA
+v1048.m4a	Ca
+v1049.m4a	Cada letrinha no lugar certinho.
+v1050.m4a	Cada vez que ele pega você,
+v1051.m4a	Cadê a cabeça?
+v1052.m4a	Cadê a carinha de Alegria?
+v1053.m4a	Cadê a carinha de Calma?
+v1054.m4a	Cadê a carinha de Medo?
+v1055.m4a	Cadê a carinha de Raiva?
+v1056.m4a	Cadê a carinha de Tristeza?
+v1057.m4a	Cair faz parte de aprender.
+v1058.m4a	Calma
+v1059.m4a	Calma!
+v1060.m4a	Casa
+v1061.m4a	Casa! Você escreveu Casa sozinha!
+v1062.m4a	Chegamos!
+v1063.m4a	Chegou o espelho mágico!
+v1064.m4a	Cocô voador!
+v1065.m4a	Com o que a gente pula?
+v1066.m4a	Com os pés! A alegria faz o corpo querer dançar.
+v1067.m4a	Corre atrás de um coração verde!
+v1068.m4a	Cuidado com o monstro da raiva!
+v1069.m4a	D
+v1070.m4a	Da próxima vez vai pegar ainda mais cocô!
+v1071.m4a	Depois nós duas fazemos juntas.
+v1072.m4a	Desculpa! Você tá bem?
+v1073.m4a	Desculpa, você tá bem?
+v1074.m4a	E
+v1075.m4a	E cada dia ela vai conhecendo mais uma.
+v1076.m4a	E no fim, você faz sozinha!
+v1077.m4a	E o mais importante:
+v1078.m4a	E olha o que aconteceu!
+v1079.m4a	E olha o segredo:
+v1080.m4a	E você escreveu tudo!
+v1081.m4a	E você ganhou a letra A!
+v1082.m4a	E você ganhou a letra E!
+v1083.m4a	E você ganhou a letra I!
+v1084.m4a	E você ganhou a letra L!
+v1085.m4a	Ela está pulando pra você!
+v1086.m4a	Ela ficou Brava.
+v1087.m4a	Ela levantou, subiu de novo e pedalou!
+v1088.m4a	Ela pedalou, pedalou…
+v1089.m4a	Ela só fica pequenininha e a gente consegue pensar de novo.
+v1090.m4a	Ela tentou de um jeito diferente,
+v1091.m4a	Elas são suas.
+v1092.m4a	Ele tá quase explodindo!
+v1093.m4a	Empurrar a amiga
+v1094.m4a	Ensaiar repertório de enfrentamento em situação neutra aumenta a chance de acesso à estratégia sob estresse.
+v1095.m4a	Errar faz parte de aprender!
+v1096.m4a	Escolhe a melhor?
+v1097.m4a	Escolhe por onde começar!
+v1098.m4a	Escolhe uma ilha pra gente começar!
+v1099.m4a	Escolher entre respostas úteis e não úteis diante de uma frustração concreta.
+v1100.m4a	Escolher é coisa de gente grande!
+v1101.m4a	Essa aqui é a letra N.
+v1102.m4a	Essa ela já conhece!
+v1103.m4a	Essa ilha ainda está dormindo.
+v1104.m4a	Essa é a Tristeza.
+v1105.m4a	Essas quatro letras que você ganhou formam uma palavra.
+v1106.m4a	Esse ainda está trancado.
+v1107.m4a	Esse era o mais difícil de todos.
+v1108.m4a	Esse poder tá sempre com você.
+v1109.m4a	Esse é o A. A gente está procurando o A.
+v1110.m4a	Esse é o A. A gente está procurando o B.
+v1111.m4a	Esse é o A. A gente está procurando o C.
+v1112.m4a	Esse é o A. A gente está procurando o D.
+v1113.m4a	Esse é o A. A gente está procurando o E.
+v1114.m4a	Esse é o A. A gente está procurando o F.
+v1115.m4a	Esse é o A. A gente está procurando o G.
+v1116.m4a	Esse é o A. A gente está procurando o I.
+v1117.m4a	Esse é o A. A gente está procurando o L.
+v1118.m4a	Esse é o A. A gente está procurando o M.
+v1119.m4a	Esse é o A. A gente está procurando o N.
+v1120.m4a	Esse é o A. A gente está procurando o O.
+v1121.m4a	Esse é o A. A gente está procurando o P.
+v1122.m4a	Esse é o A. A gente está procurando o R.
+v1123.m4a	Esse é o A. A gente está procurando o S.
+v1124.m4a	Esse é o A. A gente está procurando o T.
+v1125.m4a	Esse é o A. A gente está procurando o U.
+v1126.m4a	Esse é o A. A gente está procurando o V.
+v1127.m4a	Esse é o B. A gente está procurando o A.
+v1128.m4a	Esse é o B. A gente está procurando o B.
+v1129.m4a	Esse é o B. A gente está procurando o C.
+v1130.m4a	Esse é o B. A gente está procurando o D.
+v1131.m4a	Esse é o B. A gente está procurando o E.
+v1132.m4a	Esse é o B. A gente está procurando o F.
+v1133.m4a	Esse é o B. A gente está procurando o G.
+v1134.m4a	Esse é o B. A gente está procurando o I.
+v1135.m4a	Esse é o B. A gente está procurando o L.
+v1136.m4a	Esse é o B. A gente está procurando o M.
+v1137.m4a	Esse é o B. A gente está procurando o N.
+v1138.m4a	Esse é o B. A gente está procurando o O.
+v1139.m4a	Esse é o B. A gente está procurando o P.
+v1140.m4a	Esse é o B. A gente está procurando o R.
+v1141.m4a	Esse é o B. A gente está procurando o S.
+v1142.m4a	Esse é o B. A gente está procurando o T.
+v1143.m4a	Esse é o B. A gente está procurando o U.
+v1144.m4a	Esse é o B. A gente está procurando o V.
+v1145.m4a	Esse é o C. A gente está procurando o A.
+v1146.m4a	Esse é o C. A gente está procurando o B.
+v1147.m4a	Esse é o C. A gente está procurando o C.
+v1148.m4a	Esse é o C. A gente está procurando o D.
+v1149.m4a	Esse é o C. A gente está procurando o E.
+v1150.m4a	Esse é o C. A gente está procurando o F.
+v1151.m4a	Esse é o C. A gente está procurando o G.
+v1152.m4a	Esse é o C. A gente está procurando o I.
+v1153.m4a	Esse é o C. A gente está procurando o L.
+v1154.m4a	Esse é o C. A gente está procurando o M.
+v1155.m4a	Esse é o C. A gente está procurando o N.
+v1156.m4a	Esse é o C. A gente está procurando o O.
+v1157.m4a	Esse é o C. A gente está procurando o P.
+v1158.m4a	Esse é o C. A gente está procurando o R.
+v1159.m4a	Esse é o C. A gente está procurando o S.
+v1160.m4a	Esse é o C. A gente está procurando o T.
+v1161.m4a	Esse é o C. A gente está procurando o U.
+v1162.m4a	Esse é o C. A gente está procurando o V.
+v1163.m4a	Esse é o D. A gente está procurando o A.
+v1164.m4a	Esse é o D. A gente está procurando o B.
+v1165.m4a	Esse é o D. A gente está procurando o C.
+v1166.m4a	Esse é o D. A gente está procurando o D.
+v1167.m4a	Esse é o D. A gente está procurando o E.
+v1168.m4a	Esse é o D. A gente está procurando o F.
+v1169.m4a	Esse é o D. A gente está procurando o G.
+v1170.m4a	Esse é o D. A gente está procurando o I.
+v1171.m4a	Esse é o D. A gente está procurando o L.
+v1172.m4a	Esse é o D. A gente está procurando o M.
+v1173.m4a	Esse é o D. A gente está procurando o N.
+v1174.m4a	Esse é o D. A gente está procurando o O.
+v1175.m4a	Esse é o D. A gente está procurando o P.
+v1176.m4a	Esse é o D. A gente está procurando o R.
+v1177.m4a	Esse é o D. A gente está procurando o S.
+v1178.m4a	Esse é o D. A gente está procurando o T.
+v1179.m4a	Esse é o D. A gente está procurando o U.
+v1180.m4a	Esse é o D. A gente está procurando o V.
+v1181.m4a	Esse é o E. A gente está procurando o A.
+v1182.m4a	Esse é o E. A gente está procurando o B.
+v1183.m4a	Esse é o E. A gente está procurando o C.
+v1184.m4a	Esse é o E. A gente está procurando o D.
+v1185.m4a	Esse é o E. A gente está procurando o E.
+v1186.m4a	Esse é o E. A gente está procurando o F.
+v1187.m4a	Esse é o E. A gente está procurando o G.
+v1188.m4a	Esse é o E. A gente está procurando o I.
+v1189.m4a	Esse é o E. A gente está procurando o L.
+v1190.m4a	Esse é o E. A gente está procurando o M.
+v1191.m4a	Esse é o E. A gente está procurando o N.
+v1192.m4a	Esse é o E. A gente está procurando o O.
+v1193.m4a	Esse é o E. A gente está procurando o P.
+v1194.m4a	Esse é o E. A gente está procurando o R.
+v1195.m4a	Esse é o E. A gente está procurando o S.
+v1196.m4a	Esse é o E. A gente está procurando o T.
+v1197.m4a	Esse é o E. A gente está procurando o U.
+v1198.m4a	Esse é o E. A gente está procurando o V.
+v1199.m4a	Esse é o F. A gente está procurando o A.
+v1200.m4a	Esse é o F. A gente está procurando o B.
+v1201.m4a	Esse é o F. A gente está procurando o C.
+v1202.m4a	Esse é o F. A gente está procurando o D.
+v1203.m4a	Esse é o F. A gente está procurando o E.
+v1204.m4a	Esse é o F. A gente está procurando o F.
+v1205.m4a	Esse é o F. A gente está procurando o G.
+v1206.m4a	Esse é o F. A gente está procurando o I.
+v1207.m4a	Esse é o F. A gente está procurando o L.
+v1208.m4a	Esse é o F. A gente está procurando o M.
+v1209.m4a	Esse é o F. A gente está procurando o N.
+v1210.m4a	Esse é o F. A gente está procurando o O.
+v1211.m4a	Esse é o F. A gente está procurando o P.
+v1212.m4a	Esse é o F. A gente está procurando o R.
+v1213.m4a	Esse é o F. A gente está procurando o S.
+v1214.m4a	Esse é o F. A gente está procurando o T.
+v1215.m4a	Esse é o F. A gente está procurando o U.
+v1216.m4a	Esse é o F. A gente está procurando o V.
+v1217.m4a	Esse é o G. A gente está procurando o A.
+v1218.m4a	Esse é o G. A gente está procurando o B.
+v1219.m4a	Esse é o G. A gente está procurando o C.
+v1220.m4a	Esse é o G. A gente está procurando o D.
+v1221.m4a	Esse é o G. A gente está procurando o E.
+v1222.m4a	Esse é o G. A gente está procurando o F.
+v1223.m4a	Esse é o G. A gente está procurando o G.
+v1224.m4a	Esse é o G. A gente está procurando o I.
+v1225.m4a	Esse é o G. A gente está procurando o L.
+v1226.m4a	Esse é o G. A gente está procurando o M.
+v1227.m4a	Esse é o G. A gente está procurando o N.
+v1228.m4a	Esse é o G. A gente está procurando o O.
+v1229.m4a	Esse é o G. A gente está procurando o P.
+v1230.m4a	Esse é o G. A gente está procurando o R.
+v1231.m4a	Esse é o G. A gente está procurando o S.
+v1232.m4a	Esse é o G. A gente está procurando o T.
+v1233.m4a	Esse é o G. A gente está procurando o U.
+v1234.m4a	Esse é o G. A gente está procurando o V.
+v1235.m4a	Esse é o I. A gente está procurando o A.
+v1236.m4a	Esse é o I. A gente está procurando o B.
+v1237.m4a	Esse é o I. A gente está procurando o C.
+v1238.m4a	Esse é o I. A gente está procurando o D.
+v1239.m4a	Esse é o I. A gente está procurando o E.
+v1240.m4a	Esse é o I. A gente está procurando o F.
+v1241.m4a	Esse é o I. A gente está procurando o G.
+v1242.m4a	Esse é o I. A gente está procurando o I.
+v1243.m4a	Esse é o I. A gente está procurando o L.
+v1244.m4a	Esse é o I. A gente está procurando o M.
+v1245.m4a	Esse é o I. A gente está procurando o N.
+v1246.m4a	Esse é o I. A gente está procurando o O.
+v1247.m4a	Esse é o I. A gente está procurando o P.
+v1248.m4a	Esse é o I. A gente está procurando o R.
+v1249.m4a	Esse é o I. A gente está procurando o S.
+v1250.m4a	Esse é o I. A gente está procurando o T.
+v1251.m4a	Esse é o I. A gente está procurando o U.
+v1252.m4a	Esse é o I. A gente está procurando o V.
+v1253.m4a	Esse é o L. A gente está procurando o A.
+v1254.m4a	Esse é o L. A gente está procurando o B.
+v1255.m4a	Esse é o L. A gente está procurando o C.
+v1256.m4a	Esse é o L. A gente está procurando o D.
+v1257.m4a	Esse é o L. A gente está procurando o E.
+v1258.m4a	Esse é o L. A gente está procurando o F.
+v1259.m4a	Esse é o L. A gente está procurando o G.
+v1260.m4a	Esse é o L. A gente está procurando o I.
+v1261.m4a	Esse é o L. A gente está procurando o L.
+v1262.m4a	Esse é o L. A gente está procurando o M.
+v1263.m4a	Esse é o L. A gente está procurando o N.
+v1264.m4a	Esse é o L. A gente está procurando o O.
+v1265.m4a	Esse é o L. A gente está procurando o P.
+v1266.m4a	Esse é o L. A gente está procurando o R.
+v1267.m4a	Esse é o L. A gente está procurando o S.
+v1268.m4a	Esse é o L. A gente está procurando o T.
+v1269.m4a	Esse é o L. A gente está procurando o U.
+v1270.m4a	Esse é o L. A gente está procurando o V.
+v1271.m4a	Esse é o M. A gente está procurando o A.
+v1272.m4a	Esse é o M. A gente está procurando o B.
+v1273.m4a	Esse é o M. A gente está procurando o C.
+v1274.m4a	Esse é o M. A gente está procurando o D.
+v1275.m4a	Esse é o M. A gente está procurando o E.
+v1276.m4a	Esse é o M. A gente está procurando o F.
+v1277.m4a	Esse é o M. A gente está procurando o G.
+v1278.m4a	Esse é o M. A gente está procurando o I.
+v1279.m4a	Esse é o M. A gente está procurando o L.
+v1280.m4a	Esse é o M. A gente está procurando o M.
+v1281.m4a	Esse é o M. A gente está procurando o N.
+v1282.m4a	Esse é o M. A gente está procurando o O.
+v1283.m4a	Esse é o M. A gente está procurando o P.
+v1284.m4a	Esse é o M. A gente está procurando o R.
+v1285.m4a	Esse é o M. A gente está procurando o S.
+v1286.m4a	Esse é o M. A gente está procurando o T.
+v1287.m4a	Esse é o M. A gente está procurando o U.
+v1288.m4a	Esse é o M. A gente está procurando o V.
+v1289.m4a	Esse é o N. A gente está procurando o A.
+v1290.m4a	Esse é o N. A gente está procurando o B.
+v1291.m4a	Esse é o N. A gente está procurando o C.
+v1292.m4a	Esse é o N. A gente está procurando o D.
+v1293.m4a	Esse é o N. A gente está procurando o E.
+v1294.m4a	Esse é o N. A gente está procurando o F.
+v1295.m4a	Esse é o N. A gente está procurando o G.
+v1296.m4a	Esse é o N. A gente está procurando o I.
+v1297.m4a	Esse é o N. A gente está procurando o L.
+v1298.m4a	Esse é o N. A gente está procurando o M.
+v1299.m4a	Esse é o N. A gente está procurando o N.
+v1300.m4a	Esse é o N. A gente está procurando o O.
+v1301.m4a	Esse é o N. A gente está procurando o P.
+v1302.m4a	Esse é o N. A gente está procurando o R.
+v1303.m4a	Esse é o N. A gente está procurando o S.
+v1304.m4a	Esse é o N. A gente está procurando o T.
+v1305.m4a	Esse é o N. A gente está procurando o U.
+v1306.m4a	Esse é o N. A gente está procurando o V.
+v1307.m4a	Esse é o O. A gente está procurando o A.
+v1308.m4a	Esse é o O. A gente está procurando o B.
+v1309.m4a	Esse é o O. A gente está procurando o C.
+v1310.m4a	Esse é o O. A gente está procurando o D.
+v1311.m4a	Esse é o O. A gente está procurando o E.
+v1312.m4a	Esse é o O. A gente está procurando o F.
+v1313.m4a	Esse é o O. A gente está procurando o G.
+v1314.m4a	Esse é o O. A gente está procurando o I.
+v1315.m4a	Esse é o O. A gente está procurando o L.
+v1316.m4a	Esse é o O. A gente está procurando o M.
+v1317.m4a	Esse é o O. A gente está procurando o N.
+v1318.m4a	Esse é o O. A gente está procurando o O.
+v1319.m4a	Esse é o O. A gente está procurando o P.
+v1320.m4a	Esse é o O. A gente está procurando o R.
+v1321.m4a	Esse é o O. A gente está procurando o S.
+v1322.m4a	Esse é o O. A gente está procurando o T.
+v1323.m4a	Esse é o O. A gente está procurando o U.
+v1324.m4a	Esse é o O. A gente está procurando o V.
+v1325.m4a	Esse é o P. A gente está procurando o A.
+v1326.m4a	Esse é o P. A gente está procurando o B.
+v1327.m4a	Esse é o P. A gente está procurando o C.
+v1328.m4a	Esse é o P. A gente está procurando o D.
+v1329.m4a	Esse é o P. A gente está procurando o E.
+v1330.m4a	Esse é o P. A gente está procurando o F.
+v1331.m4a	Esse é o P. A gente está procurando o G.
+v1332.m4a	Esse é o P. A gente está procurando o I.
+v1333.m4a	Esse é o P. A gente está procurando o L.
+v1334.m4a	Esse é o P. A gente está procurando o M.
+v1335.m4a	Esse é o P. A gente está procurando o N.
+v1336.m4a	Esse é o P. A gente está procurando o O.
+v1337.m4a	Esse é o P. A gente está procurando o P.
+v1338.m4a	Esse é o P. A gente está procurando o R.
+v1339.m4a	Esse é o P. A gente está procurando o S.
+v1340.m4a	Esse é o P. A gente está procurando o T.
+v1341.m4a	Esse é o P. A gente está procurando o U.
+v1342.m4a	Esse é o P. A gente está procurando o V.
+v1343.m4a	Esse é o R. A gente está procurando o A.
+v1344.m4a	Esse é o R. A gente está procurando o B.
+v1345.m4a	Esse é o R. A gente está procurando o C.
+v1346.m4a	Esse é o R. A gente está procurando o D.
+v1347.m4a	Esse é o R. A gente está procurando o E.
+v1348.m4a	Esse é o R. A gente está procurando o F.
+v1349.m4a	Esse é o R. A gente está procurando o G.
+v1350.m4a	Esse é o R. A gente está procurando o I.
+v1351.m4a	Esse é o R. A gente está procurando o L.
+v1352.m4a	Esse é o R. A gente está procurando o M.
+v1353.m4a	Esse é o R. A gente está procurando o N.
+v1354.m4a	Esse é o R. A gente está procurando o O.
+v1355.m4a	Esse é o R. A gente está procurando o P.
+v1356.m4a	Esse é o R. A gente está procurando o R.
+v1357.m4a	Esse é o R. A gente está procurando o S.
+v1358.m4a	Esse é o R. A gente está procurando o T.
+v1359.m4a	Esse é o R. A gente está procurando o U.
+v1360.m4a	Esse é o R. A gente está procurando o V.
+v1361.m4a	Esse é o S. A gente está procurando o A.
+v1362.m4a	Esse é o S. A gente está procurando o B.
+v1363.m4a	Esse é o S. A gente está procurando o C.
+v1364.m4a	Esse é o S. A gente está procurando o D.
+v1365.m4a	Esse é o S. A gente está procurando o E.
+v1366.m4a	Esse é o S. A gente está procurando o F.
+v1367.m4a	Esse é o S. A gente está procurando o G.
+v1368.m4a	Esse é o S. A gente está procurando o I.
+v1369.m4a	Esse é o S. A gente está procurando o L.
+v1370.m4a	Esse é o S. A gente está procurando o M.
+v1371.m4a	Esse é o S. A gente está procurando o N.
+v1372.m4a	Esse é o S. A gente está procurando o O.
+v1373.m4a	Esse é o S. A gente está procurando o P.
+v1374.m4a	Esse é o S. A gente está procurando o R.
+v1375.m4a	Esse é o S. A gente está procurando o S.
+v1376.m4a	Esse é o S. A gente está procurando o T.
+v1377.m4a	Esse é o S. A gente está procurando o U.
+v1378.m4a	Esse é o S. A gente está procurando o V.
+v1379.m4a	Esse é o T. A gente está procurando o A.
+v1380.m4a	Esse é o T. A gente está procurando o B.
+v1381.m4a	Esse é o T. A gente está procurando o C.
+v1382.m4a	Esse é o T. A gente está procurando o D.
+v1383.m4a	Esse é o T. A gente está procurando o E.
+v1384.m4a	Esse é o T. A gente está procurando o F.
+v1385.m4a	Esse é o T. A gente está procurando o G.
+v1386.m4a	Esse é o T. A gente está procurando o I.
+v1387.m4a	Esse é o T. A gente está procurando o L.
+v1388.m4a	Esse é o T. A gente está procurando o M.
+v1389.m4a	Esse é o T. A gente está procurando o N.
+v1390.m4a	Esse é o T. A gente está procurando o O.
+v1391.m4a	Esse é o T. A gente está procurando o P.
+v1392.m4a	Esse é o T. A gente está procurando o R.
+v1393.m4a	Esse é o T. A gente está procurando o S.
+v1394.m4a	Esse é o T. A gente está procurando o T.
+v1395.m4a	Esse é o T. A gente está procurando o U.
+v1396.m4a	Esse é o T. A gente está procurando o V.
+v1397.m4a	Esse é o U. A gente está procurando o A.
+v1398.m4a	Esse é o U. A gente está procurando o B.
+v1399.m4a	Esse é o U. A gente está procurando o C.
+v1400.m4a	Esse é o U. A gente está procurando o D.
+v1401.m4a	Esse é o U. A gente está procurando o E.
+v1402.m4a	Esse é o U. A gente está procurando o F.
+v1403.m4a	Esse é o U. A gente está procurando o G.
+v1404.m4a	Esse é o U. A gente está procurando o I.
+v1405.m4a	Esse é o U. A gente está procurando o L.
+v1406.m4a	Esse é o U. A gente está procurando o M.
+v1407.m4a	Esse é o U. A gente está procurando o N.
+v1408.m4a	Esse é o U. A gente está procurando o O.
+v1409.m4a	Esse é o U. A gente está procurando o P.
+v1410.m4a	Esse é o U. A gente está procurando o R.
+v1411.m4a	Esse é o U. A gente está procurando o S.
+v1412.m4a	Esse é o U. A gente está procurando o T.
+v1413.m4a	Esse é o U. A gente está procurando o U.
+v1414.m4a	Esse é o U. A gente está procurando o V.
+v1415.m4a	Esse é o V. A gente está procurando o A.
+v1416.m4a	Esse é o V. A gente está procurando o B.
+v1417.m4a	Esse é o V. A gente está procurando o C.
+v1418.m4a	Esse é o V. A gente está procurando o D.
+v1419.m4a	Esse é o V. A gente está procurando o E.
+v1420.m4a	Esse é o V. A gente está procurando o F.
+v1421.m4a	Esse é o V. A gente está procurando o G.
+v1422.m4a	Esse é o V. A gente está procurando o I.
+v1423.m4a	Esse é o V. A gente está procurando o L.
+v1424.m4a	Esse é o V. A gente está procurando o M.
+v1425.m4a	Esse é o V. A gente está procurando o N.
+v1426.m4a	Esse é o V. A gente está procurando o O.
+v1427.m4a	Esse é o V. A gente está procurando o P.
+v1428.m4a	Esse é o V. A gente está procurando o R.
+v1429.m4a	Esse é o V. A gente está procurando o S.
+v1430.m4a	Esse é o V. A gente está procurando o T.
+v1431.m4a	Esse é o V. A gente está procurando o U.
+v1432.m4a	Esse é o V. A gente está procurando o V.
+v1433.m4a	Esse é o jogo de imitar.
+v1434.m4a	Estende a mãozinha pra frente!
+v1435.m4a	Eu consigo tentar de novo!
+v1436.m4a	Eu consigo. . . \nainda!
+v1437.m4a	Eu consigo… ainda!
+v1438.m4a	Eu falo um sentimento e você acha a carinha certinha.
+v1439.m4a	Eu não consigo nada!
+v1440.m4a	Eu não consigo…
+v1441.m4a	Eu não sei ler…
+v1442.m4a	Eu ouvi daqui! Que voz forte.
+v1443.m4a	Eu sou corajosa!
+v1444.m4a	Eu sou muito amada!
+v1445.m4a	Eu sou uma boa amiga!
+v1446.m4a	Eu tô com Raiva!
+v1447.m4a	Eu tô com raiva!
+v1448.m4a	Eu vi!
+v1449.m4a	F
+v1450.m4a	Fala bem alto comigo:
+v1451.m4a	Faz o gesto e fala bem alto.
+v1452.m4a	Faz o gesto e fala junto comigo,
+v1453.m4a	Faz os bracinhos bem fortes,
+v1454.m4a	Ficar caladinha
+v1455.m4a	Foi de tanto tentar.
+v1456.m4a	Foi equilibrando com calma e alegria!
+v1457.m4a	G
+v1458.m4a	GA
+v1459.m4a	GATO
+v1460.m4a	Ga
+v1461.m4a	Gato
+v1462.m4a	Gato! Você escreveu Gato sozinha!
+v1463.m4a	Gritar bem alto
+v1464.m4a	Gritar com ela
+v1465.m4a	Guarda essas frases dentro de você.
+v1466.m4a	Hmm, não foi essa.
+v1467.m4a	Hmm. . . isso deixa a raiva ainda maior.
+v1468.m4a	I
+v1469.m4a	Isso ajuda a perceber a raiva antes dela ficar grande.
+v1470.m4a	Isso é mágica de verdade.
+v1471.m4a	Isso é ser corajosa.
+v1472.m4a	Isso! A cabeça esquenta.
+v1473.m4a	Isso! Agora a próxima.
+v1474.m4a	Isso! Essa é a carinha de Raiva.
+v1475.m4a	Isso! Eu ouvi daqui.
+v1476.m4a	Isso! No peito. Quando o coração acelera,
+v1477.m4a	Isso! Você respirou e o vulcão esvaziou.
+v1478.m4a	Jogar as peças longe
+v1479.m4a	Jogar o lápis longe
+v1480.m4a	Juntas
+v1481.m4a	Já temos B. Qual é a próxima letra?
+v1482.m4a	Já temos Bo. Qual é a próxima letra?
+v1483.m4a	Já temos Bol. Qual é a próxima letra?
+v1484.m4a	Já temos C. Qual é a próxima letra?
+v1485.m4a	Já temos Ca. Qual é a próxima letra?
+v1486.m4a	Já temos Cas. Qual é a próxima letra?
+v1487.m4a	Já temos G. Qual é a próxima letra?
+v1488.m4a	Já temos Ga. Qual é a próxima letra?
+v1489.m4a	Já temos Gat. Qual é a próxima letra?
+v1490.m4a	Já temos L. Qual é a próxima letra?
+v1491.m4a	Já temos Lu. Qual é a próxima letra?
+v1492.m4a	Já temos O. Qual é a próxima letra?
+v1493.m4a	Já temos Ov. Qual é a próxima letra?
+v1494.m4a	Já temos P. Qual é a próxima letra?
+v1495.m4a	Já temos Pa. Qual é a próxima letra?
+v1496.m4a	Já temos Pat. Qual é a próxima letra?
+v1497.m4a	Já temos Pi. Qual é a próxima letra?
+v1498.m4a	Já temos Pip. Qual é a próxima letra?
+v1499.m4a	Já temos S. Qual é a próxima letra?
+v1500.m4a	Já temos Sa. Qual é a próxima letra?
+v1501.m4a	Já temos Sap. Qual é a próxima letra?
+v1502.m4a	Já temos So. Qual é a próxima letra?
+v1503.m4a	Já temos V. Qual é a próxima letra?
+v1504.m4a	Já temos Va. Qual é a próxima letra?
+v1505.m4a	Já temos Vac. Qual é a próxima letra?
+v1506.m4a	L
+v1507.m4a	LA
+v1508.m4a	LO
+v1509.m4a	LU
+v1510.m4a	LUA
+v1511.m4a	La
+v1512.m4a	Leia! E é isso que você já está fazendo.
+v1513.m4a	Levanta os dois braços bem alto!
+v1514.m4a	Levanta os ombros e dá um sorriso!
+v1515.m4a	Lo
+v1516.m4a	Localizar a emoção no corpo:
+v1517.m4a	Lu
+v1518.m4a	Lua
+v1519.m4a	Lua! Você escreveu Lua sozinha!
+v1520.m4a	M
+v1521.m4a	MEDO
+v1522.m4a	Magia de unicórnio!
+v1523.m4a	Mas está faltando a palavra mágica no final!
+v1524.m4a	Mas eu sei que você acha!
+v1525.m4a	Mas olha que legal!
+v1526.m4a	Me ajuda, por favor.
+v1527.m4a	Me ajuda, por favor?
+v1528.m4a	Medo
+v1529.m4a	Medo!
+v1530.m4a	Muito bem! Já são 1 de quatro.
+v1531.m4a	Muito bem! Já são 2 de quatro.
+v1532.m4a	Muito bem! Já são 3 de quatro.
+v1533.m4a	Muito bem! Já são 4 de quatro.
+v1534.m4a	Muito bem! Já são 5 de quatro.
+v1535.m4a	Muito bem! Já são 6 de quatro.
+v1536.m4a	Muito bem! Mais uma vez.
+v1537.m4a	Muito bem. Mais uma vez.
+v1538.m4a	N
+v1539.m4a	Na barriga! Frio na barriga é o medo dando oi.
+v1540.m4a	Nina abriu um livro e ficou tristinha,
+v1541.m4a	Nina errou o desenho e ficou brava consigo mesma.
+v1542.m4a	Nina está aprendendo a andar de bicicleta.
+v1543.m4a	Nina está com muita raiva por dentro.
+v1544.m4a	Nina não está conseguindo abrir o pote.
+v1545.m4a	Nina quer o brinquedo que a amiga está usando.
+v1546.m4a	Nina!
+v1547.m4a	Nina! Olha ele lá em cima.
+v1548.m4a	Nossa, que cheiro!
+v1549.m4a	Não fui eu!
+v1550.m4a	O
+v1551.m4a	O corpo de Nina tá tranquilo.
+v1552.m4a	O monstro da raiva te pegou 1 vezes e mesmo assim você não deixou o vulcão encher.
+v1553.m4a	O monstro da raiva te pegou 2 vezes e mesmo assim você não deixou o vulcão encher.
+v1554.m4a	O monstro da raiva te pegou 3 vezes e mesmo assim você não deixou o vulcão encher.
+v1555.m4a	O monstro da raiva te pegou 4 vezes e mesmo assim você não deixou o vulcão encher.
+v1556.m4a	O monstro da raiva te pegou 5 vezes e mesmo assim você não deixou o vulcão encher.
+v1557.m4a	O monstro da raiva te pegou 6 vezes e mesmo assim você não deixou o vulcão encher.
+v1558.m4a	O que ajuda Nina a se sentir melhor?
+v1559.m4a	O que ajuda?
+v1560.m4a	O que ela pode Dizer?
+v1561.m4a	O que eu digo?
+v1562.m4a	O que eu faço?
+v1563.m4a	O que eu\ndigo?
+v1564.m4a	O que você escolhe?
+v1565.m4a	O vulcão da raiva
+v1566.m4a	O vulcão encheu e o carrinho travou!
+v1567.m4a	O vulcão esvaziou e os pontos valem em dobro!
+v1568.m4a	O vulcão tá quase cheio e você quase não enxerga!
+v1569.m4a	OVO
+v1570.m4a	Olha a figura e monta a palavra com as letrinhas!
+v1571.m4a	Olha como você prestou atenção!
+v1572.m4a	Olha lá em cima,
+v1573.m4a	Olha só! A raiva de Nina virou um vulcão.
+v1574.m4a	Olha só. Nina tentou montar uma torre bem alta…
+v1575.m4a	Olha! A lava desceu um pouquinho.
+v1576.m4a	Olha! A raiva de Nina virou um vulcão.
+v1577.m4a	Olha! É um Bolo.
+v1578.m4a	Olha! É um Gato.
+v1579.m4a	Olha! É um Ovo.
+v1580.m4a	Olha! É um Pato.
+v1581.m4a	Olha! É um Sapo.
+v1582.m4a	Olha! É um Sol.
+v1583.m4a	Olha! É uma Bola.
+v1584.m4a	Olha! É uma Casa.
+v1585.m4a	Olha! É uma Lua.
+v1586.m4a	Olha! É uma Pipa.
+v1587.m4a	Olha! É uma Vaca.
+v1588.m4a	Olha, é essa aqui que está pulando:
+v1589.m4a	Onde eu sinto?
+v1590.m4a	Onde eu\nsinto?
+v1591.m4a	Onde é que dá esse friozinho?
+v1592.m4a	Os sentimentos moram dentro do corpo.
+v1593.m4a	Ovo
+v1594.m4a	Ovo! Você escreveu Ovo sozinha!
+v1595.m4a	P
+v1596.m4a	PA
+v1597.m4a	PATO
+v1598.m4a	PI
+v1599.m4a	PIPA
+v1600.m4a	PO
+v1601.m4a	Pa
+v1602.m4a	Palavra mágica ainda
+v1603.m4a	Palavras de quatro letras agora!
+v1604.m4a	Palavras são mágicas:
+v1605.m4a	Para! Aperta o botão!
+v1606.m4a	Parar (técnica da tartaruga) e respirar devagar três vezes,
+v1607.m4a	Parar é a parte mais difícil — e é a que mais vale pontos.
+v1608.m4a	Parei! Muito bem.
+v1609.m4a	Pato
+v1610.m4a	Pato! Você escreveu Pato sozinha!
+v1611.m4a	Pedir ajuda
+v1612.m4a	Pedir ajuda! Pedir ajuda não é ser fraca.
+v1613.m4a	Pedir com palavras!
+v1614.m4a	Pedir: posso brincar também?
+v1615.m4a	Perfeito! Seu corpo e sua voz falaram a mesma coisa.
+v1616.m4a	Pi
+v1617.m4a	Pipa
+v1618.m4a	Pipa! Você escreveu Pipa sozinha!
+v1619.m4a	Po
+v1620.m4a	Pode brincar de novo na que quiser.
+v1621.m4a	Pode brincar de novo no que quiser.
+v1622.m4a	Pode demorar o quanto quiser,
+v1623.m4a	Primeiro a gente faz igual a tartaruga:
+v1624.m4a	Primeiro você só olha a Nina fazer.
+v1625.m4a	Prontinho. Seu corpo já tá mais calminho.
+v1626.m4a	Puuum!
+v1627.m4a	Põe as duas mãos no coração!
+v1628.m4a	Qual é a primeira letra?
+v1629.m4a	Qual é o próximo?
+v1630.m4a	Quando Nina fica com Raiva,
+v1631.m4a	Quando a gente arranca,
+v1632.m4a	Quando a gente pede,
+v1633.m4a	Quando a raiva chega,
+v1634.m4a	Quando a raiva fica bem grande,
+v1635.m4a	Quando a raiva fica grande demais,
+v1636.m4a	Quando dá Medo, dá um friozinho esquisito.
+v1637.m4a	Quando ela chega,
+v1638.m4a	Quando terminar,
+v1639.m4a	Quando vocês terminarem,
+v1640.m4a	Quase! Segura mais um pouquinho,
+v1641.m4a	Quase! Vamos olhar de novo com calma.
+v1642.m4a	Que atenção.
+v1643.m4a	Que fedor!
+v1644.m4a	Que tal outro jeito?
+v1645.m4a	Que voz forte! O espelho brilhou inteirinho.
+v1646.m4a	R
+v1647.m4a	RAIVA
+v1648.m4a	Raiva
+v1649.m4a	Raiva!
+v1650.m4a	Rasgar o papel
+v1651.m4a	Reconhecer e nomear cinco emoções básicas em rostos.
+v1652.m4a	Reenquadrar o "não consigo" com a palavra Ainda e afirmações em primeira pessoa.
+v1653.m4a	Respirar fundo
+v1654.m4a	Respirar fundo! O ar entra e a raiva vai diminuindo.
+v1655.m4a	S
+v1656.m4a	SA
+v1657.m4a	SAPO
+v1658.m4a	SOL
+v1659.m4a	Sa
+v1660.m4a	Sapo
+v1661.m4a	Sapo! Você escreveu Sapo sozinha!
+v1662.m4a	Segura firme! Ficando mais rápido!
+v1663.m4a	Segura mais um pouquinho,
+v1664.m4a	Segura na flor e cheira bem devagar.
+v1665.m4a	Segura na flor e cheira devagarinho.
+v1666.m4a	Segura o dedinho na flor e cheira o cheirinho dela…
+v1667.m4a	Segure o botãozinho para chamar um adulto.
+v1668.m4a	Sem querer, Nina machucou a amiga.
+v1669.m4a	Seu cérebro tá ficando fortão!
+v1670.m4a	Seu olho já acha as letras rapidinho.
+v1671.m4a	Sol
+v1672.m4a	Sol! Você escreveu Sol sozinha!
+v1673.m4a	São três tempos.
+v1674.m4a	Só você
+v1675.m4a	T
+v1676.m4a	TO
+v1677.m4a	TRISTEZA
+v1678.m4a	Tempo dois: nós duas juntas.
+v1679.m4a	Tempo três: agora é só você!
+v1680.m4a	Tempo um: só olhar.
+v1681.m4a	Tenta outra.
+v1682.m4a	Termina a de antes que ela acorda!
+v1683.m4a	Termina o de antes que ele abre!
+v1684.m4a	Tinha letra sobrando pra confundir e você não caiu!
+v1685.m4a	Tirei. Pode tentar de novo!
+v1686.m4a	To
+v1687.m4a	Todo mundo sente raiva às vezes.
+v1688.m4a	Trabalha resolução de problemas sociais,
+v1689.m4a	Trinta pontos por se acalmar — é o que mais vale no jogo!
+v1690.m4a	Tristeza
+v1691.m4a	Tristeza!
+v1692.m4a	Trocar grito, ofensa e silêncio por frases:
+v1693.m4a	U
+v1694.m4a	V
+v1695.m4a	VA
+v1696.m4a	VACA
+v1697.m4a	Va
+v1698.m4a	Vaca
+v1699.m4a	Vaca! Você escreveu Vaca sozinha!
+v1700.m4a	Vai,
+v1701.m4a	Vamos achar onde cada um mora?
+v1702.m4a	Vamos cheirar a flor e soprar a vela?
+v1703.m4a	Vamos de novo?
+v1704.m4a	Vamos escolher junto?
+v1705.m4a	Vamos escrever Bola.
+v1706.m4a	Vamos escrever Bolo.
+v1707.m4a	Vamos escrever Casa.
+v1708.m4a	Vamos escrever Gato.
+v1709.m4a	Vamos escrever Lua.
+v1710.m4a	Vamos escrever Ovo.
+v1711.m4a	Vamos escrever Pato.
+v1712.m4a	Vamos escrever Pipa.
+v1713.m4a	Vamos escrever Sapo.
+v1714.m4a	Vamos escrever Sol.
+v1715.m4a	Vamos escrever Vaca.
+v1716.m4a	Vamos olhar as carinhas!
+v1717.m4a	Vamos respirar juntinhos.
+v1718.m4a	Vem comigo!
+v1719.m4a	Viu o gesto que ela fez?
+v1720.m4a	Você acalmou um vulcão inteirinho só respirando!
+v1721.m4a	Você ainda não consegue — ainda!
+v1722.m4a	Você aprendeu a palavra mais mágica do mundo:
+v1723.m4a	Você aprendeu que as palavras tiram a raiva de dentro sem machucar ninguém.
+v1724.m4a	Você conseguiu! O vulcão virou uma montanha calminha.
+v1725.m4a	Você deixou a raiva encher e mesmo assim parou e respirou 1 vez.
+v1726.m4a	Você deixou a raiva encher e mesmo assim parou e respirou 1 vezes.
+v1727.m4a	Você deixou a raiva encher e mesmo assim parou e respirou 2 vez.
+v1728.m4a	Você deixou a raiva encher e mesmo assim parou e respirou 2 vezes.
+v1729.m4a	Você deixou a raiva encher e mesmo assim parou e respirou 3 vez.
+v1730.m4a	Você deixou a raiva encher e mesmo assim parou e respirou 3 vezes.
+v1731.m4a	Você deixou a raiva encher e mesmo assim parou e respirou 4 vez.
+v1732.m4a	Você deixou a raiva encher e mesmo assim parou e respirou 4 vezes.
+v1733.m4a	Você deixou a raiva encher e mesmo assim parou e respirou 5 vez.
+v1734.m4a	Você deixou a raiva encher e mesmo assim parou e respirou 5 vezes.
+v1735.m4a	Você deixou a raiva encher e mesmo assim parou e respirou 6 vez.
+v1736.m4a	Você deixou a raiva encher e mesmo assim parou e respirou 6 vezes.
+v1737.m4a	Você descobriu onde os sentimentos moram no corpo.
+v1738.m4a	Você escolheu jeitos bons de resolver,
+v1739.m4a	Você escreveu suas primeiras palavras!
+v1740.m4a	Você escreveu! Vamos ler juntas:
+v1741.m4a	Você falou com o corpo todo!
+v1742.m4a	Você falou tudo sozinha!
+v1743.m4a	Você fez o gesto e falou junto.
+v1744.m4a	Você foi até o fim da estrada sem desistir.
+v1745.m4a	Você já fez todas!
+v1746.m4a	Você já fez todos!
+v1747.m4a	Você me ajuda a acalmar ele?
+v1748.m4a	Você não desistiu.
+v1749.m4a	Você não precisa falar nada agora,
+v1750.m4a	Você olhou com atenção em cada carinha!
+v1751.m4a	Você pintou o arco-íris inteirinho,
+v1752.m4a	Você sabe o nome dos sentimentos,
+v1753.m4a	Você tentou de novo!
+v1754.m4a	Você é chata!
+v1755.m4a	Voz ligada!
+v1756.m4a	a amiga entende.
+v1757.m4a	a cabeça esquenta feito um vulcão.
+v1758.m4a	a gente para. Segura a flor e cheira devagar.
+v1759.m4a	a gente pode escolher o que fazer.
+v1760.m4a	a raiva não some pra sempre.
+v1761.m4a	add(
+v1762.m4a	ainda-txt
+v1763.m4a	ajudapf
+v1764.m4a	alegria
+v1765.m4a	anelAv
+v1766.m4a	aperta o botão verde.
+v1767.m4a	aperta o botão.
+v1768.m4a	bandeja
+v1769.m4a	barriga
+v1770.m4a	bem devagar.
+v1771.m4a	bem devagarinho.
+v1772.m4a	brilha
+v1773.m4a	bt claro pequeno
+v1774.m4a	bt pequeno
+v1775.m4a	btAinda
+v1776.m4a	btApagar
+v1777.m4a	btDeNovo
+v1778.m4a	btDica
+v1779.m4a	btFalei
+v1780.m4a	btOuvir
+v1781.m4a	btSalvar
+v1782.m4a	btSeguir
+v1783.m4a	btTartaruga
+v1784.m4a	btVoltarMapa
+v1785.m4a	btZerar
+v1786.m4a	cabeca
+v1787.m4a	cabelo
+v1788.m4a	cabeça quente.
+v1789.m4a	carrinho-recorde
+v1790.m4a	cheirando bem devagar.
+v1791.m4a	circle
+v1792.m4a	com retorno visual imediato.
+v1793.m4a	contador
+v1794.m4a	coração acelerado,
+v1795.m4a	corpo-wrap
+v1796.m4a	desculpa
+v1797.m4a	dá vontade de um colo.
+v1798.m4a	e a torre caiu toda no chão.
+v1799.m4a	e a torre ficou em pé.
+v1800.m4a	e caiu.
+v1801.m4a	ease-in-out
+v1802.m4a	ela se assusta.
+v1803.m4a	elas tiram a raiva de dentro sem machucar ninguém.
+v1804.m4a	ellipse
+v1805.m4a	empurrar
+v1806.m4a	espera
+v1807.m4a	estrela
+v1808.m4a	etapa-doc
+v1809.m4a	eu espero aqui.
+v1810.m4a	eu não consigo… ainda!
+v1811.m4a	falando
+v1812.m4a	fechaResp
+v1813.m4a	flor-bt
+v1814.m4a	florAv
+v1815.m4a	florAv2
+v1816.m4a	florBt
+v1817.m4a	florsvg
+v1818.m4a	frio na barriga,
+v1819.m4a	igual a ela!
+v1820.m4a	in-nome
+v1821.m4a	indefinite
+v1822.m4a	linha-bt
+v1823.m4a	mesmo com raiva.
+v1824.m4a	molduraFig
+v1825.m4a	moveTo
+v1826.m4a	musica
+v1827.m4a	nadaconsigo
+v1828.m4a	nomear
+v1829.m4a	nomear, pedir ajuda,
+v1830.m4a	núcleo dos programas de competência socioemocional pré-escolar.
+v1831.m4a	o A.
+v1832.m4a	o B.
+v1833.m4a	o C.
+v1834.m4a	o D.
+v1835.m4a	o E.
+v1836.m4a	o F.
+v1837.m4a	o G.
+v1838.m4a	o I.
+v1839.m4a	o L.
+v1840.m4a	o M.
+v1841.m4a	o N.
+v1842.m4a	o O.
+v1843.m4a	o P.
+v1844.m4a	o R.
+v1845.m4a	o S.
+v1846.m4a	o T.
+v1847.m4a	o U.
+v1848.m4a	o V.
+v1849.m4a	o coração dela bate rápido:
+v1850.m4a	o vulcão enche.
+v1851.m4a	p-corpo
+v1852.m4a	p-resp
+v1853.m4a	pal-cabelo
+v1854.m4a	pal-pele
+v1855.m4a	pal-vestido
+v1856.m4a	pergunta
+v1857.m4a	pointercancel
+v1858.m4a	pointerdown
+v1859.m4a	pointerleave
+v1860.m4a	pointerup
+v1861.m4a	porque ainda não sabe ler as palavras.
+v1862.m4a	previa
+v1863.m4a	quando alguma coisa é difícil,
+v1864.m4a	que inteligente!
+v1865.m4a	quieta
+v1866.m4a	rasgar
+v1867.m4a	reduce)
+v1868.m4a	reparar.
+v1869.m4a	ritual
+v1870.m4a	sabe acalmar o corpo e sabe usar as palavras.
+v1871.m4a	suspended
+v1872.m4a	só prestar atenção.
+v1873.m4a	transform
+v1874.m4a	translateY(0)
+v1875.m4a	travada
+v1876.m4a	triste
+v1877.m4a	tristeza
+v1878.m4a	tum, tum, tum! Onde é que bate o coração?
+v1879.m4a	use strict
+v1880.m4a	velaBox
+v1881.m4a	vestido
+v1882.m4a	você lembra da palavra mágica…
+v1883.m4a	você tentou de novo mesmo sendo difícil
+v1884.m4a	vulcao-arcoiris
+v1885.m4a	vulcao-cena
+v1886.m4a	xingar
+v1887.m4a	É a primeira letra do nome Nina.
+v1888.m4a	É assim que a gente aprende de verdade!
+v1889.m4a	É o Medo! O medo é um amigo que avisa a gente pra tomar cuidado.
+v1890.m4a	É ser esperta.
+v1891.m4a	é a raiva chegando.
+v1892.m4a	A próxima letra é o H.
+v1893.m4a	A próxima letra é o J.
+v1894.m4a	A próxima letra é o Z.
+v1895.m4a	ABELHA
+v1896.m4a	Abelha
+v1897.m4a	Abelha! Isso! Você escreveu sozinha!
+v1898.m4a	BANANA
+v1899.m4a	Banana
+v1900.m4a	Banana! Isso! Você escreveu sozinha!
+v1901.m4a	Bola! Isso! Você escreveu sozinha!
+v1902.m4a	Bolo! Isso! Você escreveu sozinha!
+v1903.m4a	CADEIRA
+v1904.m4a	CARRO
+v1905.m4a	CASTELO
+v1906.m4a	CAVALO
+v1907.m4a	CENOURA
+v1908.m4a	CHAVE
+v1909.m4a	COELHO
+v1910.m4a	Cadeira
+v1911.m4a	Cadeira! Isso! Você escreveu sozinha!
+v1912.m4a	Carro
+v1913.m4a	Carro! Isso! Você escreveu sozinha!
+v1914.m4a	Casa! Isso! Você escreveu sozinha!
+v1915.m4a	Castelo
+v1916.m4a	Castelo! Isso! Você escreveu sozinha!
+v1917.m4a	Cavalo
+v1918.m4a	Cavalo! Isso! Você escreveu sozinha!
+v1919.m4a	Cenoura
+v1920.m4a	Cenoura! Isso! Você escreveu sozinha!
+v1921.m4a	Chave
+v1922.m4a	Chave! Isso! Você escreveu sozinha!
+v1923.m4a	Coelho
+v1924.m4a	Coelho! Isso! Você escreveu sozinha!
+v1925.m4a	E você conseguiu!
+v1926.m4a	E você escreveu todas!
+v1927.m4a	E você ganhou a letra R!
+v1928.m4a	E você ganhou a letra S!
+v1929.m4a	E você ganhou a letra T!
+v1930.m4a	Essas seis letras que você ganhou formam uma palavra.
+v1931.m4a	Esse era o mais difícil de todos,
+v1932.m4a	Esse é o A. A gente quer o A.
+v1933.m4a	Esse é o A. A gente quer o B.
+v1934.m4a	Esse é o A. A gente quer o C.
+v1935.m4a	Esse é o A. A gente quer o D.
+v1936.m4a	Esse é o A. A gente quer o E.
+v1937.m4a	Esse é o A. A gente quer o F.
+v1938.m4a	Esse é o A. A gente quer o G.
+v1939.m4a	Esse é o A. A gente quer o H.
+v1940.m4a	Esse é o A. A gente quer o I.
+v1941.m4a	Esse é o A. A gente quer o J.
+v1942.m4a	Esse é o A. A gente quer o L.
+v1943.m4a	Esse é o A. A gente quer o M.
+v1944.m4a	Esse é o A. A gente quer o N.
+v1945.m4a	Esse é o A. A gente quer o O.
+v1946.m4a	Esse é o A. A gente quer o P.
+v1947.m4a	Esse é o A. A gente quer o R.
+v1948.m4a	Esse é o A. A gente quer o S.
+v1949.m4a	Esse é o A. A gente quer o T.
+v1950.m4a	Esse é o A. A gente quer o U.
+v1951.m4a	Esse é o A. A gente quer o V.
+v1952.m4a	Esse é o A. A gente quer o Z.
+v1953.m4a	Esse é o B. A gente quer o A.
+v1954.m4a	Esse é o B. A gente quer o B.
+v1955.m4a	Esse é o B. A gente quer o C.
+v1956.m4a	Esse é o B. A gente quer o D.
+v1957.m4a	Esse é o B. A gente quer o E.
+v1958.m4a	Esse é o B. A gente quer o F.
+v1959.m4a	Esse é o B. A gente quer o G.
+v1960.m4a	Esse é o B. A gente quer o H.
+v1961.m4a	Esse é o B. A gente quer o I.
+v1962.m4a	Esse é o B. A gente quer o J.
+v1963.m4a	Esse é o B. A gente quer o L.
+v1964.m4a	Esse é o B. A gente quer o M.
+v1965.m4a	Esse é o B. A gente quer o N.
+v1966.m4a	Esse é o B. A gente quer o O.
+v1967.m4a	Esse é o B. A gente quer o P.
+v1968.m4a	Esse é o B. A gente quer o R.
+v1969.m4a	Esse é o B. A gente quer o S.
+v1970.m4a	Esse é o B. A gente quer o T.
+v1971.m4a	Esse é o B. A gente quer o U.
+v1972.m4a	Esse é o B. A gente quer o V.
+v1973.m4a	Esse é o B. A gente quer o Z.
+v1974.m4a	Esse é o C. A gente quer o A.
+v1975.m4a	Esse é o C. A gente quer o B.
+v1976.m4a	Esse é o C. A gente quer o C.
+v1977.m4a	Esse é o C. A gente quer o D.
+v1978.m4a	Esse é o C. A gente quer o E.
+v1979.m4a	Esse é o C. A gente quer o F.
+v1980.m4a	Esse é o C. A gente quer o G.
+v1981.m4a	Esse é o C. A gente quer o H.
+v1982.m4a	Esse é o C. A gente quer o I.
+v1983.m4a	Esse é o C. A gente quer o J.
+v1984.m4a	Esse é o C. A gente quer o L.
+v1985.m4a	Esse é o C. A gente quer o M.
+v1986.m4a	Esse é o C. A gente quer o N.
+v1987.m4a	Esse é o C. A gente quer o O.
+v1988.m4a	Esse é o C. A gente quer o P.
+v1989.m4a	Esse é o C. A gente quer o R.
+v1990.m4a	Esse é o C. A gente quer o S.
+v1991.m4a	Esse é o C. A gente quer o T.
+v1992.m4a	Esse é o C. A gente quer o U.
+v1993.m4a	Esse é o C. A gente quer o V.
+v1994.m4a	Esse é o C. A gente quer o Z.
+v1995.m4a	Esse é o D. A gente quer o A.
+v1996.m4a	Esse é o D. A gente quer o B.
+v1997.m4a	Esse é o D. A gente quer o C.
+v1998.m4a	Esse é o D. A gente quer o D.
+v1999.m4a	Esse é o D. A gente quer o E.
+v2000.m4a	Esse é o D. A gente quer o F.
+v2001.m4a	Esse é o D. A gente quer o G.
+v2002.m4a	Esse é o D. A gente quer o H.
+v2003.m4a	Esse é o D. A gente quer o I.
+v2004.m4a	Esse é o D. A gente quer o J.
+v2005.m4a	Esse é o D. A gente quer o L.
+v2006.m4a	Esse é o D. A gente quer o M.
+v2007.m4a	Esse é o D. A gente quer o N.
+v2008.m4a	Esse é o D. A gente quer o O.
+v2009.m4a	Esse é o D. A gente quer o P.
+v2010.m4a	Esse é o D. A gente quer o R.
+v2011.m4a	Esse é o D. A gente quer o S.
+v2012.m4a	Esse é o D. A gente quer o T.
+v2013.m4a	Esse é o D. A gente quer o U.
+v2014.m4a	Esse é o D. A gente quer o V.
+v2015.m4a	Esse é o D. A gente quer o Z.
+v2016.m4a	Esse é o E. A gente quer o A.
+v2017.m4a	Esse é o E. A gente quer o B.
+v2018.m4a	Esse é o E. A gente quer o C.
+v2019.m4a	Esse é o E. A gente quer o D.
+v2020.m4a	Esse é o E. A gente quer o E.
+v2021.m4a	Esse é o E. A gente quer o F.
+v2022.m4a	Esse é o E. A gente quer o G.
+v2023.m4a	Esse é o E. A gente quer o H.
+v2024.m4a	Esse é o E. A gente quer o I.
+v2025.m4a	Esse é o E. A gente quer o J.
+v2026.m4a	Esse é o E. A gente quer o L.
+v2027.m4a	Esse é o E. A gente quer o M.
+v2028.m4a	Esse é o E. A gente quer o N.
+v2029.m4a	Esse é o E. A gente quer o O.
+v2030.m4a	Esse é o E. A gente quer o P.
+v2031.m4a	Esse é o E. A gente quer o R.
+v2032.m4a	Esse é o E. A gente quer o S.
+v2033.m4a	Esse é o E. A gente quer o T.
+v2034.m4a	Esse é o E. A gente quer o U.
+v2035.m4a	Esse é o E. A gente quer o V.
+v2036.m4a	Esse é o E. A gente quer o Z.
+v2037.m4a	Esse é o F. A gente quer o A.
+v2038.m4a	Esse é o F. A gente quer o B.
+v2039.m4a	Esse é o F. A gente quer o C.
+v2040.m4a	Esse é o F. A gente quer o D.
+v2041.m4a	Esse é o F. A gente quer o E.
+v2042.m4a	Esse é o F. A gente quer o F.
+v2043.m4a	Esse é o F. A gente quer o G.
+v2044.m4a	Esse é o F. A gente quer o H.
+v2045.m4a	Esse é o F. A gente quer o I.
+v2046.m4a	Esse é o F. A gente quer o J.
+v2047.m4a	Esse é o F. A gente quer o L.
+v2048.m4a	Esse é o F. A gente quer o M.
+v2049.m4a	Esse é o F. A gente quer o N.
+v2050.m4a	Esse é o F. A gente quer o O.
+v2051.m4a	Esse é o F. A gente quer o P.
+v2052.m4a	Esse é o F. A gente quer o R.
+v2053.m4a	Esse é o F. A gente quer o S.
+v2054.m4a	Esse é o F. A gente quer o T.
+v2055.m4a	Esse é o F. A gente quer o U.
+v2056.m4a	Esse é o F. A gente quer o V.
+v2057.m4a	Esse é o F. A gente quer o Z.
+v2058.m4a	Esse é o G. A gente quer o A.
+v2059.m4a	Esse é o G. A gente quer o B.
+v2060.m4a	Esse é o G. A gente quer o C.
+v2061.m4a	Esse é o G. A gente quer o D.
+v2062.m4a	Esse é o G. A gente quer o E.
+v2063.m4a	Esse é o G. A gente quer o F.
+v2064.m4a	Esse é o G. A gente quer o G.
+v2065.m4a	Esse é o G. A gente quer o H.
+v2066.m4a	Esse é o G. A gente quer o I.
+v2067.m4a	Esse é o G. A gente quer o J.
+v2068.m4a	Esse é o G. A gente quer o L.
+v2069.m4a	Esse é o G. A gente quer o M.
+v2070.m4a	Esse é o G. A gente quer o N.
+v2071.m4a	Esse é o G. A gente quer o O.
+v2072.m4a	Esse é o G. A gente quer o P.
+v2073.m4a	Esse é o G. A gente quer o R.
+v2074.m4a	Esse é o G. A gente quer o S.
+v2075.m4a	Esse é o G. A gente quer o T.
+v2076.m4a	Esse é o G. A gente quer o U.
+v2077.m4a	Esse é o G. A gente quer o V.
+v2078.m4a	Esse é o G. A gente quer o Z.
+v2079.m4a	Esse é o H. A gente quer o A.
+v2080.m4a	Esse é o H. A gente quer o B.
+v2081.m4a	Esse é o H. A gente quer o C.
+v2082.m4a	Esse é o H. A gente quer o D.
+v2083.m4a	Esse é o H. A gente quer o E.
+v2084.m4a	Esse é o H. A gente quer o F.
+v2085.m4a	Esse é o H. A gente quer o G.
+v2086.m4a	Esse é o H. A gente quer o H.
+v2087.m4a	Esse é o H. A gente quer o I.
+v2088.m4a	Esse é o H. A gente quer o J.
+v2089.m4a	Esse é o H. A gente quer o L.
+v2090.m4a	Esse é o H. A gente quer o M.
+v2091.m4a	Esse é o H. A gente quer o N.
+v2092.m4a	Esse é o H. A gente quer o O.
+v2093.m4a	Esse é o H. A gente quer o P.
+v2094.m4a	Esse é o H. A gente quer o R.
+v2095.m4a	Esse é o H. A gente quer o S.
+v2096.m4a	Esse é o H. A gente quer o T.
+v2097.m4a	Esse é o H. A gente quer o U.
+v2098.m4a	Esse é o H. A gente quer o V.
+v2099.m4a	Esse é o H. A gente quer o Z.
+v2100.m4a	Esse é o I. A gente quer o A.
+v2101.m4a	Esse é o I. A gente quer o B.
+v2102.m4a	Esse é o I. A gente quer o C.
+v2103.m4a	Esse é o I. A gente quer o D.
+v2104.m4a	Esse é o I. A gente quer o E.
+v2105.m4a	Esse é o I. A gente quer o F.
+v2106.m4a	Esse é o I. A gente quer o G.
+v2107.m4a	Esse é o I. A gente quer o H.
+v2108.m4a	Esse é o I. A gente quer o I.
+v2109.m4a	Esse é o I. A gente quer o J.
+v2110.m4a	Esse é o I. A gente quer o L.
+v2111.m4a	Esse é o I. A gente quer o M.
+v2112.m4a	Esse é o I. A gente quer o N.
+v2113.m4a	Esse é o I. A gente quer o O.
+v2114.m4a	Esse é o I. A gente quer o P.
+v2115.m4a	Esse é o I. A gente quer o R.
+v2116.m4a	Esse é o I. A gente quer o S.
+v2117.m4a	Esse é o I. A gente quer o T.
+v2118.m4a	Esse é o I. A gente quer o U.
+v2119.m4a	Esse é o I. A gente quer o V.
+v2120.m4a	Esse é o I. A gente quer o Z.
+v2121.m4a	Esse é o J. A gente quer o A.
+v2122.m4a	Esse é o J. A gente quer o B.
+v2123.m4a	Esse é o J. A gente quer o C.
+v2124.m4a	Esse é o J. A gente quer o D.
+v2125.m4a	Esse é o J. A gente quer o E.
+v2126.m4a	Esse é o J. A gente quer o F.
+v2127.m4a	Esse é o J. A gente quer o G.
+v2128.m4a	Esse é o J. A gente quer o H.
+v2129.m4a	Esse é o J. A gente quer o I.
+v2130.m4a	Esse é o J. A gente quer o J.
+v2131.m4a	Esse é o J. A gente quer o L.
+v2132.m4a	Esse é o J. A gente quer o M.
+v2133.m4a	Esse é o J. A gente quer o N.
+v2134.m4a	Esse é o J. A gente quer o O.
+v2135.m4a	Esse é o J. A gente quer o P.
+v2136.m4a	Esse é o J. A gente quer o R.
+v2137.m4a	Esse é o J. A gente quer o S.
+v2138.m4a	Esse é o J. A gente quer o T.
+v2139.m4a	Esse é o J. A gente quer o U.
+v2140.m4a	Esse é o J. A gente quer o V.
+v2141.m4a	Esse é o J. A gente quer o Z.
+v2142.m4a	Esse é o L. A gente quer o A.
+v2143.m4a	Esse é o L. A gente quer o B.
+v2144.m4a	Esse é o L. A gente quer o C.
+v2145.m4a	Esse é o L. A gente quer o D.
+v2146.m4a	Esse é o L. A gente quer o E.
+v2147.m4a	Esse é o L. A gente quer o F.
+v2148.m4a	Esse é o L. A gente quer o G.
+v2149.m4a	Esse é o L. A gente quer o H.
+v2150.m4a	Esse é o L. A gente quer o I.
+v2151.m4a	Esse é o L. A gente quer o J.
+v2152.m4a	Esse é o L. A gente quer o L.
+v2153.m4a	Esse é o L. A gente quer o M.
+v2154.m4a	Esse é o L. A gente quer o N.
+v2155.m4a	Esse é o L. A gente quer o O.
+v2156.m4a	Esse é o L. A gente quer o P.
+v2157.m4a	Esse é o L. A gente quer o R.
+v2158.m4a	Esse é o L. A gente quer o S.
+v2159.m4a	Esse é o L. A gente quer o T.
+v2160.m4a	Esse é o L. A gente quer o U.
+v2161.m4a	Esse é o L. A gente quer o V.
+v2162.m4a	Esse é o L. A gente quer o Z.
+v2163.m4a	Esse é o M. A gente quer o A.
+v2164.m4a	Esse é o M. A gente quer o B.
+v2165.m4a	Esse é o M. A gente quer o C.
+v2166.m4a	Esse é o M. A gente quer o D.
+v2167.m4a	Esse é o M. A gente quer o E.
+v2168.m4a	Esse é o M. A gente quer o F.
+v2169.m4a	Esse é o M. A gente quer o G.
+v2170.m4a	Esse é o M. A gente quer o H.
+v2171.m4a	Esse é o M. A gente quer o I.
+v2172.m4a	Esse é o M. A gente quer o J.
+v2173.m4a	Esse é o M. A gente quer o L.
+v2174.m4a	Esse é o M. A gente quer o M.
+v2175.m4a	Esse é o M. A gente quer o N.
+v2176.m4a	Esse é o M. A gente quer o O.
+v2177.m4a	Esse é o M. A gente quer o P.
+v2178.m4a	Esse é o M. A gente quer o R.
+v2179.m4a	Esse é o M. A gente quer o S.
+v2180.m4a	Esse é o M. A gente quer o T.
+v2181.m4a	Esse é o M. A gente quer o U.
+v2182.m4a	Esse é o M. A gente quer o V.
+v2183.m4a	Esse é o M. A gente quer o Z.
+v2184.m4a	Esse é o N. A gente quer o A.
+v2185.m4a	Esse é o N. A gente quer o B.
+v2186.m4a	Esse é o N. A gente quer o C.
+v2187.m4a	Esse é o N. A gente quer o D.
+v2188.m4a	Esse é o N. A gente quer o E.
+v2189.m4a	Esse é o N. A gente quer o F.
+v2190.m4a	Esse é o N. A gente quer o G.
+v2191.m4a	Esse é o N. A gente quer o H.
+v2192.m4a	Esse é o N. A gente quer o I.
+v2193.m4a	Esse é o N. A gente quer o J.
+v2194.m4a	Esse é o N. A gente quer o L.
+v2195.m4a	Esse é o N. A gente quer o M.
+v2196.m4a	Esse é o N. A gente quer o N.
+v2197.m4a	Esse é o N. A gente quer o O.
+v2198.m4a	Esse é o N. A gente quer o P.
+v2199.m4a	Esse é o N. A gente quer o R.
+v2200.m4a	Esse é o N. A gente quer o S.
+v2201.m4a	Esse é o N. A gente quer o T.
+v2202.m4a	Esse é o N. A gente quer o U.
+v2203.m4a	Esse é o N. A gente quer o V.
+v2204.m4a	Esse é o N. A gente quer o Z.
+v2205.m4a	Esse é o O. A gente quer o A.
+v2206.m4a	Esse é o O. A gente quer o B.
+v2207.m4a	Esse é o O. A gente quer o C.
+v2208.m4a	Esse é o O. A gente quer o D.
+v2209.m4a	Esse é o O. A gente quer o E.
+v2210.m4a	Esse é o O. A gente quer o F.
+v2211.m4a	Esse é o O. A gente quer o G.
+v2212.m4a	Esse é o O. A gente quer o H.
+v2213.m4a	Esse é o O. A gente quer o I.
+v2214.m4a	Esse é o O. A gente quer o J.
+v2215.m4a	Esse é o O. A gente quer o L.
+v2216.m4a	Esse é o O. A gente quer o M.
+v2217.m4a	Esse é o O. A gente quer o N.
+v2218.m4a	Esse é o O. A gente quer o O.
+v2219.m4a	Esse é o O. A gente quer o P.
+v2220.m4a	Esse é o O. A gente quer o R.
+v2221.m4a	Esse é o O. A gente quer o S.
+v2222.m4a	Esse é o O. A gente quer o T.
+v2223.m4a	Esse é o O. A gente quer o U.
+v2224.m4a	Esse é o O. A gente quer o V.
+v2225.m4a	Esse é o O. A gente quer o Z.
+v2226.m4a	Esse é o P. A gente quer o A.
+v2227.m4a	Esse é o P. A gente quer o B.
+v2228.m4a	Esse é o P. A gente quer o C.
+v2229.m4a	Esse é o P. A gente quer o D.
+v2230.m4a	Esse é o P. A gente quer o E.
+v2231.m4a	Esse é o P. A gente quer o F.
+v2232.m4a	Esse é o P. A gente quer o G.
+v2233.m4a	Esse é o P. A gente quer o H.
+v2234.m4a	Esse é o P. A gente quer o I.
+v2235.m4a	Esse é o P. A gente quer o J.
+v2236.m4a	Esse é o P. A gente quer o L.
+v2237.m4a	Esse é o P. A gente quer o M.
+v2238.m4a	Esse é o P. A gente quer o N.
+v2239.m4a	Esse é o P. A gente quer o O.
+v2240.m4a	Esse é o P. A gente quer o P.
+v2241.m4a	Esse é o P. A gente quer o R.
+v2242.m4a	Esse é o P. A gente quer o S.
+v2243.m4a	Esse é o P. A gente quer o T.
+v2244.m4a	Esse é o P. A gente quer o U.
+v2245.m4a	Esse é o P. A gente quer o V.
+v2246.m4a	Esse é o P. A gente quer o Z.
+v2247.m4a	Esse é o R. A gente quer o A.
+v2248.m4a	Esse é o R. A gente quer o B.
+v2249.m4a	Esse é o R. A gente quer o C.
+v2250.m4a	Esse é o R. A gente quer o D.
+v2251.m4a	Esse é o R. A gente quer o E.
+v2252.m4a	Esse é o R. A gente quer o F.
+v2253.m4a	Esse é o R. A gente quer o G.
+v2254.m4a	Esse é o R. A gente quer o H.
+v2255.m4a	Esse é o R. A gente quer o I.
+v2256.m4a	Esse é o R. A gente quer o J.
+v2257.m4a	Esse é o R. A gente quer o L.
+v2258.m4a	Esse é o R. A gente quer o M.
+v2259.m4a	Esse é o R. A gente quer o N.
+v2260.m4a	Esse é o R. A gente quer o O.
+v2261.m4a	Esse é o R. A gente quer o P.
+v2262.m4a	Esse é o R. A gente quer o R.
+v2263.m4a	Esse é o R. A gente quer o S.
+v2264.m4a	Esse é o R. A gente quer o T.
+v2265.m4a	Esse é o R. A gente quer o U.
+v2266.m4a	Esse é o R. A gente quer o V.
+v2267.m4a	Esse é o R. A gente quer o Z.
+v2268.m4a	Esse é o S. A gente quer o A.
+v2269.m4a	Esse é o S. A gente quer o B.
+v2270.m4a	Esse é o S. A gente quer o C.
+v2271.m4a	Esse é o S. A gente quer o D.
+v2272.m4a	Esse é o S. A gente quer o E.
+v2273.m4a	Esse é o S. A gente quer o F.
+v2274.m4a	Esse é o S. A gente quer o G.
+v2275.m4a	Esse é o S. A gente quer o H.
+v2276.m4a	Esse é o S. A gente quer o I.
+v2277.m4a	Esse é o S. A gente quer o J.
+v2278.m4a	Esse é o S. A gente quer o L.
+v2279.m4a	Esse é o S. A gente quer o M.
+v2280.m4a	Esse é o S. A gente quer o N.
+v2281.m4a	Esse é o S. A gente quer o O.
+v2282.m4a	Esse é o S. A gente quer o P.
+v2283.m4a	Esse é o S. A gente quer o R.
+v2284.m4a	Esse é o S. A gente quer o S.
+v2285.m4a	Esse é o S. A gente quer o T.
+v2286.m4a	Esse é o S. A gente quer o U.
+v2287.m4a	Esse é o S. A gente quer o V.
+v2288.m4a	Esse é o S. A gente quer o Z.
+v2289.m4a	Esse é o T. A gente quer o A.
+v2290.m4a	Esse é o T. A gente quer o B.
+v2291.m4a	Esse é o T. A gente quer o C.
+v2292.m4a	Esse é o T. A gente quer o D.
+v2293.m4a	Esse é o T. A gente quer o E.
+v2294.m4a	Esse é o T. A gente quer o F.
+v2295.m4a	Esse é o T. A gente quer o G.
+v2296.m4a	Esse é o T. A gente quer o H.
+v2297.m4a	Esse é o T. A gente quer o I.
+v2298.m4a	Esse é o T. A gente quer o J.
+v2299.m4a	Esse é o T. A gente quer o L.
+v2300.m4a	Esse é o T. A gente quer o M.
+v2301.m4a	Esse é o T. A gente quer o N.
+v2302.m4a	Esse é o T. A gente quer o O.
+v2303.m4a	Esse é o T. A gente quer o P.
+v2304.m4a	Esse é o T. A gente quer o R.
+v2305.m4a	Esse é o T. A gente quer o S.
+v2306.m4a	Esse é o T. A gente quer o T.
+v2307.m4a	Esse é o T. A gente quer o U.
+v2308.m4a	Esse é o T. A gente quer o V.
+v2309.m4a	Esse é o T. A gente quer o Z.
+v2310.m4a	Esse é o U. A gente quer o A.
+v2311.m4a	Esse é o U. A gente quer o B.
+v2312.m4a	Esse é o U. A gente quer o C.
+v2313.m4a	Esse é o U. A gente quer o D.
+v2314.m4a	Esse é o U. A gente quer o E.
+v2315.m4a	Esse é o U. A gente quer o F.
+v2316.m4a	Esse é o U. A gente quer o G.
+v2317.m4a	Esse é o U. A gente quer o H.
+v2318.m4a	Esse é o U. A gente quer o I.
+v2319.m4a	Esse é o U. A gente quer o J.
+v2320.m4a	Esse é o U. A gente quer o L.
+v2321.m4a	Esse é o U. A gente quer o M.
+v2322.m4a	Esse é o U. A gente quer o N.
+v2323.m4a	Esse é o U. A gente quer o O.
+v2324.m4a	Esse é o U. A gente quer o P.
+v2325.m4a	Esse é o U. A gente quer o R.
+v2326.m4a	Esse é o U. A gente quer o S.
+v2327.m4a	Esse é o U. A gente quer o T.
+v2328.m4a	Esse é o U. A gente quer o U.
+v2329.m4a	Esse é o U. A gente quer o V.
+v2330.m4a	Esse é o U. A gente quer o Z.
+v2331.m4a	Esse é o V. A gente quer o A.
+v2332.m4a	Esse é o V. A gente quer o B.
+v2333.m4a	Esse é o V. A gente quer o C.
+v2334.m4a	Esse é o V. A gente quer o D.
+v2335.m4a	Esse é o V. A gente quer o E.
+v2336.m4a	Esse é o V. A gente quer o F.
+v2337.m4a	Esse é o V. A gente quer o G.
+v2338.m4a	Esse é o V. A gente quer o H.
+v2339.m4a	Esse é o V. A gente quer o I.
+v2340.m4a	Esse é o V. A gente quer o J.
+v2341.m4a	Esse é o V. A gente quer o L.
+v2342.m4a	Esse é o V. A gente quer o M.
+v2343.m4a	Esse é o V. A gente quer o N.
+v2344.m4a	Esse é o V. A gente quer o O.
+v2345.m4a	Esse é o V. A gente quer o P.
+v2346.m4a	Esse é o V. A gente quer o R.
+v2347.m4a	Esse é o V. A gente quer o S.
+v2348.m4a	Esse é o V. A gente quer o T.
+v2349.m4a	Esse é o V. A gente quer o U.
+v2350.m4a	Esse é o V. A gente quer o V.
+v2351.m4a	Esse é o V. A gente quer o Z.
+v2352.m4a	Esse é o Z. A gente quer o A.
+v2353.m4a	Esse é o Z. A gente quer o B.
+v2354.m4a	Esse é o Z. A gente quer o C.
+v2355.m4a	Esse é o Z. A gente quer o D.
+v2356.m4a	Esse é o Z. A gente quer o E.
+v2357.m4a	Esse é o Z. A gente quer o F.
+v2358.m4a	Esse é o Z. A gente quer o G.
+v2359.m4a	Esse é o Z. A gente quer o H.
+v2360.m4a	Esse é o Z. A gente quer o I.
+v2361.m4a	Esse é o Z. A gente quer o J.
+v2362.m4a	Esse é o Z. A gente quer o L.
+v2363.m4a	Esse é o Z. A gente quer o M.
+v2364.m4a	Esse é o Z. A gente quer o N.
+v2365.m4a	Esse é o Z. A gente quer o O.
+v2366.m4a	Esse é o Z. A gente quer o P.
+v2367.m4a	Esse é o Z. A gente quer o R.
+v2368.m4a	Esse é o Z. A gente quer o S.
+v2369.m4a	Esse é o Z. A gente quer o T.
+v2370.m4a	Esse é o Z. A gente quer o U.
+v2371.m4a	Esse é o Z. A gente quer o V.
+v2372.m4a	Esse é o Z. A gente quer o Z.
+v2373.m4a	FLOR
+v2374.m4a	FOGUETE
+v2375.m4a	Flor
+v2376.m4a	Flor! Isso! Você escreveu sozinha!
+v2377.m4a	Foguete
+v2378.m4a	Foguete! Isso! Você escreveu sozinha!
+v2379.m4a	GALO
+v2380.m4a	GIRAFA
+v2381.m4a	Galo
+v2382.m4a	Galo! Isso! Você escreveu sozinha!
+v2383.m4a	Gato! Isso! Você escreveu sozinha!
+v2384.m4a	Girafa
+v2385.m4a	Girafa! Isso! Você escreveu sozinha!
+v2386.m4a	H
+v2387.m4a	Isso já é palavra de gente grande.
+v2388.m4a	J
+v2389.m4a	JANELA
+v2390.m4a	Janela
+v2391.m4a	Janela! Isso! Você escreveu sozinha!
+v2392.m4a	LIVRO
+v2393.m4a	Letras! E agora você já sabe juntar todas elas.
+v2394.m4a	Livro
+v2395.m4a	Livro! Isso! Você escreveu sozinha!
+v2396.m4a	Lua! Isso! Você escreveu sozinha!
+v2397.m4a	MACACO
+v2398.m4a	MALA
+v2399.m4a	MAR
+v2400.m4a	MESA
+v2401.m4a	MOTO
+v2402.m4a	Macaco
+v2403.m4a	Macaco! Isso! Você escreveu sozinha!
+v2404.m4a	Mala
+v2405.m4a	Mala! Isso! Você escreveu sozinha!
+v2406.m4a	Mar
+v2407.m4a	Mar! Isso! Você escreveu sozinha!
+v2408.m4a	Mesa
+v2409.m4a	Mesa! Isso! Você escreveu sozinha!
+v2410.m4a	Moto
+v2411.m4a	Moto! Isso! Você escreveu sozinha!
+v2412.m4a	Muito bem! Qual é o próximo?
+v2413.m4a	NAVIO
+v2414.m4a	NUVEM
+v2415.m4a	Navio
+v2416.m4a	Navio! Isso! Você escreveu sozinha!
+v2417.m4a	Nuvem
+v2418.m4a	Nuvem! Isso! Você escreveu sozinha!
+v2419.m4a	Olha! É a Lua.
+v2420.m4a	Olha! É o Mar.
+v2421.m4a	Olha! É um Carro.
+v2422.m4a	Olha! É um Castelo.
+v2423.m4a	Olha! É um Cavalo.
+v2424.m4a	Olha! É um Coelho.
+v2425.m4a	Olha! É um Foguete.
+v2426.m4a	Olha! É um Galo.
+v2427.m4a	Olha! É um Livro.
+v2428.m4a	Olha! É um Macaco.
+v2429.m4a	Olha! É um Navio.
+v2430.m4a	Olha! É um Peixe.
+v2431.m4a	Olha! É um Prato.
+v2432.m4a	Olha! É um Rato.
+v2433.m4a	Olha! É um Rio.
+v2434.m4a	Olha! É um Sapato.
+v2435.m4a	Olha! É um Sino.
+v2436.m4a	Olha! É um Suco.
+v2437.m4a	Olha! É um Tomate.
+v2438.m4a	Olha! É um Trem.
+v2439.m4a	Olha! É um Urso.
+v2440.m4a	Olha! É uma Abelha.
+v2441.m4a	Olha! É uma Banana.
+v2442.m4a	Olha! É uma Cadeira.
+v2443.m4a	Olha! É uma Cenoura.
+v2444.m4a	Olha! É uma Chave.
+v2445.m4a	Olha! É uma Flor.
+v2446.m4a	Olha! É uma Girafa.
+v2447.m4a	Olha! É uma Janela.
+v2448.m4a	Olha! É uma Mala.
+v2449.m4a	Olha! É uma Mesa.
+v2450.m4a	Olha! É uma Moto.
+v2451.m4a	Olha! É uma Nuvem.
+v2452.m4a	Olha! É uma Panela.
+v2453.m4a	Olha! É uma Porta.
+v2454.m4a	Olha! É uma Rosa.
+v2455.m4a	Olha! É uma Tesoura.
+v2456.m4a	Ovo! Isso! Você escreveu sozinha!
+v2457.m4a	PANELA
+v2458.m4a	PEIXE
+v2459.m4a	PORTA
+v2460.m4a	PRATO
+v2461.m4a	Palavras de cinco letras!
+v2462.m4a	Palavras grandes,
+v2463.m4a	Panela
+v2464.m4a	Panela! Isso! Você escreveu sozinha!
+v2465.m4a	Pato! Isso! Você escreveu sozinha!
+v2466.m4a	Peixe
+v2467.m4a	Peixe! Isso! Você escreveu sozinha!
+v2468.m4a	Pipa! Isso! Você escreveu sozinha!
+v2469.m4a	Porta
+v2470.m4a	Porta! Isso! Você escreveu sozinha!
+v2471.m4a	Prato
+v2472.m4a	Prato! Isso! Você escreveu sozinha!
+v2473.m4a	Que atenção!
+v2474.m4a	RATO
+v2475.m4a	RIO
+v2476.m4a	ROSA
+v2477.m4a	Rato
+v2478.m4a	Rato! Isso! Você escreveu sozinha!
+v2479.m4a	Rio
+v2480.m4a	Rio! Isso! Você escreveu sozinha!
+v2481.m4a	Rosa
+v2482.m4a	Rosa! Isso! Você escreveu sozinha!
+v2483.m4a	SAPATO
+v2484.m4a	SINO
+v2485.m4a	SUCO
+v2486.m4a	Sapato
+v2487.m4a	Sapato! Isso! Você escreveu sozinha!
+v2488.m4a	Sapo! Isso! Você escreveu sozinha!
+v2489.m4a	Sino
+v2490.m4a	Sino! Isso! Você escreveu sozinha!
+v2491.m4a	Sol! Isso! Você escreveu sozinha!
+v2492.m4a	Suco
+v2493.m4a	Suco! Isso! Você escreveu sozinha!
+v2494.m4a	TESOURA
+v2495.m4a	TOMATE
+v2496.m4a	TREM
+v2497.m4a	Tesoura
+v2498.m4a	Tesoura! Isso! Você escreveu sozinha!
+v2499.m4a	Tinha letra sobrando pra confundir e você não caiu.
+v2500.m4a	Tomate
+v2501.m4a	Tomate! Isso! Você escreveu sozinha!
+v2502.m4a	Trem
+v2503.m4a	Trem! Isso! Você escreveu sozinha!
+v2504.m4a	URSO
+v2505.m4a	Urso
+v2506.m4a	Urso! Isso! Você escreveu sozinha!
+v2507.m4a	Vaca! Isso! Você escreveu sozinha!
+v2508.m4a	Vamos escrever Abelha.
+v2509.m4a	Vamos escrever Banana.
+v2510.m4a	Vamos escrever Cadeira.
+v2511.m4a	Vamos escrever Carro.
+v2512.m4a	Vamos escrever Castelo.
+v2513.m4a	Vamos escrever Cavalo.
+v2514.m4a	Vamos escrever Cenoura.
+v2515.m4a	Vamos escrever Chave.
+v2516.m4a	Vamos escrever Coelho.
+v2517.m4a	Vamos escrever Flor.
+v2518.m4a	Vamos escrever Foguete.
+v2519.m4a	Vamos escrever Galo.
+v2520.m4a	Vamos escrever Girafa.
+v2521.m4a	Vamos escrever Janela.
+v2522.m4a	Vamos escrever Livro.
+v2523.m4a	Vamos escrever Macaco.
+v2524.m4a	Vamos escrever Mala.
+v2525.m4a	Vamos escrever Mar.
+v2526.m4a	Vamos escrever Mesa.
+v2527.m4a	Vamos escrever Moto.
+v2528.m4a	Vamos escrever Navio.
+v2529.m4a	Vamos escrever Nuvem.
+v2530.m4a	Vamos escrever Panela.
+v2531.m4a	Vamos escrever Peixe.
+v2532.m4a	Vamos escrever Porta.
+v2533.m4a	Vamos escrever Prato.
+v2534.m4a	Vamos escrever Rato.
+v2535.m4a	Vamos escrever Rio.
+v2536.m4a	Vamos escrever Rosa.
+v2537.m4a	Vamos escrever Sapato.
+v2538.m4a	Vamos escrever Sino.
+v2539.m4a	Vamos escrever Suco.
+v2540.m4a	Vamos escrever Tesoura.
+v2541.m4a	Vamos escrever Tomate.
+v2542.m4a	Vamos escrever Trem.
+v2543.m4a	Vamos escrever Urso.
+v2544.m4a	Você conseguiu!
+v2545.m4a	Z
+v2546.m4a	com três letras sobrando.
+v2547.m4a	sem nenhuma ajuda.

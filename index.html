@@ -1,0 +1,2180 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#2E86AB">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icone-192.png">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no">
+<meta name="theme-color" content="#BFE9FF">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="description" content="Jogo falado de regulação emocional e autoestima para crianças de 4 a 6 anos que ainda não leem.">
+<style>
+  :root{color-scheme:light}
+  html,body{margin:0;padding:0}
+  img{max-width:100%}
+  [hidden]{display:none!important}
+</style>
+<title>O Vulcão e o Arco-Íris</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:ital,wght@0,400;0,600;0,800;1,400&display=swap">
+
+<style>
+/* ============================================================
+   O VULCÃO E O ARCO-ÍRIS
+   Jogo de regulação emocional e autoestima — 4 a 6 anos
+   Mundo visual único (céu de dia). Sem leitura: tudo falado.
+   ============================================================ */
+
+:root{
+  --ceu-1:#BFE9FF; --ceu-2:#FFE3F2; --ceu-3:#FFF7DE;
+  --tinta:#3A2B52; --tinta-2:#6E5C90; --tinta-3:#A294BE;
+  --nuvem:#FFFFFF; --creme:#FFFBF4;
+  --c1:#FF5A6E; --c2:#FF9A3D; --c3:#FFC93C;
+  --c4:#3FCB8E; --c5:#3FA9F5; --c6:#9B6BF2;
+  --rosa:#FF7EB6;
+  --sombra:0 14px 34px rgba(58,43,82,.16);
+  --r-g:34px; --r-m:22px;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  background:var(--ceu-2);
+  color:var(--tinta);
+  font-family:"Nunito",ui-rounded,system-ui,-apple-system,sans-serif;
+  -webkit-font-smoothing:antialiased;
+  overflow:hidden;
+  -webkit-tap-highlight-color:transparent;
+}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;touch-action:manipulation}
+svg{display:block}
+
+#app{
+  position:fixed;inset:0;
+  display:flex;flex-direction:column;
+  user-select:none;-webkit-user-select:none;
+  touch-action:manipulation;
+  overflow:hidden;
+}
+
+/* ---------- céu + arco-íris de fundo (é a barra de progresso) ---------- */
+.ceu{
+  position:absolute;inset:0;z-index:0;
+  background:
+    radial-gradient(120% 80% at 50% 108%, var(--ceu-3) 0%, transparent 55%),
+    linear-gradient(178deg, var(--ceu-1) 0%, #DFF0FF 32%, var(--ceu-2) 74%, var(--ceu-3) 100%);
+}
+.nuvem-bg{position:absolute;z-index:1;opacity:.85;animation:passeia 62s linear infinite}
+.nuvem-bg.b{animation-duration:88s;animation-delay:-30s;opacity:.6}
+.nuvem-bg.c{animation-duration:104s;animation-delay:-64s;opacity:.45}
+@keyframes passeia{from{transform:translateX(-30vw)}to{transform:translateX(130vw)}}
+
+.arcoiris{
+  position:absolute;z-index:2;left:50%;bottom:-24%;
+  width:max(1180px,168vw);aspect-ratio:2/1.06;
+  transform:translateX(-50%);
+  pointer-events:none;
+}
+.faixa{fill:none;stroke-linecap:round;stroke-width:44;
+  stroke:rgba(58,43,82,.065);
+  transition:stroke-dashoffset 1.1s cubic-bezier(.2,.8,.25,1);
+}
+.faixa-viva{opacity:0;transition:opacity .5s}
+.faixa-viva.acesa{opacity:1}
+
+/* ---------- topo ---------- */
+.topo{
+  position:relative;z-index:20;
+  display:flex;align-items:center;gap:10px;
+  padding:max(10px,env(safe-area-inset-top)) 14px 4px;
+}
+.mini{
+  width:52px;height:52px;flex:none;
+  display:grid;place-items:center;
+  background:var(--nuvem);border-radius:50%;
+  box-shadow:0 5px 0 rgba(58,43,82,.14), 0 10px 20px rgba(58,43,82,.10);
+  transition:transform .1s, box-shadow .1s;
+}
+.mini:active{transform:translateY(4px);box-shadow:0 1px 0 rgba(58,43,82,.14)}
+.mini[hidden]{display:none}
+.mini.off{opacity:.42}
+.espaco{flex:1}
+.trilha{display:flex;gap:7px;align-items:center}
+.pt{width:15px;height:15px;border-radius:50%;background:rgba(58,43,82,.14);transition:.35s}
+.pt.feita{transform:scale(1.25);box-shadow:0 0 0 3px rgba(255,255,255,.75)}
+
+/* ---------- palco ---------- */
+main{position:relative;z-index:10;flex:1;display:flex;min-height:0;padding:0 12px}
+.tela{
+  display:none;flex-direction:column;align-items:center;justify-content:center;
+  width:100%;max-width:900px;margin:auto;gap:clamp(10px,2.2vh,20px);
+  min-height:0;
+}
+.tela.on{display:flex;animation:entra .45s cubic-bezier(.2,.9,.3,1.2) both}
+@keyframes entra{from{opacity:0;transform:translateY(18px) scale(.97)}to{opacity:1;transform:none}}
+
+.cartao{
+  background:var(--nuvem);border-radius:var(--r-g);
+  padding:clamp(14px,2.6vh,26px);
+  box-shadow:var(--sombra);
+  width:100%;
+  display:flex;flex-direction:column;align-items:center;gap:clamp(10px,2vh,18px);
+  min-height:0;
+}
+.cartao.tremendo{animation:treme .4s}
+@keyframes treme{0%,100%{transform:none}20%{transform:translateX(-9px)}40%{transform:translateX(9px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
+
+h1,h2,h3,.tit{font-family:"Baloo 2",ui-rounded,system-ui,sans-serif;font-weight:800;line-height:1.08;text-wrap:balance}
+.tit-jogo{font-size:clamp(30px,7.4vw,62px);text-align:center;letter-spacing:-.5px}
+.tit-jogo .l1{display:block;color:var(--c1)}
+.tit-jogo .l2{display:block;color:var(--c6)}
+.sub{font-size:clamp(14px,3.4vw,18px);color:var(--tinta-2);text-align:center;max-width:34ch;line-height:1.45}
+.pergunta{
+  font-family:"Baloo 2",sans-serif;font-weight:700;
+  font-size:clamp(20px,5vw,32px);text-align:center;line-height:1.15;text-wrap:balance;
+}
+.pergunta em{font-style:normal;padding:0 .22em;border-radius:10px;color:#fff}
+
+/* ---------- botões de brinquedo ---------- */
+.bt{
+  --bg:var(--c6); --dark:rgba(0,0,0,.22);
+  position:relative;
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  background:var(--bg);color:#fff;
+  font-family:"Baloo 2",sans-serif;font-weight:800;
+  font-size:clamp(19px,4.4vw,26px);
+  padding:16px 34px;border-radius:999px;
+  box-shadow:0 8px 0 var(--dark), 0 16px 26px rgba(58,43,82,.22);
+  transition:transform .09s, box-shadow .09s, filter .15s;
+}
+.bt:active{transform:translateY(7px);box-shadow:0 1px 0 var(--dark)}
+.bt:focus-visible,.mini:focus-visible,.op:focus-visible,.zona:focus-visible{outline:4px solid var(--c6);outline-offset:4px}
+.bt.gigante{font-size:clamp(24px,6.4vw,38px);padding:22px 52px}
+.bt.fantasma{background:#fff;color:var(--tinta);--dark:rgba(58,43,82,.16);box-shadow:0 7px 0 var(--dark)}
+.pulsa{animation:pulsa 1.7s ease-in-out infinite}
+@keyframes pulsa{0%,100%{transform:scale(1)}50%{transform:scale(1.055)}}
+
+/* ---------- grade de opções ---------- */
+.ops{display:flex;flex-wrap:wrap;justify-content:center;gap:clamp(9px,2.2vw,18px);width:100%}
+.op{
+  position:relative;
+  background:var(--creme);
+  border:4px solid rgba(58,43,82,.09);
+  border-radius:var(--r-m);
+  padding:10px 10px 8px;
+  width:clamp(108px,27vw,178px);
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  box-shadow:0 7px 0 rgba(58,43,82,.10);
+  transition:transform .12s, box-shadow .12s, border-color .2s, opacity .3s;
+}
+.op:active{transform:translateY(5px);box-shadow:0 2px 0 rgba(58,43,82,.10)}
+.op svg{width:100%;height:auto}
+.op .rot{font-size:clamp(11px,2.6vw,14px);font-weight:800;color:var(--tinta-2);text-align:center;line-height:1.2}
+.op.falando{border-color:var(--c3);transform:translateY(-6px) scale(1.04);box-shadow:0 12px 0 rgba(58,43,82,.10)}
+.op.certa{border-color:var(--c4);animation:comemora .6s}
+.op.errada{opacity:.4;animation:treme .4s}
+@keyframes comemora{0%{transform:scale(1)}45%{transform:scale(1.14) rotate(-3deg)}100%{transform:scale(1)}}
+
+/* ---------- guia (unicórnio + balão) ---------- */
+.guia{
+  position:relative;z-index:20;
+  display:flex;align-items:flex-end;gap:8px;
+  padding:6px 12px max(10px,env(safe-area-inset-bottom));
+}
+.uni{width:clamp(72px,17vw,104px);flex:none;animation:flutua 3.4s ease-in-out infinite}
+@keyframes flutua{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-8px) rotate(1.5deg)}}
+.balao{
+  flex:1;min-height:56px;
+  background:var(--nuvem);border-radius:22px 22px 22px 6px;
+  padding:11px 15px;box-shadow:var(--sombra);
+  display:flex;align-items:center;
+  font-weight:800;font-size:clamp(14px,3.5vw,19px);line-height:1.28;
+  color:var(--tinta);
+}
+.balao p{max-width:60ch}
+.balao.vazio{opacity:0;pointer-events:none}
+
+/* ---------- mapa ---------- */
+.mapa{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(8px,2.4vw,18px);width:100%}
+.ilha{
+  position:relative;display:flex;flex-direction:column;align-items:center;gap:6px;
+  padding:10px 4px 8px;border-radius:26px;background:rgba(255,255,255,.62);
+  box-shadow:0 6px 0 rgba(58,43,82,.09);
+  transition:transform .12s, box-shadow .12s, filter .3s;
+}
+.ilha:active{transform:translateY(5px);box-shadow:0 1px 0 rgba(58,43,82,.09)}
+.bolha{
+  width:clamp(62px,16vw,96px);aspect-ratio:1;border-radius:50%;
+  display:grid;place-items:center;color:#fff;
+  box-shadow:inset 0 -7px 0 rgba(0,0,0,.13), 0 8px 18px rgba(58,43,82,.2);
+}
+.bolha svg{width:62%;height:62%}
+.ilha .nome{font-family:"Baloo 2",sans-serif;font-weight:700;font-size:clamp(11px,2.7vw,15px);text-align:center;line-height:1.1;color:var(--tinta)}
+.ilha.travada{filter:grayscale(.85) opacity(.55)}
+.ilha.agora{animation:pulsa 2s ease-in-out infinite}
+.selo{position:absolute;top:4px;right:8px;font-size:clamp(15px,3.6vw,22px)}
+
+/* ---------- corpo (etapa 2) ---------- */
+.corpo-wrap{position:relative;width:min(300px,62vw)}
+.zona{position:absolute;border:0;background:rgba(255,255,255,.001);border-radius:50%}
+.zona::after{
+  content:"";position:absolute;inset:0;border-radius:50%;
+  border:5px dashed rgba(58,43,82,.28);
+  animation:pisca 2.2s ease-in-out infinite;
+}
+@keyframes pisca{0%,100%{transform:scale(.94);opacity:.5}50%{transform:scale(1.05);opacity:.95}}
+.zona.acertou::after{border:6px solid var(--c4);animation:none}
+
+/* ---------- vulcão (etapa 3) ---------- */
+.vulcao-cena{position:relative;width:min(360px,80vw)}
+.balanca{animation:balanca .16s linear infinite}
+@keyframes balanca{0%,100%{transform:translate(0,0)}25%{transform:translate(-3px,2px)}50%{transform:translate(3px,-2px)}75%{transform:translate(-2px,-1px)}}
+#lava{transition:transform 1.5s cubic-bezier(.3,.9,.3,1)}
+.flor-bt{
+  position:relative;width:min(200px,52vw);aspect-ratio:1;
+  display:grid;place-items:center;touch-action:none;
+}
+.anel{
+  position:absolute;inset:14%;border-radius:50%;
+  border:8px solid var(--c4);opacity:.55;
+  transform:scale(.55);
+}
+.anel.inspira{transition:transform 4s linear, opacity 4s linear;transform:scale(1.32);opacity:.95}
+.anel.expira{transition:transform 4.6s ease-out, opacity 4.6s ease-out;transform:scale(.5);opacity:.4}
+.flor-svg{width:74%;transition:transform 4s linear}
+.flor-svg.crescendo{transform:scale(1.3)}
+.chama{transform-origin:50% 100%}
+.chama.soprada{animation:sopra 1.6s forwards}
+@keyframes sopra{0%{transform:rotate(0) scale(1)}30%{transform:rotate(-42deg) scale(.85)}70%{transform:rotate(-64deg) scale(.4)}100%{transform:rotate(-70deg) scale(0);opacity:0}}
+.contador{display:flex;gap:12px}
+.gota{width:26px;height:26px;border-radius:50%;background:rgba(58,43,82,.14);transition:.4s}
+.gota.on{background:var(--c4);transform:scale(1.18);box-shadow:0 0 0 4px rgba(63,203,142,.25)}
+
+/* ---------- balões de fala (etapa 5) ---------- */
+.op.fala-op{border-radius:26px 26px 26px 8px;background:#fff}
+.op .frase{font-family:"Baloo 2",sans-serif;font-weight:700;font-size:clamp(12px,2.9vw,16px);text-align:center;color:var(--tinta);line-height:1.15}
+
+/* ---------- estrela AINDA (etapa 6) ---------- */
+.aindabt{position:relative;display:grid;place-items:center;width:min(190px,48vw);aspect-ratio:1}
+.aindabt .txt{
+  position:absolute;font-family:"Baloo 2",sans-serif;font-weight:800;
+  font-size:clamp(24px,6.6vw,40px);color:#fff;letter-spacing:1px;
+  text-shadow:0 3px 0 rgba(0,0,0,.18);
+}
+.gira{animation:gira 9s linear infinite}
+@keyframes gira{to{transform:rotate(360deg)}}
+.pensamento{
+  background:#fff;border-radius:24px;padding:10px 18px;
+  box-shadow:0 6px 0 rgba(58,43,82,.09);
+  font-family:"Baloo 2",sans-serif;font-weight:700;font-size:clamp(17px,4.2vw,26px);
+  color:var(--tinta-2);text-align:center;
+}
+.pensamento .ainda{color:var(--c6);opacity:0;transition:opacity .5s}
+.pensamento .ainda.on{opacity:1}
+.estrelas-espelho{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}
+.est{width:clamp(56px,15vw,84px);aspect-ratio:1;display:grid;place-items:center;transition:.25s}
+.est:active{transform:scale(.9)}
+.est.usada{opacity:.3;pointer-events:none}
+
+/* ---------- festa / final ---------- */
+.medalha{width:min(220px,52vw)}
+.diploma{
+  background:var(--creme);border:6px dashed var(--c6);border-radius:28px;
+  padding:clamp(16px,3.4vh,28px) 20px;text-align:center;width:100%;
+}
+.diploma .grande{font-family:"Baloo 2",sans-serif;font-weight:800;font-size:clamp(28px,7.6vw,54px);color:var(--c1);line-height:1}
+.diploma .nomezao{font-family:"Baloo 2",sans-serif;font-weight:800;font-size:clamp(22px,6vw,40px);color:var(--c6);margin-top:6px}
+
+#fx{position:fixed;inset:0;z-index:60;pointer-events:none}
+
+/* ---------- overlays ---------- */
+.ov{
+  position:fixed;inset:0;z-index:80;
+  background:rgba(40,28,60,.55);backdrop-filter:blur(6px);
+  display:none;align-items:center;justify-content:center;padding:14px;
+}
+.ov.on{display:flex;animation:entra .3s both}
+.folha{
+  background:var(--creme);border-radius:var(--r-g);
+  width:100%;max-width:760px;max-height:92vh;overflow-y:auto;
+  padding:clamp(20px,4vw,40px);
+  box-shadow:0 30px 70px rgba(30,18,48,.4);
+}
+.folha-jogo{max-width:520px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:16px}
+
+/* painel do adulto — tratamento editorial, para leitura */
+.folha h2{font-size:clamp(26px,5.4vw,38px);color:var(--c6);letter-spacing:-.4px}
+.folha .olho{
+  font-family:"Nunito",sans-serif;font-weight:800;font-size:12px;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--c1);
+  margin-bottom:6px;
+}
+.folha h3{font-size:clamp(18px,4vw,23px);margin-top:26px;color:var(--tinta)}
+.folha p,.folha li{font-size:clamp(14px,3.3vw,16.5px);line-height:1.62;color:#4A3A66;max-width:66ch}
+.folha p{margin-top:10px}
+.folha ul{margin:10px 0 0 20px;display:flex;flex-direction:column;gap:8px}
+.folha hr{border:0;border-top:2px dotted rgba(58,43,82,.18);margin:26px 0}
+.folha strong{color:var(--tinta)}
+.etapa-doc{
+  display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:start;
+  padding:14px 0;border-bottom:2px dotted rgba(58,43,82,.14);
+}
+.etapa-doc .bola{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;color:#fff;font-family:"Baloo 2",sans-serif;font-weight:800;font-size:20px}
+.etapa-doc h4{font-family:"Baloo 2",sans-serif;font-weight:700;font-size:clamp(16px,3.8vw,20px)}
+.etapa-doc .base{font-size:clamp(12.5px,3vw,14px);color:var(--tinta-2);margin-top:4px;font-style:italic}
+.aviso{background:#FFF3F4;border-left:6px solid var(--c1);border-radius:0 16px 16px 0;padding:14px 18px;margin-top:18px}
+.aviso p{margin-top:0}
+
+.ajustes{display:flex;flex-direction:column;gap:16px;margin-top:14px}
+.campo{display:flex;flex-direction:column;gap:7px}
+.campo label{font-weight:800;font-size:14px;color:var(--tinta-2)}
+.campo input[type=text]{
+  font:inherit;font-weight:800;font-size:19px;padding:12px 16px;
+  border:3px solid rgba(58,43,82,.16);border-radius:16px;background:#fff;color:var(--tinta);
+}
+.campo input:focus{outline:none;border-color:var(--c6)}
+.paleta{display:flex;flex-wrap:wrap;gap:9px}
+.swatch{width:42px;height:42px;border-radius:50%;box-shadow:0 3px 0 rgba(0,0,0,.16);transition:.15s}
+.swatch.sel{transform:scale(1.16);box-shadow:0 0 0 4px #fff,0 0 0 7px var(--c6)}
+.linha-bt{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+.bt.pequeno{font-size:16px;padding:12px 22px}
+
+/* ---------- HUB: escolher o jogo ---------- */
+.hub{display:flex;flex-direction:column;gap:clamp(9px,2vh,15px);width:100%}
+.jogo-card{
+  display:flex;align-items:center;gap:clamp(10px,3vw,18px);width:100%;text-align:left;
+  border-radius:30px;padding:clamp(10px,2vh,15px) clamp(12px,3vw,18px);color:#fff;
+  background:var(--cor);
+  box-shadow:0 9px 0 var(--esc), 0 18px 30px rgba(58,43,82,.20);
+  transition:transform .14s cubic-bezier(.3,1.3,.5,1), box-shadow .14s;
+}
+.jogo-card:active{transform:translateY(7px);box-shadow:0 2px 0 var(--esc)}
+.jogo-card .art{width:clamp(72px,19vw,108px);flex:none;background:rgba(255,255,255,.94);
+  border-radius:24px;padding:5px;box-shadow:inset 0 -4px 0 rgba(58,43,82,.10)}
+.jogo-card .art svg{width:100%;height:auto;display:block}
+.jogo-card .txt{flex:1;min-width:0}
+.jogo-card .txt b{font-family:"Baloo 2",sans-serif;font-weight:800;
+  font-size:clamp(20px,5.4vw,32px);display:block;line-height:1.03}
+.jogo-card .txt small{font-size:clamp(11.5px,3vw,15px);opacity:.94;font-weight:800;display:block;margin-top:3px;line-height:1.25}
+.jogo-card .selos{font-size:clamp(13px,3.4vw,18px);white-space:nowrap;letter-spacing:-1px}
+.jogo-card.falando{transform:scale(1.035) translateY(-5px);box-shadow:0 14px 0 var(--esc),0 0 0 5px #fff,0 22px 34px rgba(58,43,82,.25)}
+.hub-tit{font-family:"Baloo 2",sans-serif;font-weight:800;font-size:clamp(22px,5.6vw,34px);text-align:center;color:var(--tinta)}
+
+/* ---------- mais jogos (lista antiga, agora sem uso) ---------- */
+#t-mapa .cartao{max-height:100%;overflow-y:auto}
+.mais{width:100%;margin-top:2px}
+.mais .olho2{
+  font-weight:800;font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--tinta-3);text-align:center;margin-bottom:9px;
+}
+.jogos-lista{display:flex;flex-direction:column;gap:8px}
+.jogo-cartao{
+  display:flex;align-items:center;gap:12px;width:100%;text-align:left;
+  background:#fff;border-radius:24px;padding:10px 14px;
+  box-shadow:0 6px 0 rgba(58,43,82,.10);
+  transition:transform .12s,box-shadow .12s;
+}
+.jogo-cartao:active{transform:translateY(5px);box-shadow:0 1px 0 rgba(58,43,82,.10)}
+.jogo-cartao .cap{width:54px;height:54px;border-radius:17px;display:grid;place-items:center;flex:none}
+.jogo-cartao .cap svg{width:62%;height:62%}
+.jogo-cartao b{font-family:"Baloo 2",sans-serif;font-size:clamp(15px,3.8vw,19px);display:block;line-height:1.1}
+.jogo-cartao small{font-size:clamp(11.5px,3vw,13.5px);color:var(--tinta-2);display:block;line-height:1.3;margin-top:2px}
+.jogo-cartao .seta{margin-left:auto;flex:none;opacity:.4}
+.em-breve{opacity:.5}
+.em-breve .cap{background:#C9BEDD!important}
+
+/* ---------- etapa 6: ritual do espelho ---------- */
+.ritual{display:flex;gap:7px;justify-content:center;flex-wrap:wrap}
+.passo{
+  display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.65);
+  border-radius:999px;padding:6px 13px;opacity:.38;transition:.3s;
+  font-weight:800;font-size:clamp(10.5px,2.7vw,13.5px);color:var(--tinta);
+}
+.passo.on{opacity:1;background:#fff;box-shadow:0 5px 0 rgba(58,43,82,.12);transform:scale(1.06)}
+.passo.feito{opacity:.8}
+.passo .ic{font-size:16px}
+.moldura{
+  position:relative;width:min(200px,44vw);padding:9px;border-radius:32px;
+  background:linear-gradient(135deg,#FF5A6E,#FF9A3D,#FFC93C,#3FCB8E,#3FA9F5,#9B6BF2);
+  box-shadow:0 12px 28px rgba(58,43,82,.22);
+}
+.moldura .dentro{background:#FFFDF8;border-radius:24px;padding:6px}
+.moldura.brilha{animation:brilhaM 1.5s ease-in-out infinite}
+@keyframes brilhaM{0%,100%{filter:brightness(1)}50%{filter:brightness(1.15) saturate(1.15)}}
+.fazGesto{animation:gestoAnim .7s cubic-bezier(.3,1.4,.4,1)}
+@keyframes gestoAnim{0%{transform:scale(.86) translateY(8px)}60%{transform:scale(1.06)}100%{transform:none}}
+.frase-espelho{
+  font-family:"Baloo 2",sans-serif;font-weight:800;
+  font-size:clamp(19px,5.2vw,32px);color:var(--c6);text-align:center;line-height:1.14;
+}
+.gesto-dica{font-weight:800;color:var(--tinta-2);font-size:clamp(13px,3.3vw,17px);text-align:center;line-height:1.3}
+.esperando{animation:pulsa 1.3s ease-in-out infinite}
+
+@media (prefers-reduced-motion:reduce){
+  .nuvem-bg,.uni,.pulsa,.gira,.zona::after{animation:none!important}
+  *{transition-duration:.01ms!important}
+}
+@media (max-height:560px){
+  .uni{width:64px}
+  .balao{min-height:44px;padding:8px 12px}
+}
+</style>
+
+</head>
+<body>
+<div id="app">
+  <div class="ceu"></div>
+
+  <svg class="nuvem-bg" style="top:9%;width:170px" viewBox="0 0 200 90" aria-hidden="true"><g fill="#fff"><ellipse cx="60" cy="58" rx="46" ry="30"/><ellipse cx="106" cy="44" rx="38" ry="34"/><ellipse cx="146" cy="60" rx="34" ry="24"/></g></svg>
+  <svg class="nuvem-bg b" style="top:22%;width:120px" viewBox="0 0 200 90" aria-hidden="true"><g fill="#fff"><ellipse cx="60" cy="58" rx="46" ry="30"/><ellipse cx="106" cy="44" rx="38" ry="34"/><ellipse cx="146" cy="60" rx="34" ry="24"/></g></svg>
+  <svg class="nuvem-bg c" style="top:3%;width:210px" viewBox="0 0 200 90" aria-hidden="true"><g fill="#fff"><ellipse cx="60" cy="58" rx="46" ry="30"/><ellipse cx="106" cy="44" rx="38" ry="34"/><ellipse cx="146" cy="60" rx="34" ry="24"/></g></svg>
+
+  <svg class="arcoiris" id="arcoiris" viewBox="0 0 1060 560" aria-hidden="true"></svg>
+
+  <header class="topo">
+    <button class="mini" id="btCasa" aria-label="Voltar para o mapa" hidden>
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#3A2B52" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+    </button>
+    <div class="espaco"></div>
+    <div class="trilha" id="trilha"></div>
+    <div class="espaco"></div>
+    <button class="mini" id="btFlor" aria-label="Preciso respirar">
+      <svg width="30" height="30" viewBox="0 0 40 40"><g><circle cx="20" cy="10" r="7" fill="#FF7EB6"/><circle cx="30" cy="20" r="7" fill="#FFC93C"/><circle cx="20" cy="30" r="7" fill="#9B6BF2"/><circle cx="10" cy="20" r="7" fill="#3FA9F5"/><circle cx="20" cy="20" r="6" fill="#fff"/></g></svg>
+    </button>
+    <button class="mini" id="btSom" hidden aria-label="Ligar ou desligar a voz">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#3A2B52" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="#3A2B52"/><path class="ondas" d="M16.5 8.5a5 5 0 010 7M19.5 6a9 9 0 010 12"/></svg>
+    </button>
+    <button class="mini" id="btAdulto" aria-label="Área do adulto — segure para abrir">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#3A2B52" stroke-width="2.3" stroke-linecap="round"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.5v2.6M12 18.9v2.6M21.5 12h-2.6M5.1 12H2.5M18.7 5.3l-1.8 1.8M7.1 16.9l-1.8 1.8M18.7 18.7l-1.8-1.8M7.1 7.1L5.3 5.3"/></svg>
+    </button>
+  </header>
+
+  <main>
+    <!-- INÍCIO -->
+    <section class="tela on" id="t-inicio">
+      <div id="capa"></div>
+      <h1 class="tit-jogo"><span class="l1">O Vulcão</span><span class="l2">e o Arco-Íris</span></h1>
+      <p class="sub" id="sub-inicio">Um jogo para brincar de sentir, acalmar e descobrir tudo o que você já consegue.</p>
+      <button class="bt gigante pulsa" id="btJogar" style="--bg:var(--c4);--dark:#2AA372">JOGAR</button>
+    </section>
+
+    <!-- HUB: escolher o jogo -->
+    <section class="tela" id="t-hub">
+      <div class="cartao">
+        <p class="hub-tit">Escolhe o jogo!</p>
+        <div class="hub" id="hub"></div>
+      </div>
+    </section>
+
+    <!-- MAPA -->
+    <section class="tela" id="t-mapa">
+      <div class="cartao">
+        <p class="pergunta" id="tit-mapa">Onde a gente vai hoje?</p>
+        <div class="mapa" id="mapa"></div>
+        <div class="mais" id="mais"></div>
+      </div>
+    </section>
+
+    <!-- JOGO -->
+    <section class="tela" id="t-jogo">
+      <div class="cartao" id="palco"></div>
+    </section>
+
+    <!-- FESTA -->
+    <section class="tela" id="t-festa">
+      <div class="cartao" id="palco-festa"></div>
+    </section>
+
+    <!-- FINAL -->
+    <section class="tela" id="t-final">
+      <div class="cartao" id="palco-final"></div>
+    </section>
+  </main>
+
+  <footer class="guia">
+    <div class="uni" id="uni"></div>
+    <div class="balao vazio" id="balao"><p id="fala"></p></div>
+    <button class="mini" id="btRepetir" aria-label="Ouvir de novo" style="align-self:center">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#3A2B52" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11a8 8 0 10-2.3 5.7"/><path d="M20 4v7h-7"/></svg>
+    </button>
+  </footer>
+
+  <canvas id="fx"></canvas>
+
+  <!-- OVERLAY: respiração rápida -->
+  <div class="ov" id="ov-respiro">
+    <div class="folha folha-jogo" id="folha-respiro"></div>
+  </div>
+
+  <!-- OVERLAY: adulto -->
+  <div class="ov" id="ov-adulto">
+    <div class="folha" id="folha-adulto"></div>
+  </div>
+</div>
+
+<script src="voz-pacote.js"></script>
+<script>
+(function(){
+"use strict";
+
+/* ==========================================================
+   0. ESTADO E PERSISTÊNCIA
+   ========================================================== */
+const PADRAO = {
+  nome:"Nina",
+  vestido:"#FF5A6E",
+  pele:"#F5C9A6",
+  cabelo:"#3B2418",
+  voz:true,
+  prog:[0,0,0,0,0,0]     // fração 0..1 concluída por etapa
+};
+let S = Object.assign({}, PADRAO);
+
+function salvar(){ try{ localStorage.setItem("vulcao-arcoiris", JSON.stringify(S)); }catch(e){} }
+function carregar(){
+  try{
+    const b = localStorage.getItem("vulcao-arcoiris");
+    if(b) S = Object.assign({}, PADRAO, JSON.parse(b));
+    if(!Array.isArray(S.prog) || S.prog.length!==6) S.prog=[0,0,0,0,0,0];
+  }catch(e){}
+}
+carregar();
+
+/* A criança desligava a voz sem querer no botão da barra. O botão saiu
+   daqui (foi para a área do adulto) e a voz volta ligada uma única vez. */
+try{
+  const b=localStorage.getItem("vulcao-arcoiris");
+  const o=b?JSON.parse(b):{};
+  if(!o.vozRestaurada){ o.voz=true; o.vozRestaurada=true;
+    localStorage.setItem("vulcao-arcoiris",JSON.stringify(o)); S.voz=true; }
+}catch(e){}
+
+
+const $ = s => document.querySelector(s);
+const $$ = s => Array.from(document.querySelectorAll(s));
+const espera = ms => new Promise(r=>setTimeout(r,ms));
+const CORES = ["#FF5A6E","#FF9A3D","#FFC93C","#3FCB8E","#3FA9F5","#9B6BF2"];
+const ESCURO = ["#D93E52","#DB7620","#DEA612","#2AA372","#2585C9","#7A4CD1"];
+const reduzir = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* ==========================================================
+   1. SOM — Web Audio (efeitos) + fala pt-BR
+   ========================================================== */
+let AC = null;
+function audio(){
+  if(!AC){ try{ AC = new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ return null; } }
+  if(AC.state === "suspended") AC.resume();
+  return AC;
+}
+function nota(f, t0, dur, tipo, vol, f2){
+  const ac = audio(); if(!ac) return;
+  const o = ac.createOscillator(), g = ac.createGain();
+  o.type = tipo || "sine";
+  o.frequency.setValueAtTime(f, ac.currentTime + t0);
+  if(f2) o.frequency.exponentialRampToValueAtTime(f2, ac.currentTime + t0 + dur);
+  g.gain.setValueAtTime(0.0001, ac.currentTime + t0);
+  g.gain.exponentialRampToValueAtTime(vol||.22, ac.currentTime + t0 + .02);
+  g.gain.exponentialRampToValueAtTime(0.0001, ac.currentTime + t0 + dur);
+  o.connect(g); g.connect(ac.destination);
+  o.start(ac.currentTime + t0); o.stop(ac.currentTime + t0 + dur + .05);
+}
+function ruido(dur, vol, filtro){
+  const ac = audio(); if(!ac) return null;
+  const n = Math.floor(ac.sampleRate * dur);
+  const buf = ac.createBuffer(1, n, ac.sampleRate);
+  const d = buf.getChannelData(0);
+  for(let i=0;i<n;i++) d[i] = (Math.random()*2-1) * (1 - i/n);
+  const src = ac.createBufferSource(); src.buffer = buf;
+  const f = ac.createBiquadFilter(); f.type="lowpass"; f.frequency.value = filtro||900;
+  const g = ac.createGain(); g.gain.value = vol||.14;
+  src.connect(f); f.connect(g); g.connect(ac.destination);
+  src.start(); return src;
+}
+const SFX = {
+  toque(){ nota(660,0,.09,"triangle",.16); },
+  acerto(){ [523.25,659.25,783.99,1046.5].forEach((f,i)=>nota(f,i*.075,.34,"triangle",.2)); },
+  brilho(){ for(let i=0;i<7;i++) nota(900+Math.random()*1200, i*.045, .28, "sine", .09); },
+  tentar(){ nota(392,0,.16,"sine",.16); nota(330,.13,.26,"sine",.14); },
+  estrela(){ nota(1046,0,.16,"triangle",.16,2093); },
+  nivel(){ [523,587,659,784,880,1046].forEach((f,i)=>nota(f,i*.09,.42,"triangle",.19));
+           setTimeout(()=>{for(let i=0;i<12;i++) nota(1200+Math.random()*1600,i*.05,.3,"sine",.07);},520); },
+  fanfarra(){ [523,659,784,1046,784,1046,1318].forEach((f,i)=>nota(f,i*.13,.55,"triangle",.2)); },
+  inspira(){ nota(220,0,3.9,"sine",.10,520); },
+  expira(){ nota(520,0,4.2,"sine",.10,180); ruido(2.2,.10,700); },
+  pum(){ nota(120,0,.35,"sine",.2,60); },
+  coracao(){ nota(150,0,.12,"sine",.25); nota(120,.18,.16,"sine",.22); }
+};
+let rumor = null, rumorG = null;
+function rumorLiga(){
+  const ac = audio(); if(!ac || rumor) return;
+  const n = Math.floor(ac.sampleRate*2), buf = ac.createBuffer(1,n,ac.sampleRate), d = buf.getChannelData(0);
+  for(let i=0;i<n;i++) d[i]=Math.random()*2-1;
+  rumor = ac.createBufferSource(); rumor.buffer = buf; rumor.loop = true;
+  const f = ac.createBiquadFilter(); f.type="lowpass"; f.frequency.value=170;
+  rumorG = ac.createGain(); rumorG.gain.value=.0001;
+  rumorG.gain.exponentialRampToValueAtTime(.3, ac.currentTime+1.2);
+  rumor.connect(f); f.connect(rumorG); rumorG.connect(ac.destination); rumor.start();
+}
+function rumorDesliga(){
+  if(!rumor) return;
+  try{ rumorG.gain.exponentialRampToValueAtTime(.0001, AC.currentTime+.8); rumor.stop(AC.currentTime+1); }catch(e){}
+  rumor = null;
+}
+
+
+
+/* ---- TOCADOR DE VOZ GRAVADA -------------------------------------
+   As falas foram gravadas em arquivo com a voz do próprio Mac
+   (pasta "voz/"). Isso não depende da síntese do navegador, que
+   estava muda aqui. Se faltar algum clipe, cai na voz do navegador.
+   ------------------------------------------------------------------ */
+let clipeAtual = null;
+function temClipe(t){ return !!(window.VOZ && window.VOZ[t]); }
+function tocaClipe(trecho, op){
+  return new Promise(res=>{
+    const nome = window.VOZ[trecho];
+    const a = new Audio("voz/" + nome + ".m4a");
+    let pronto = false;
+    const fim = ()=>{ if(!pronto){ pronto = true; if(clipeAtual===a) clipeAtual=null; res(); } };
+    a.onended = fim;
+    a.onerror = fim;
+    try{
+      a.preservesPitch = true; a.mozPreservesPitch = true; a.webkitPreservesPitch = true;
+      const r = (op && op.rate) ? op.rate/0.87 : 1;
+      a.playbackRate = Math.max(.55, Math.min(1.5, r));
+    }catch(e){}
+    pararClipe();
+    clipeAtual = a;
+    const pr = a.play();
+    if(pr && pr.catch) pr.catch(()=>fim());
+    setTimeout(fim, 16000);
+  });
+}
+function pararClipe(){
+  if(clipeAtual){ try{ clipeAtual.pause(); clipeAtual.currentTime = 0; }catch(e){} clipeAtual = null; }
+}
+
+/* ---- DESTRAVA DA VOZ ------------------------------------------
+   Safari e Chrome só liberam a síntese se speak() for chamado
+   DENTRO do gesto do usuário, de forma síncrona. Por isso isto
+   roda no primeiro pointerdown da página, antes de qualquer await.
+   Texto curto e volume zero: silencioso, e sem travar a fila. --- */
+let vozDestravada = false;
+function destravaVoz(){
+  if(vozDestravada || !("speechSynthesis" in window)) return;
+  vozDestravada = true;
+  try{
+    const u = new SpeechSynthesisUtterance("oi");
+    u.volume = 0; u.rate = 2; u.lang = "pt-BR";
+    speechSynthesis.speak(u);
+  }catch(e){}
+  try{ speechSynthesis.getVoices(); }catch(e){}
+  try{ const a=new Audio(); a.muted=true; const p=a.play(); if(p&&p.catch) p.catch(()=>{}); }catch(e){}
+}
+document.addEventListener("pointerdown", destravaVoz, true);
+document.addEventListener("keydown", destravaVoz, true);
+
+/* se mesmo assim a voz não sair, o adulto precisa saber */
+function avisaVozMuda(){
+  if(document.getElementById("aviso-voz")) return;
+  const d=document.createElement("div");
+  d.id="aviso-voz";
+  d.style.cssText="position:fixed;left:10px;right:10px;bottom:10px;z-index:999;background:#FFF3F4;"+
+    "border:3px solid #FF5A6E;border-radius:18px;padding:11px 14px;font:800 13px/1.35 Nunito,system-ui,sans-serif;"+
+    "color:#3A2B52;box-shadow:0 10px 26px rgba(58,43,82,.25)";
+  d.innerHTML='A voz do sistema não está respondendo neste navegador. '+
+    'Abra <b>0-testar-voz.html</b> (mesma pasta) para verificar, ou tente abrir o jogo no Chrome. '+
+    '<button style="margin-left:8px;border:0;background:#FF5A6E;color:#fff;border-radius:999px;padding:5px 12px;font:inherit;cursor:pointer">ok</button>';
+  d.querySelector("button").onclick=()=>d.remove();
+  document.body.appendChild(d);
+}
+
+/* --- motor de fala robusto ---------------------------------
+   Três defesas: espera as vozes carregarem; se a fala não
+   COMEÇAR, tenta de novo e depois desiste (em vez de travar o
+   jogo esperando); e mantém o Chrome acordado, que corta a voz
+   sozinho depois de alguns segundos.
+   ----------------------------------------------------------- */
+let vozPT = null, vozesOk = false, vozQuebrada = false, batida = null;
+function pegaVoz(){
+  if(!("speechSynthesis" in window)) return;
+  const vs = speechSynthesis.getVoices();
+  if(!vs || !vs.length) return;
+  vozesOk = true;
+  const br = vs.filter(v=>/pt[-_]BR/i.test(v.lang));
+  const boa = /aprimorad|enhanced|premium|neural|natural|siri/i;
+  /* ordem de preferência: Premium > vozes novas e expressivas > Luciana */
+  const naturais = /^(Flo|Sandy|Shelley|Grandma)\b/i;
+  vozPT = br.find(v=>boa.test(v.name))
+       || br.find(v=>naturais.test(v.name))
+       || br.find(v=>/Luciana|Joana|Francisca|Camila|Vit[oó]ria/i.test(v.name))
+       || br[0]
+       || vs.find(v=>/^pt/i.test(v.lang)) || null;
+}
+if("speechSynthesis" in window){
+  pegaVoz();
+  speechSynthesis.onvoiceschanged = pegaVoz;
+  /* Chrome interrompe a fala sozinho por volta dos 15 s */
+  batida = setInterval(()=>{
+    try{ if(speechSynthesis.speaking && !speechSynthesis.paused) speechSynthesis.resume(); }catch(e){}
+  }, 5000);
+}
+async function esperaVozes(){
+  if(vozesOk || !("speechSynthesis" in window)) return;
+  for(let i=0;i<14 && !vozesOk;i++){ pegaVoz(); if(vozesOk) break; await espera(100); }
+  vozesOk = true;
+}
+
+/* CAIXA ALTA sai robótica na síntese — só o balão mostra maiúscula */
+function humaniza(t){
+  return String(t)
+    .replace(/\b[A-ZÁÂÃÀÉÊÍÓÔÕÚÜÇ]{2,}\b/g, m => m.charAt(0)+m.slice(1).toLowerCase())
+    .replace(/\s+/g, " ").trim();
+}
+function pedacos(t){
+  const bruto = []; let buf = "";
+  for(const ch of t){ buf += ch; if(".!?…:;,".indexOf(ch) >= 0){ bruto.push(buf.trim()); buf = ""; } }
+  if(buf.trim()) bruto.push(buf.trim());
+  const j = [];
+  for(const pe of bruto){
+    if(j.length && j[j.length-1].length < 16) j[j.length-1] += " " + pe; else j.push(pe);
+  }
+  return j.length ? j : [t];
+}
+/* ---- O NOME DA CRIANÇA É UM CLIPE À PARTE ----------------------
+   Assim o jogo serve a qualquer família: a fala é quebrada no nome
+   e o nome vira um áudio separado, escolhido pelo cadastro. -------- */
+function partesComNome(t){
+  const nome=(S.nome||"").trim();
+  if(!nome || t.indexOf(nome)<0) return pedacos(t);
+  const saida=[];
+  t.split(nome).forEach((frag,i)=>{
+    if(i) saida.push(nome);
+    frag=frag.trim().replace(/^[,;]\s*/,"");
+    if(frag) pedacos(frag).forEach(c=>saida.push(c));
+  });
+  return saida.length?saida:pedacos(t);
+}
+
+
+let ultimaFala = "";
+function mostraBalao(txt){
+  ultimaFala = txt;
+  const b = $("#balao");
+  if(!b) return;
+  $("#fala").textContent = txt;
+  b.classList.toggle("vazio", !txt);
+}
+
+function novaFala(trecho, op){
+  const u = new SpeechSynthesisUtterance(trecho);
+  if(vozPT) u.voice = vozPT;
+  u.lang  = "pt-BR";
+  u.rate  = op.rate  || .87;
+  u.pitch = op.pitch || 1.06;
+  u.volume = 1;
+  return u;
+}
+function dizNavegador(trecho, op){
+  return new Promise(res=>{
+    if(vozQuebrada) return setTimeout(res, Math.min(1600, 300+trecho.length*35));
+    let pronto = false, comecou = false, tGuarda = null, tTeto = null;
+    const fim = ()=>{
+      if(pronto) return;
+      pronto = true; clearTimeout(tGuarda); clearTimeout(tTeto); res();
+    };
+    const u = novaFala(trecho, op);
+    u.onstart = ()=>{ comecou = true; };
+    u.onend = fim; u.onerror = fim;
+    /* não começou em 700 ms? limpa a fila e tenta uma segunda vez */
+    tGuarda = setTimeout(()=>{
+      if(comecou) return;
+      try{ speechSynthesis.cancel(); }catch(e){}
+      const u2 = novaFala(trecho, op);
+      u2.onstart = ()=>{ comecou = true; };
+      u2.onend = fim; u2.onerror = fim;
+      try{ speechSynthesis.speak(u2); }catch(e){}
+      /* nem na segunda? a voz não funciona aqui: segue sem travar o jogo */
+      setTimeout(()=>{ if(!comecou){ vozQuebrada = true; avisaVozMuda(); fim(); } }, 1000);
+    }, 700);
+    tTeto = setTimeout(fim, 900 + trecho.length*95);
+    try{ speechSynthesis.speak(u); }catch(e){ fim(); }
+  });
+}
+
+function diz(trecho, op){
+  op = op || {};
+  if(temClipe(trecho)) return tocaClipe(trecho, op);
+  return dizNavegador(trecho, op);
+}
+
+let falaId = 0;
+async function falar(txt, opts){
+  opts = opts || {};
+  if(opts.balao !== false) mostraBalao(txt);
+  const limpo = humaniza(txt);
+  if(!S.voz || !("speechSynthesis" in window) || !limpo){
+    await espera(opts.pausa === undefined ? 600 : opts.pausa);
+    return;
+  }
+  const chunks = partesComNome(limpo);
+  if(!chunks.every(temClipe)) await esperaVozes();
+  const meu = ++falaId;
+  try{
+    if(speechSynthesis.speaking || speechSynthesis.pending){
+      speechSynthesis.cancel();
+      await espera(140);
+    }
+  }catch(e){}
+  for(const trecho of chunks){
+    if(meu !== falaId) return;
+    await diz(trecho, opts);
+    if(meu !== falaId) return;
+    await espera(opts.gap === undefined ? 170 : opts.gap);
+  }
+  await espera(opts.pausa === undefined ? 420 : opts.pausa);
+}
+function calar(){ falaId++; pararClipe(); try{ speechSynthesis.cancel(); }catch(e){} }
+
+/* ==========================================================
+   2. DESENHOS — personagem, unicórnio, cenas
+   ========================================================== */
+/* --- rosto paramétrico --- */
+function rosto(emo){
+  const T = "#3A2B52";
+  const olhoBrilho = (x,y)=>`<circle cx="${x+3}" cy="${y-3.5}" r="2.6" fill="#fff"/>`;
+  let sobr="", olhos="", boca="", extra="", bochecha=`<ellipse cx="66" cy="86" rx="9" ry="6" fill="#FF9CB4" opacity=".62"/><ellipse cx="134" cy="86" rx="9" ry="6" fill="#FF9CB4" opacity=".62"/>`;
+
+  if(emo==="alegria"){
+    sobr = `<path d="M62,54 q14,-9 28,-2" stroke="${T}" stroke-width="5" fill="none" stroke-linecap="round"/>
+            <path d="M110,52 q14,-7 28,2" stroke="${T}" stroke-width="5" fill="none" stroke-linecap="round"/>`;
+    olhos = `<path d="M62,76 q13,-16 26,0" stroke="${T}" stroke-width="6.5" fill="none" stroke-linecap="round"/>
+             <path d="M112,76 q13,-16 26,0" stroke="${T}" stroke-width="6.5" fill="none" stroke-linecap="round"/>`;
+    boca = `<path d="M72,96 q28,34 56,0 z" fill="#7A2540"/><path d="M86,112 q14,12 28,0 q-14,-4 -28,0 z" fill="#FF7E9B"/>`;
+  }
+  else if(emo==="raiva"){
+    sobr = `<path d="M58,50 L92,66" stroke="${T}" stroke-width="8" stroke-linecap="round"/>
+            <path d="M142,50 L108,66" stroke="${T}" stroke-width="8" stroke-linecap="round"/>`;
+    olhos = `<ellipse cx="76" cy="80" rx="8.5" ry="7.5" fill="${T}"/>${olhoBrilho(76,80)}
+             <ellipse cx="124" cy="80" rx="8.5" ry="7.5" fill="${T}"/>${olhoBrilho(124,80)}`;
+    boca = `<path d="M70,112 q30,-26 60,0 q-30,16 -60,0 z" fill="#7A2540"/>
+            <path d="M76,110 l10,7 l10,-7 l10,7 l10,-7 l10,7" stroke="#fff" stroke-width="4" fill="none" stroke-linejoin="round"/>`;
+    bochecha = `<ellipse cx="62" cy="90" rx="12" ry="8" fill="#FF6B6B" opacity=".55"/><ellipse cx="138" cy="90" rx="12" ry="8" fill="#FF6B6B" opacity=".55"/>`;
+    extra = `<g opacity=".85">
+      <ellipse cx="42" cy="26" rx="11" ry="8" fill="#fff" opacity=".9"><animate attributeName="cy" values="26;10;26" dur="2s" repeatCount="indefinite"/><animate attributeName="opacity" values=".9;0;.9" dur="2s" repeatCount="indefinite"/></ellipse>
+      <ellipse cx="158" cy="30" rx="9" ry="7" fill="#fff" opacity=".8"><animate attributeName="cy" values="30;14;30" dur="2.4s" repeatCount="indefinite"/><animate attributeName="opacity" values=".8;0;.8" dur="2.4s" repeatCount="indefinite"/></ellipse>
+    </g>`;
+  }
+  else if(emo==="tristeza"){
+    sobr = `<path d="M58,64 L92,50" stroke="${T}" stroke-width="7" stroke-linecap="round"/>
+            <path d="M142,64 L108,50" stroke="${T}" stroke-width="7" stroke-linecap="round"/>`;
+    olhos = `<ellipse cx="76" cy="80" rx="9" ry="11" fill="${T}"/>${olhoBrilho(76,80)}
+             <ellipse cx="124" cy="80" rx="9" ry="11" fill="${T}"/>${olhoBrilho(124,80)}`;
+    boca = `<path d="M78,118 q22,-20 44,0" stroke="${T}" stroke-width="7" fill="none" stroke-linecap="round"/>`;
+    extra = `<path d="M68,92 q-5,14 0,20 q6,-6 0,-20z" fill="#5FC2F5"><animate attributeName="opacity" values="1;.3;1" dur="2.6s" repeatCount="indefinite"/></path>`;
+  }
+  else if(emo==="medo"){
+    sobr = `<path d="M58,46 q16,-12 32,0" stroke="${T}" stroke-width="6" fill="none" stroke-linecap="round"/>
+            <path d="M110,46 q16,-12 32,0" stroke="${T}" stroke-width="6" fill="none" stroke-linecap="round"/>`;
+    olhos = `<ellipse cx="76" cy="80" rx="13" ry="15" fill="#fff" stroke="${T}" stroke-width="3"/><circle cx="76" cy="82" r="7" fill="${T}"/>
+             <ellipse cx="124" cy="80" rx="13" ry="15" fill="#fff" stroke="${T}" stroke-width="3"/><circle cx="124" cy="82" r="7" fill="${T}"/>`;
+    boca = `<ellipse cx="100" cy="112" rx="13" ry="16" fill="#7A2540"/>`;
+    bochecha = "";
+    extra = `<path d="M150,58 q7,12 0,17 q-7,-5 0,-17z" fill="#7ED0FF"/>`;
+  }
+  else { /* calma */
+    sobr = `<path d="M62,52 q14,-6 28,-1" stroke="${T}" stroke-width="5" fill="none" stroke-linecap="round"/>
+            <path d="M110,51 q14,-5 28,1" stroke="${T}" stroke-width="5" fill="none" stroke-linecap="round"/>`;
+    olhos = `<path d="M62,78 q13,12 26,0" stroke="${T}" stroke-width="6.5" fill="none" stroke-linecap="round"/>
+             <path d="M112,78 q13,12 26,0" stroke="${T}" stroke-width="6.5" fill="none" stroke-linecap="round"/>`;
+    boca = `<path d="M80,104 q20,16 40,0" stroke="${T}" stroke-width="7" fill="none" stroke-linecap="round"/>`;
+  }
+  return {sobr, olhos, boca, extra, bochecha};
+}
+
+/* --- cabeça grande (cartões da etapa 1) --- */
+function cabeca(emo, tam){
+  const f = rosto(emo);
+  return `<svg viewBox="0 0 200 200" style="width:${tam||"100%"}">
+    <g>
+      <path d="M100,18 C48,18 26,58 26,102 C26,150 60,182 100,182 C140,182 174,150 174,102 C174,58 152,18 100,18z" fill="${S.cabelo}"/>
+      <circle cx="100" cy="102" r="66" fill="${S.pele}"/>
+      <path d="M34,80 C40,34 74,20 100,20 C126,20 160,34 166,80 C150,52 124,44 100,44 C76,44 50,52 34,80z" fill="${S.cabelo}"/>
+      <circle cx="30" cy="112" r="20" fill="${S.cabelo}"/><circle cx="170" cy="112" r="20" fill="${S.cabelo}"/>
+      <circle cx="30" cy="112" r="9" fill="${S.vestido}"/><circle cx="170" cy="112" r="9" fill="${S.vestido}"/>
+      ${f.bochecha}${f.sobr}${f.olhos}${f.boca}${f.extra}
+    </g></svg>`;
+}
+
+/* --- braços em poses, para a criança imitar --- */
+const POSES = {
+  normal:  [[44,244],[156,244]],
+  forte:   [[64,152],[136,152]],
+  cima:    [[36,110],[164,110]],
+  coracao: [[86,218],[114,218]],
+  mao:     [[44,244],[188,190]],
+  ombros:  [[26,208],[174,208]]
+};
+function bracos(pose){
+  const P = POSES[pose] || POSES.normal;
+  const braco = (x2,y2,x1)=>`<line x1="${x1}" y1="188" x2="${x2}" y2="${y2}" stroke="${S.pele}" stroke-width="17" stroke-linecap="round"/>`;
+  let ex = "";
+  if(pose === "forte")   ex = `<circle cx="${P[0][0]}" cy="${P[0][1]}" r="13" fill="${S.pele}"/><circle cx="${P[1][0]}" cy="${P[1][1]}" r="13" fill="${S.pele}"/>`;
+  if(pose === "coracao") ex = `<path d="M100,226 l-15,-15 a10.6,10.6 0 0115,-14 a10.6,10.6 0 0115,14z" fill="#FF5A6E"/>`;
+  if(pose === "cima")    ex = `<g fill="#FFC93C"><circle cx="24" cy="92" r="7"/><circle cx="176" cy="92" r="7"/></g>`;
+  return braco(P[0][0],P[0][1],62) + braco(P[1][0],P[1][1],138) + ex;
+}
+
+/* --- boneca inteira --- */
+function boneca(emo, extra, pose){
+  const f = rosto(emo);
+  return `<svg viewBox="0 0 200 330" style="width:100%">
+    <g id="corpo-g">
+      <rect x="82" y="252" width="14" height="34" rx="7" fill="${S.pele}"/>
+      <rect x="104" y="252" width="14" height="34" rx="7" fill="${S.pele}"/>
+      <ellipse cx="86" cy="292" rx="16" ry="10" fill="#6B4BB0"/>
+      <ellipse cx="114" cy="292" rx="16" ry="10" fill="#6B4BB0"/>
+      <path d="M100,168 L54,258 Q100,274 146,258 z" fill="${S.vestido}"/>
+      <path d="M54,258 Q100,274 146,258 L143,268 Q100,284 57,268 z" fill="#fff" opacity=".55"/>
+      ${bracos(pose)}
+      <rect x="92" y="146" width="16" height="26" fill="${S.pele}"/>
+      <g transform="translate(0,-6)">
+        <path d="M100,18 C48,18 26,58 26,102 C26,150 60,182 100,182 C140,182 174,150 174,102 C174,58 152,18 100,18z" fill="${S.cabelo}"/>
+        <circle cx="100" cy="102" r="66" fill="${S.pele}"/>
+        <path d="M34,80 C40,34 74,20 100,20 C126,20 160,34 166,80 C150,52 124,44 100,44 C76,44 50,52 34,80z" fill="${S.cabelo}"/>
+        <circle cx="30" cy="112" r="20" fill="${S.cabelo}"/><circle cx="170" cy="112" r="20" fill="${S.cabelo}"/>
+        <circle cx="30" cy="112" r="9" fill="${S.vestido}"/><circle cx="170" cy="112" r="9" fill="${S.vestido}"/>
+        ${f.bochecha}${f.sobr}${f.olhos}${f.boca}${f.extra}
+      </g>
+      ${extra||""}
+    </g></svg>`;
+}
+
+/* --- unicórnio guia --- */
+function unicornio(){
+  return `<svg viewBox="0 0 200 200">
+    <defs><linearGradient id="chifre" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0" stop-color="#FFC93C"/><stop offset=".5" stop-color="#FF7EB6"/><stop offset="1" stop-color="#9B6BF2"/>
+    </linearGradient></defs>
+    <ellipse cx="96" cy="132" rx="52" ry="38" fill="#fff"/>
+    <ellipse cx="96" cy="132" rx="52" ry="38" fill="#F3E9FF" opacity=".6"/>
+    <rect x="62" y="158" width="15" height="30" rx="7" fill="#fff"/>
+    <rect x="112" y="158" width="15" height="30" rx="7" fill="#fff"/>
+    <path d="M140,110 q30,-6 34,26 q-16,-16 -34,-4z" fill="#FF7EB6"/>
+    <path d="M146,116 q22,0 26,18" stroke="#FFC93C" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <path d="M62,110 q-14,-30 8,-46 q26,-18 46,4 q14,16 4,38z" fill="#fff"/>
+    <circle cx="74" cy="78" r="30" fill="#fff"/>
+    <path d="M66,52 L76,20 L88,54z" fill="url(#chifre)"/>
+    <path d="M88,58 q26,-14 34,10 q-12,-4 -20,4 q-10,-12 -14,-14z" fill="#9B6BF2"/>
+    <path d="M92,66 q22,-8 28,12" stroke="#FF7EB6" stroke-width="7" fill="none" stroke-linecap="round"/>
+    <path d="M96,78 q20,-4 24,14" stroke="#3FA9F5" stroke-width="7" fill="none" stroke-linecap="round"/>
+    <path d="M98,90 q18,0 22,14" stroke="#3FCB8E" stroke-width="7" fill="none" stroke-linecap="round"/>
+    <ellipse cx="54" cy="96" rx="20" ry="15" fill="#fff"/>
+    <circle cx="66" cy="80" r="6" fill="#3A2B52"/><circle cx="68" cy="78" r="2" fill="#fff"/>
+    <path d="M60,60 q8,-6 14,-1" stroke="#3A2B52" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <ellipse cx="46" cy="98" rx="3.5" ry="2.6" fill="#C79BE0"/>
+    <path d="M44,104 q8,7 16,1" stroke="#C79BE0" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <ellipse cx="52" cy="112" rx="9" ry="6" fill="#FFB8D2" opacity=".7"/>
+  </svg>`;
+}
+
+/* --- ícones das etapas (mapa) --- */
+const ICONES = {
+  0:`<svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="16" fill="#fff"/><circle cx="14" cy="17" r="2.6" fill="#3A2B52"/><circle cx="26" cy="17" r="2.6" fill="#3A2B52"/><path d="M13,25 q7,7 14,0" stroke="#3A2B52" stroke-width="3" fill="none" stroke-linecap="round"/></svg>`,
+  1:`<svg viewBox="0 0 40 40"><circle cx="20" cy="9" r="6" fill="#fff"/><path d="M20,16 q-9,2 -9,12 v8 h18 v-8 q0,-10 -9,-12z" fill="#fff"/><path d="M20,26 l-3,-3 a2.1,2.1 0 013,-3 a2.1,2.1 0 013,3z" fill="#FF5A6E"/></svg>`,
+  2:`<svg viewBox="0 0 40 40"><path d="M6,34 L15,12 h10 l9,22z" fill="#fff"/><path d="M15,12 h10 l3,7 q-8,4 -16,0z" fill="#FF5A6E"/><circle cx="20" cy="8" r="3" fill="#FF9A3D"/></svg>`,
+  3:`<svg viewBox="0 0 40 40"><path d="M20,6 l4,10 h11 l-9,7 3,11 -9,-6.6 -9,6.6 3,-11 -9,-7 h11z" fill="#fff"/></svg>`,
+  4:`<svg viewBox="0 0 40 40"><path d="M8,8 h24 a4,4 0 014,4 v13 a4,4 0 01-4,4 H18 l-8,7 v-7 a4,4 0 01-4,-4 V12 a4,4 0 014,-4z" fill="#fff"/><circle cx="15" cy="19" r="2.3" fill="#3FA9F5"/><circle cx="21" cy="19" r="2.3" fill="#3FA9F5"/><circle cx="27" cy="19" r="2.3" fill="#3FA9F5"/></svg>`,
+  5:`<svg viewBox="0 0 40 40"><path d="M20,4 l4.6,11.4 12.4,.9 -9.5,8 3,12 -10.5,-6.6 -10.5,6.6 3,-12 -9.5,-8 12.4,-.9z" fill="#fff"/></svg>`
+};
+
+/* --- pequenas cenas de ação (etapa 4) --- */
+function acao(tipo){
+  const cab = (emo)=>{
+    const f = rosto(emo);
+    return `<g transform="translate(30,26) scale(.52)">
+      <path d="M100,18 C48,18 26,58 26,102 C26,150 60,182 100,182 C140,182 174,150 174,102 C174,58 152,18 100,18z" fill="${S.cabelo}"/>
+      <circle cx="100" cy="102" r="66" fill="${S.pele}"/>
+      <path d="M34,80 C40,34 74,20 100,20 C126,20 160,34 166,80 C150,52 124,44 100,44 C76,44 50,52 34,80z" fill="${S.cabelo}"/>
+      <circle cx="30" cy="112" r="20" fill="${S.cabelo}"/><circle cx="170" cy="112" r="20" fill="${S.cabelo}"/>
+      ${f.bochecha}${f.sobr}${f.olhos}${f.boca}
+    </g>`;
+  };
+  const P = {
+    flor: cab("calma") + `<g><circle cx="130" cy="105" r="9" fill="#FF7EB6"/><circle cx="146" cy="93" r="9" fill="#FFC93C"/><circle cx="146" cy="117" r="9" fill="#9B6BF2"/><circle cx="160" cy="105" r="9" fill="#3FA9F5"/><circle cx="145" cy="105" r="7" fill="#fff"/>
+      <path d="M116,72 q14,-10 26,2" stroke="#3FCB8E" stroke-width="5" fill="none" stroke-linecap="round" opacity=".8"/>
+      <path d="M110,58 q18,-13 34,2" stroke="#3FCB8E" stroke-width="5" fill="none" stroke-linecap="round" opacity=".5"/></g>`,
+    grito: cab("raiva") + `<g stroke="#FF5A6E" stroke-width="7" stroke-linecap="round">
+      <path d="M138,110 h20"/><path d="M136,90 l19,-9"/><path d="M136,130 l19,9"/></g>
+      <path d="M8,60 l12,10 -12,10" stroke="#FF5A6E" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`,
+    jogar: cab("raiva") + `<g><rect x="128" y="34" width="26" height="26" rx="5" fill="#FF9A3D" transform="rotate(22 141 47)"/>
+      <rect x="146" y="76" width="22" height="22" rx="5" fill="#3FA9F5" transform="rotate(-18 157 87)"/>
+      <rect x="126" y="120" width="20" height="20" rx="5" fill="#9B6BF2" transform="rotate(34 136 130)"/>
+      <path d="M118,60 q16,-8 26,-18" stroke="#3A2B52" stroke-width="3.4" fill="none" opacity=".35" stroke-dasharray="5 6" stroke-linecap="round"/></g>`,
+    empurrar: cab("raiva") + `<g><rect x="128" y="70" width="34" height="34" rx="8" fill="#3FA9F5"/>
+      <path d="M120,72 h16 M120,88 h16 M120,104 h16" stroke="#FF5A6E" stroke-width="6" stroke-linecap="round"/>
+      <path d="M164,60 l14,14 -14,14" stroke="#FF5A6E" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g>`,
+    pedir: cab("calma") + `<g><path d="M118,52 h58 a12,12 0 0112,12 v26 a12,12 0 01-12,12 h-34 l-14,12 v-12 a12,12 0 01-10,-12 V64 a12,12 0 0110,-12z" fill="#3FCB8E"/>
+      <path d="M147,88 l-9,-9 a5.6,5.6 0 018,-8 a5.6,5.6 0 018,8z" fill="#fff"/></g>`,
+    rasgar: cab("raiva") + `<g><path d="M124,44 l30,6 -6,28 -26,-8z" fill="#fff" stroke="#C9BEDD" stroke-width="3"/>
+      <path d="M132,86 l30,10 -10,30 -26,-12z" fill="#fff" stroke="#C9BEDD" stroke-width="3" transform="rotate(18 146 106)"/>
+      <path d="M154,50 l-8,14 8,12" stroke="#FF5A6E" stroke-width="5" fill="none" stroke-linecap="round"/></g>`,
+    ajuda: cab("tristeza") + `<g><path d="M150,132 q-8,-30 4,-42 q6,-6 9,2 l4,20 2,-26 q1,-9 8,-8 q7,1 7,9 l-1,26 4,-20 q2,-8 9,-5 q6,3 4,11 l-6,32 q-4,16 -22,16 q-16,0 -22,-15z" fill="${S.pele}" stroke="#C99A76" stroke-width="3"/></g>`
+  };
+  return `<svg viewBox="0 0 200 176">${P[tipo]||""}</svg>`;
+}
+
+/* --- balões de fala (etapa 5) --- */
+function simbolo(tipo){
+  const P = {
+    grito:`<path d="M50,14 l10,26 27,-10 -14,26 25,14 -28,7 8,27 -24,-16 -18,22 -3,-28 -28,3 17,-22 -22,-18 28,-3z" fill="#FF5A6E"/><text x="50" y="66" font-size="30" font-weight="800" text-anchor="middle" fill="#fff" font-family="Baloo 2, sans-serif">!!!</text>`,
+    nomear:`<path d="M50,86 L22,58 a17,17 0 0128,-22 a17,17 0 0128,22z" fill="#FF5A6E"/><path d="M36,52 q14,14 28,0" stroke="#fff" stroke-width="6" fill="none" stroke-linecap="round"/><circle cx="40" cy="40" r="4" fill="#fff"/><circle cx="60" cy="40" r="4" fill="#fff"/>`,
+    xingar:`<ellipse cx="50" cy="42" rx="34" ry="21" fill="#8A7CA0"/><ellipse cx="30" cy="46" rx="18" ry="14" fill="#8A7CA0"/><ellipse cx="70" cy="46" rx="18" ry="14" fill="#8A7CA0"/><path d="M54,58 l-16,22 h13 l-8,20 22,-26 h-13z" fill="#FFC93C"/>`,
+    ajudapf:`<path d="M32,88 q-8,-30 4,-42 q6,-6 9,2 l4,20 2,-26 q1,-9 8,-8 q7,1 7,9 l-1,26 4,-20 q2,-8 9,-5 q6,3 4,11 l-6,32z" fill="#F5C9A6" stroke="#C99A76" stroke-width="3"/><path d="M50,30 L38,18 a8,8 0 0112,-10 a8,8 0 0112,10z" fill="#FF5A6E"/>`,
+    nadaconsigo:`<ellipse cx="50" cy="36" rx="32" ry="20" fill="#8A7CA0"/><ellipse cx="30" cy="40" rx="16" ry="13" fill="#8A7CA0"/><ellipse cx="70" cy="40" rx="16" ry="13" fill="#8A7CA0"/><g stroke="#5B8FD6" stroke-width="6" stroke-linecap="round"><path d="M34,64 l-5,16"/><path d="M50,64 l-5,20"/><path d="M66,64 l-5,16"/></g>`,
+    desculpa:`<path d="M50,88 L20,58 a18,18 0 0130,-24 a18,18 0 0130,24z" fill="#FF5A6E"/><rect x="30" y="46" width="40" height="15" rx="7" fill="#FFE3B0" transform="rotate(-20 50 53)"/><g fill="#E0BC7C"><circle cx="46" cy="56" r="2"/><circle cx="54" cy="50" r="2"/></g>`,
+    quieta:`<circle cx="50" cy="44" r="30" fill="#F5C9A6"/><path d="M32,54 h36" stroke="#3A2B52" stroke-width="7" stroke-linecap="round"/><circle cx="40" cy="34" r="4" fill="#3A2B52"/><circle cx="60" cy="34" r="4" fill="#3A2B52"/><path d="M28,52 l44,4" stroke="#8A7CA0" stroke-width="5" stroke-dasharray="4 6" stroke-linecap="round"/>`,
+    negar:`<path d="M64,86 q10,-28 0,-42 q-6,-8 -11,0 l-6,18 -2,-24 q-1,-9 -8,-8 q-7,1 -7,9 l1,32 q1,20 16,22z" fill="#F5C9A6" stroke="#C99A76" stroke-width="3" transform="rotate(-24 50 50)"/><path d="M74,18 l14,14 M88,18 l-14,14" stroke="#FF5A6E" stroke-width="7" stroke-linecap="round"/>`
+  };
+  return `<svg viewBox="0 0 100 100" style="width:74%;margin:0 auto">${P[tipo]||""}</svg>`;
+}
+
+/* ==========================================================
+   3. ARCO-ÍRIS DE PROGRESSO
+   ========================================================== */
+const RAIOS = [500,448,396,344,292,240];
+function montaArcoiris(){
+  const svg = $("#arcoiris"), cx = 530, cy = 545;
+  let h = `<defs>`;
+  CORES.forEach((c,i)=>{
+    h += `<linearGradient id="g${i}" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="${c}" stop-opacity=".55"/><stop offset=".5" stop-color="${c}"/><stop offset="1" stop-color="${c}" stop-opacity=".55"/></linearGradient>`;
+  });
+  h += `</defs>`;
+  RAIOS.forEach((r,i)=>{
+    const d = `M${cx-r},${cy} A${r},${r} 0 0 1 ${cx+r},${cy}`;
+    h += `<path class="faixa" d="${d}"/>`;
+  });
+  RAIOS.forEach((r,i)=>{
+    const d = `M${cx-r},${cy} A${r},${r} 0 0 1 ${cx+r},${cy}`;
+    const L = Math.PI*r;
+    h += `<path class="faixa faixa-viva" id="fx${i}" d="${d}" style="stroke:url(#g${i})" stroke-dasharray="${L}" stroke-dashoffset="${L}"/>`;
+  });
+  h += `<g id="uni-arco" opacity="0"></g>`;
+  svg.innerHTML = h;
+  pintaArcoiris(false);
+}
+function pintaArcoiris(anim){
+  RAIOS.forEach((r,i)=>{
+    const p = $("#fx"+i); if(!p) return;
+    const L = Math.PI*r;
+    const f = Math.max(0, Math.min(1, S.prog[i]||0));
+    p.classList.toggle("acesa", f>0);
+    if(!anim) p.style.transition = "none";
+    p.style.strokeDashoffset = L*(1-f);
+    if(!anim) requestAnimationFrame(()=>{ p.style.transition = ""; });
+  });
+  $$("#trilha .pt").forEach((d,i)=>{
+    d.classList.toggle("feita", (S.prog[i]||0) >= 1);
+    d.style.background = (S.prog[i]||0) >= 1 ? CORES[i] : "";
+  });
+}
+function montaTrilha(){
+  $("#trilha").innerHTML = CORES.map(()=>`<div class="pt"></div>`).join("");
+}
+
+/* ==========================================================
+   4. CONFETE / PARTÍCULAS
+   ========================================================== */
+const cv = $("#fx"), ctx = cv.getContext("2d");
+let parts = [], animando = false;
+function ajustaCanvas(){
+  const d = Math.min(window.devicePixelRatio||1, 2);
+  cv.width = innerWidth*d; cv.height = innerHeight*d;
+  ctx.setTransform(d,0,0,d,0,0);
+}
+addEventListener("resize", ajustaCanvas); ajustaCanvas();
+
+function confete(n, x, y){
+  if(reduzir) n = Math.min(n, 20);
+  for(let i=0;i<n;i++){
+    parts.push({
+      x: x!==undefined ? x : Math.random()*innerWidth,
+      y: y!==undefined ? y : -20 - Math.random()*innerHeight*.3,
+      vx:(Math.random()-.5)*7, vy: y!==undefined ? -Math.random()*11-3 : Math.random()*2+1.5,
+      g:.19, r:Math.random()*Math.PI, vr:(Math.random()-.5)*.28,
+      w:7+Math.random()*10, h:5+Math.random()*8,
+      c: CORES[(Math.random()*CORES.length)|0], vida:1
+    });
+  }
+  if(!animando){ animando = true; requestAnimationFrame(laco); }
+}
+function laco(){
+  ctx.clearRect(0,0,innerWidth,innerHeight);
+  parts = parts.filter(p=>{
+    p.vy += p.g; p.x += p.vx; p.y += p.vy; p.r += p.vr; p.vx *= .995;
+    if(p.y > innerHeight+40) return false;
+    ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.r);
+    ctx.fillStyle = p.c; ctx.globalAlpha = .95;
+    ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h); ctx.restore();
+    return true;
+  });
+  if(parts.length) requestAnimationFrame(laco);
+  else { animando = false; ctx.clearRect(0,0,innerWidth,innerHeight); }
+}
+
+/* ==========================================================
+   5. CONTEÚDO DAS ETAPAS
+   ========================================================== */
+const N = ()=>S.nome;
+
+const ETAPAS = [
+  { nome:"Que carinha\né essa?", cor:0,
+    intro:()=>`Vamos olhar as carinhas! Eu falo um sentimento e você acha a carinha certinha.`,
+    rodadas:[
+      {alvo:"raiva",    ops:["alegria","raiva","tristeza"], depois:()=>`Isso! Essa é a carinha de RAIVA. Todo mundo sente raiva às vezes. Até eu!`},
+      {alvo:"alegria",  ops:["medo","tristeza","alegria"], depois:()=>`Achou! A ALEGRIA deixa a barriga quentinha.`},
+      {alvo:"tristeza", ops:["tristeza","calma","raiva"],  depois:()=>`Essa é a TRISTEZA. Quando ela chega, dá vontade de um colo.`},
+      {alvo:"medo",     ops:["alegria","medo","raiva"],    depois:()=>`É o MEDO! O medo é um amigo que avisa a gente pra tomar cuidado.`},
+      {alvo:"calma",    ops:["calma","raiva","tristeza"],  depois:()=>`A CALMA! É assim que o corpo fica depois que a gente respira.`}
+    ]},
+
+  { nome:"Onde eu\nsinto?", cor:1,
+    intro:()=>`Os sentimentos moram dentro do corpo. Vamos achar onde cada um mora?`,
+    rodadas:[
+      {zona:"peito",   emo:"raiva",   pede:()=>`Quando ${N()} fica com RAIVA, o coração dela bate rápido: tum, tum, tum! Onde é que bate o coração?`, depois:()=>`Isso! No peito. Quando o coração acelera, é a raiva chegando.`},
+      {zona:"barriga", emo:"medo",    pede:()=>`Quando dá MEDO, dá um friozinho esquisito. Onde é que dá esse friozinho?`, depois:()=>`Na barriga! Frio na barriga é o medo dando oi.`},
+      {zona:"cabeca",  emo:"raiva",   pede:()=>`Quando a raiva fica bem grande, a cabeça esquenta feito um vulcão. Cadê a cabeça?`, depois:()=>`Isso! A cabeça esquenta. Aí é hora de parar e respirar.`},
+      {zona:"pes",     emo:"alegria", pede:()=>`A ALEGRIA dá vontade de pular! Com o que a gente pula?`, depois:()=>`Com os pés! A alegria faz o corpo querer dançar.`}
+    ]},
+
+  { nome:"O vulcão\nda raiva", cor:2,
+    intro:()=>`Olha! A raiva de ${N()} virou um vulcão. Você me ajuda a acalmar ele?`,
+    especial:"vulcao" },
+
+  { nome:"O que eu\nfaço?", cor:3,
+    intro:()=>`Quando a raiva chega, a gente pode escolher o que fazer. Vamos escolher junto?`,
+    rodadas:[
+      { cena:()=>`A torre de ${N()} caiu no chão. Ela ficou BRAVA. O que ajuda ${N()} a se sentir melhor?`,
+        ops:[{t:"jogar",r:"Jogar as peças longe"},{t:"flor",r:"Respirar fundo",ok:1},{t:"grito",r:"Gritar bem alto"}],
+        depois:()=>`Respirar fundo! O ar entra e a raiva vai diminuindo. Aí dá pra montar de novo.`},
+      { cena:()=>`${N()} quer o brinquedo que a amiga está usando. O que ajuda?`,
+        ops:[{t:"empurrar",r:"Empurrar a amiga"},{t:"pedir",r:"Pedir: posso brincar também?",ok:1},{t:"grito",r:"Gritar com ela"}],
+        depois:()=>`Pedir com palavras! Quando a gente pede, a amiga entende. Quando a gente arranca, ela se assusta.`},
+      { cena:()=>`${N()} errou o desenho e ficou brava consigo mesma. O que ajuda?`,
+        ops:[{t:"rasgar",r:"Rasgar o papel"},{t:"ajuda",r:"Pedir ajuda",ok:1},{t:"jogar",r:"Jogar o lápis longe"}],
+        depois:()=>`Pedir ajuda! Pedir ajuda não é ser fraca. É ser esperta.`}
+    ]},
+
+  { nome:"O que eu\ndigo?", cor:4,
+    intro:()=>`Palavras são mágicas: elas tiram a raiva de dentro sem machucar ninguém. Escolhe a melhor?`,
+    rodadas:[
+      { cena:()=>`${N()} está com muita raiva por dentro. O que ela pode DIZER?`,
+        ops:[{t:"grito",f:"AAAAAH!"},{t:"nomear",f:"Eu tô com RAIVA!",ok:1},{t:"xingar",f:"Você é chata!"}],
+        depois:()=>`"Eu tô com raiva!" Falar o nome do sentimento faz ele ficar menorzinho. Isso é mágica de verdade.`},
+      { cena:()=>`${N()} não está conseguindo abrir o pote. O que ela pode DIZER?`,
+        ops:[{t:"ajudapf",f:"Me ajuda, por favor?",ok:1},{t:"nadaconsigo",f:"Eu não consigo nada!"},{t:"grito",f:"Ahhh, que ódio!"}],
+        depois:()=>`"Me ajuda, por favor." Duas palavrinhas que abrem qualquer pote.`},
+      { cena:()=>`Sem querer, ${N()} machucou a amiga. O que ela pode DIZER?`,
+        ops:[{t:"desculpa",f:"Desculpa! Você tá bem?",ok:1},{t:"quieta",f:"Ficar caladinha"},{t:"negar",f:"Não fui eu!"}],
+        depois:()=>`"Desculpa, você tá bem?" Consertar é de gente corajosa.`}
+    ]},
+
+  { nome:"Eu consigo...\nainda!", cor:5,
+    especial:"ainda",
+    intro:()=>`Agora a palavra mais mágica de todas. Vem comigo!`}
+];
+
+/* ==========================================================
+   6. NAVEGAÇÃO
+   ========================================================== */
+let etapaAtual = 0, rodadaAtual = 0, ocupado = false;
+
+function tela(id){
+  $$(".tela").forEach(t=>t.classList.remove("on"));
+  $("#t-"+id).classList.add("on");
+  $("#btCasa").hidden = (id === "inicio" || id === "hub");
+}
+function liberadas(){
+  let n = 1;
+  for(let i=0;i<6;i++){ if((S.prog[i]||0) >= 1) n = i+2; }
+  return Math.min(n, 6);
+}
+function montaMapa(){
+  const lib = liberadas();
+  $("#mapa").innerHTML = ETAPAS.map((e,i)=>{
+    const trava = i >= lib;
+    const feita = (S.prog[i]||0) >= 1;
+    return `<button class="ilha ${trava?"travada":""} ${(!trava&&!feita&&i===lib-1)?"agora":""}" data-e="${i}">
+      ${feita?`<span class="selo">⭐</span>`:""}
+      <div class="bolha" style="background:${CORES[i]}">${trava?`<svg viewBox="0 0 40 40"><rect x="10" y="18" width="20" height="15" rx="4" fill="#fff"/><path d="M15,18 v-4 a5,5 0 0110,0 v4" stroke="#fff" stroke-width="3.4" fill="none"/></svg>`:ICONES[i]}</div>
+      <span class="nome">${e.nome.replace(/\n/g,"<br>")}</span>
+    </button>`;
+  }).join("");
+  $$("#mapa .ilha").forEach(b=>{
+    b.addEventListener("click", ()=>{
+      const i = +b.dataset.e;
+      SFX.toque();
+      if(i >= liberadas()){
+        falar(`Essa ilha ainda está dormindo. Termina a de antes que ela acorda!`);
+        return;
+      }
+      abreEtapa(i);
+    });
+  });
+}
+
+/* --- arte grande de cada jogo, para ela reconhecer sem ler --- */
+const ART_EMO = `<svg viewBox="0 0 200 200">
+  <g fill="none" stroke-width="13" stroke-linecap="round">
+    <path d="M20,178 a80,80 0 01160,0" stroke="#FF5A6E"/>
+    <path d="M40,178 a60,60 0 01120,0" stroke="#FFC93C"/>
+    <path d="M60,178 a40,40 0 0180,0" stroke="#3FA9F5"/></g>
+  <path d="M62,178 L94,96 h22 l32,82z" fill="#8A6A54"/>
+  <path d="M94,96 h22 l7,18 q-19,8 -36,0z" fill="#FF5A6E"/>
+  <circle cx="105" cy="74" r="9" fill="#FF9A3D"/><circle cx="122" cy="60" r="6" fill="#FFC93C"/>
+  <circle cx="46" cy="60" r="30" fill="#FFC93C"/>
+  <circle cx="37" cy="54" r="4" fill="#3A2B52"/><circle cx="55" cy="54" r="4" fill="#3A2B52"/>
+  <path d="M36,68 q10,10 20,0" stroke="#3A2B52" stroke-width="5" fill="none" stroke-linecap="round"/></svg>`;
+const ART_CAR = `<svg viewBox="0 0 200 200">
+  <path d="M0,200 L70,70 h60 l70,130z" fill="#EFE7F7"/>
+  <g fill="#FF5A6E"><path d="M84,86 h32 l4,20 h-40z"/></g>
+  <g fill="#FFC93C"><path d="M78,120 h44 l5,24 h-54z"/></g>
+  <g fill="#3FCB8E"><path d="M70,158 h60 l6,28 h-72z"/></g>
+  <g><rect x="52" y="112" width="24" height="46" rx="10" fill="#2C2440"/>
+     <rect x="124" y="112" width="24" height="46" rx="10" fill="#2C2440"/>
+     <rect x="62" y="96" width="76" height="76" rx="24" fill="#FF5A6E"/>
+     <rect x="74" y="108" width="52" height="26" rx="11" fill="#BFE9FF"/>
+     <circle cx="100" cy="150" r="17" fill="#3B2418"/><circle cx="100" cy="150" r="12" fill="#F5C9A6"/>
+     <circle cx="78" cy="148" r="8" fill="#3B2418"/><circle cx="122" cy="148" r="8" fill="#3B2418"/>
+     <rect x="68" y="88" width="18" height="9" rx="4" fill="#FFC93C"/>
+     <rect x="114" y="88" width="18" height="9" rx="4" fill="#FFC93C"/></g></svg>`;
+const ART_ABC = `<svg viewBox="0 0 200 200">
+  <g font-family="Baloo 2, sans-serif" font-weight="800" font-size="46" text-anchor="middle">
+    <rect x="16" y="52" width="54" height="54" rx="14" fill="#FF5A6E"/><text x="43" y="90" fill="#fff">A</text>
+    <rect x="73" y="42" width="54" height="54" rx="14" fill="#3FA9F5"/><text x="100" y="80" fill="#fff">B</text>
+    <rect x="130" y="52" width="54" height="54" rx="14" fill="#3FCB8E"/><text x="157" y="90" fill="#fff">C</text>
+  </g>
+  <path d="M100,124 q-30,-14 -62,-8 v58 q32,-6 62,8z" fill="#fff" stroke="#C9BEDD" stroke-width="4"/>
+  <path d="M100,124 q30,-14 62,-8 v58 q-32,-6 62,8z" fill="#FFFDF6" stroke="#C9BEDD" stroke-width="4"/>
+  <path d="M100,124 q30,-14 62,-8 v58 q-32,-6 -62,8z" fill="#FFFDF6" stroke="#C9BEDD" stroke-width="4"/>
+  <rect x="95" y="120" width="10" height="62" rx="4" fill="#9B6BF2"/></svg>`;
+
+const ART_ESP = `<svg viewBox="0 0 200 200">
+  <ellipse cx="100" cy="90" rx="62" ry="74" fill="#EADCFF" stroke="#9B6BF2" stroke-width="9"/>
+  <path d="M62,48 q18,-14 38,-4" stroke="#fff" stroke-width="13" fill="none" stroke-linecap="round"/>
+  <circle cx="86" cy="84" r="6" fill="#3A2B52"/><circle cx="114" cy="84" r="6" fill="#3A2B52"/>
+  <path d="M84,106 q16,14 32,0" stroke="#3A2B52" stroke-width="6" fill="none" stroke-linecap="round"/>
+  <ellipse cx="74" cy="100" rx="9" ry="6" fill="#FF9CB4" opacity=".75"/>
+  <ellipse cx="126" cy="100" rx="9" ry="6" fill="#FF9CB4" opacity=".75"/>
+  <rect x="86" y="162" width="28" height="20" rx="7" fill="#9B6BF2"/>
+  <g fill="#FFC93C"><path d="M40,30 l4,11 11,4 -11,4 -4,11 -4,-11 -11,-4 11,-4z"/>
+  <path d="M164,132 l3,9 9,3 -9,3 -3,9 -3,-9 -9,-3 9,-3z"/></g></svg>`;
+
+const JOGOS = [
+  {id:"emocoes",  nome:"As Emoções",  desc:"O vulcão e o arco-íris",       cor:"#FF5A6E", esc:"#D93E52",
+   art:ART_EMO, fala:"Este é o jogo das emoções. O vulcão e o arco-íris."},
+  {id:"carrinho", nome:"O Carrinho",  desc:"Corrida com cocô e sentimentos", cor:"#3FA9F5", esc:"#2585C9",
+   art:ART_CAR, arq:"2-carrinho-do-arco-iris.html", fala:"Este é o jogo do carrinho. Uma corrida com cocô e sentimentos."},
+  {id:"palavras", nome:"As Palavras", desc:"Monta palavras com letrinhas",  cor:"#FF9A3D", esc:"#DB7620",
+   art:ART_ABC, arq:"3-qual-e-a-palavra.html", fala:"Este é o jogo das palavras. Montar palavras com as letrinhas."},
+  {id:"espelho",  nome:"O Espelho",    desc:"Falar coisas boas pra você",   cor:"#9B6BF2", esc:"#7A4CD1",
+   art:ART_ESP, arq:"4-espelho-magico.html", fala:"Este é o jogo do espelho. Falar coisas boas pra você mesma."}
+];
+
+function montaHub(){
+  const feitas = S.prog.filter(p=>p>=1).length;
+  $("#hub").innerHTML = JOGOS.map((j,i)=>{
+    let selo = "";
+    if(j.id==="emocoes") selo = "⭐".repeat(feitas) + "☆".repeat(6-feitas);
+    return `<button class="jogo-card" data-i="${i}" style="--cor:${j.cor};--esc:${j.esc}">
+      <span class="art">${j.art}</span>
+      <span class="txt"><b>${j.nome}</b><small>${j.desc}</small></span>
+      <span class="selos">${selo}</span>
+    </button>`;
+  }).join("");
+  $$("#hub .jogo-card").forEach(b=>b.addEventListener("click",()=>{
+    const j = JOGOS[+b.dataset.i];
+    SFX.toque(); calar();
+    if(j.arq) location.href = j.arq;
+    else irMapa();
+  }));
+}
+/* apresenta os três em voz alta, acendendo um por vez */
+async function apresentaJogos(){
+  const cards = $$("#hub .jogo-card");
+  await falar("Escolhe o jogo!");
+  for(let i=0;i<cards.length;i++){
+    if(!$("#t-hub").classList.contains("on")) return;
+    cards[i].classList.add("falando");
+    SFX.toque();
+    await falar(JOGOS[i].fala, {balao:true});
+    cards[i].classList.remove("falando");
+    await espera(120);
+  }
+}
+function irHub(){
+  calar(); etapaAtual = -1;
+  montaHub(); tela("hub");
+  apresentaJogos();
+}
+
+const OUTROS_JOGOS = [
+  { arq:"2-carrinho-do-arco-iris.html", nome:"O Carrinho do Arco-Íris", cor:"#3FA9F5",
+    desc:"Corrida com cocô, sentimentos e magia de unicórnio",
+    icone:`<svg viewBox="0 0 40 40"><rect x="11" y="7" width="18" height="26" rx="7" fill="#fff"/><rect x="14" y="10" width="12" height="7" rx="3" fill="#BFE9FF"/><circle cx="20" cy="24" r="5" fill="#3A2B52" opacity=".25"/><rect x="7" y="11" width="5" height="8" rx="2.4" fill="#fff"/><rect x="28" y="11" width="5" height="8" rx="2.4" fill="#fff"/><rect x="7" y="22" width="5" height="8" rx="2.4" fill="#fff"/><rect x="28" y="22" width="5" height="8" rx="2.4" fill="#fff"/></svg>` },
+  { arq:"3-qual-e-a-palavra.html", nome:"Qual É a Palavra?", cor:"#FF9A3D",
+    desc:"Letras, sílabas e as primeiras palavras pra ler",
+    icone:`<svg viewBox="0 0 40 40"><text x="20" y="27" font-family="Baloo 2, sans-serif" font-size="20" font-weight="800" fill="#fff" text-anchor="middle">Aa</text><path d="M8 32 h24" stroke="#fff" stroke-width="3" stroke-linecap="round"/></svg>` }
+];
+function montaMais(){
+  const el = $("#mais"); if(!el) return;
+  el.innerHTML =
+    `<p class="olho2">Mais jogos</p>
+     <div class="jogos-lista">${OUTROS_JOGOS.map(j=>
+       `<button class="jogo-cartao" data-arq="${j.arq}">
+          <span class="cap" style="background:${j.cor}">${j.icone}</span>
+          <span><b>${j.nome}</b><small>${j.desc}</small></span>
+          <svg class="seta" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3A2B52" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
+        </button>`).join("")}</div>`;
+  $$("#mais .jogo-cartao").forEach(b=>b.addEventListener("click",()=>{
+    SFX.toque(); calar();
+    location.href = b.dataset.arq;
+  }));
+}
+
+function irMapa(){
+  calar(); rumorDesliga();
+  etapaAtual = -1;
+  montaMapa(); pintaArcoiris(true); tela("mapa");
+  const done = S.prog.filter(p=>p>=1).length;
+  falar(done===0 ? `Escolhe uma ilha pra gente começar!`
+       : done>=6 ? `Você já fez todas! Pode brincar de novo na que quiser.`
+       : `Muito bem! Já são ${done} ${done===1?"ilha":"ilhas"}. Qual é a próxima?`);
+}
+
+function abreEtapa(i){
+  etapaAtual = i; rodadaAtual = 0;
+  S.prog[i] = 0; pintaArcoiris(true); salvar();
+  tela("jogo");
+  const e = ETAPAS[i];
+  if(e.especial === "vulcao") return iniciaVulcao();
+  if(e.especial === "ainda")  return iniciaAinda();
+  falar(e.intro()).then(()=>rodada());
+}
+function fracao(){
+  const e = ETAPAS[etapaAtual];
+  return (rodadaAtual+1) / e.rodadas.length;
+}
+async function acertou(msg, semAvancar){
+  ocupado = true;
+  SFX.acerto(); confete(26, innerWidth/2, innerHeight*.55);
+  const e = ETAPAS[etapaAtual];
+  if(e.rodadas){ S.prog[etapaAtual] = fracao(); pintaArcoiris(true); salvar(); }
+  await falar(msg);
+  ocupado = false;
+  if(semAvancar) return;
+  rodadaAtual++;
+  if(e.rodadas && rodadaAtual >= e.rodadas.length) festa();
+  else rodada();
+}
+async function errou(msg, alvo){
+  SFX.tentar();
+  $("#palco").classList.add("tremendo");
+  setTimeout(()=>$("#palco").classList.remove("tremendo"), 420);
+  if(alvo){ alvo.classList.add("errada"); setTimeout(()=>alvo.classList.remove("errada"), 900); }
+  ocupado = true;
+  await falar(msg);
+  ocupado = false;
+}
+
+const ELOGIOS = [
+  ()=>`Você tentou de novo! Isso é ser corajosa.`,
+  ()=>`Olha como você prestou atenção!`,
+  ()=>`Você não desistiu. Eu vi!`,
+  ()=>`Seu cérebro tá ficando fortão!`
+];
+const DICAS_ERRO = [
+  ()=>`Quase! Vamos olhar de novo com calma.`,
+  ()=>`Ainda não é essa. Errar faz parte de aprender! Tenta outra.`,
+  ()=>`Hmm, não foi essa. Mas eu sei que você acha!`
+];
+const sorteia = a => a[(Math.random()*a.length)|0];
+
+/* ---------- roteador de rodada ---------- */
+function rodada(){
+  const e = ETAPAS[etapaAtual];
+  if(etapaAtual === 0) return rodadaCaras();
+  if(etapaAtual === 1) return rodadaCorpo();
+  if(etapaAtual === 3) return rodadaEscolha();
+  if(etapaAtual === 4) return rodadaFala();
+}
+
+/* ---------- ETAPA 1: reconhecer emoções ---------- */
+const NOMES_EMO = {alegria:"ALEGRIA", raiva:"RAIVA", tristeza:"TRISTEZA", medo:"MEDO", calma:"CALMA"};
+function rodadaCaras(){
+  const r = ETAPAS[0].rodadas[rodadaAtual];
+  const cor = CORES[0];
+  $("#palco").innerHTML =
+    `<p class="pergunta">Cadê a carinha de <em style="background:${cor}">${NOMES_EMO[r.alvo]}</em>?</p>
+     <div class="ops">${r.ops.map(e=>`<button class="op" data-e="${e}">${cabeca(e)}</button>`).join("")}</div>`;
+  $$("#palco .op").forEach(b=>{
+    b.addEventListener("click", async ()=>{
+      if(ocupado) return;
+      SFX.toque();
+      if(b.dataset.e === r.alvo){ b.classList.add("certa"); acertou(r.depois()); }
+      else errou(sorteia(DICAS_ERRO)() + ` Cadê a carinha de ${NOMES_EMO[r.alvo]}?`, b);
+    });
+  });
+  falar(`Cadê a carinha de ${NOMES_EMO[r.alvo]}?`, {pitch: r.alvo==="raiva"?.95:1.25});
+}
+
+/* ---------- ETAPA 2: mapa corporal ---------- */
+const ZONAS = {
+  cabeca: {x:50, y:29, w:66, h:40, nome:"a cabeça"},
+  peito:  {x:50, y:58, w:48, h:12, nome:"o peito"},
+  barriga:{x:50, y:71, w:48, h:12, nome:"a barriga"},
+  pes:    {x:50, y:88, w:52, h:12, nome:"os pés"}
+};
+function rodadaCorpo(){
+  const r = ETAPAS[1].rodadas[rodadaAtual];
+  $("#palco").innerHTML =
+    `<p class="pergunta" id="p-corpo"></p>
+     <div class="corpo-wrap" id="corpo">${boneca(r.emo)}
+       ${Object.keys(ZONAS).map(k=>{
+         const z = ZONAS[k];
+         return `<button class="zona" data-z="${k}" aria-label="${z.nome}"
+           style="left:${z.x - z.w/2}%;top:${z.y - z.h/2}%;width:${z.w}%;height:${z.h}%"></button>`;
+       }).join("")}
+     </div>`;
+  $("#p-corpo").textContent = r.pede();
+  $$("#palco .zona").forEach(b=>{
+    b.addEventListener("click", ()=>{
+      if(ocupado) return;
+      SFX.toque();
+      if(b.dataset.z === r.zona){
+        b.classList.add("acertou");
+        if(r.zona === "peito") SFX.coracao();
+        animaZona(r.zona);
+        acertou(r.depois());
+      } else {
+        errou(`Aí é ${ZONAS[b.dataset.z].nome}. ` + r.pede(), b);
+      }
+    });
+  });
+  falar(r.pede());
+}
+function animaZona(z){
+  const g = $("#corpo svg g");
+  if(!g) return;
+  const ns = "http://www.w3.org/2000/svg";
+  const add = (tag, attrs)=>{ const e = document.createElementNS(ns,tag); for(const k in attrs) e.setAttribute(k,attrs[k]); g.appendChild(e); return e; };
+  if(z === "peito"){
+    const c = add("path",{d:"M100,226 l-14,-14 a10,10 0 0114,-14 a10,10 0 0114,14z", fill:"#FF5A6E"});
+    c.innerHTML = `<animateTransform attributeName="transform" type="scale" values="1;1.3;1" dur=".55s" repeatCount="6" additive="sum"/>`;
+    c.setAttribute("transform-origin","100 212");
+  } else if(z === "barriga"){
+    for(let i=0;i<5;i++){
+      const b = add("circle",{cx:80+i*10, cy:248, r:4, fill:"#7ED0FF", opacity:.9});
+      b.innerHTML = `<animate attributeName="cy" values="248;226;248" dur="${1.4+i*.2}s" repeatCount="indefinite"/>`;
+    }
+  } else if(z === "cabeca"){
+    for(let i=0;i<3;i++){
+      const p = add("ellipse",{cx:60+i*40, cy:24, rx:10, ry:7, fill:"#fff", opacity:.85});
+      p.innerHTML = `<animate attributeName="cy" values="24;-2;24" dur="${1.6+i*.3}s" repeatCount="indefinite"/>`;
+    }
+  } else {
+    g.style.transformOrigin = "100px 300px";
+    g.animate([{transform:"translateY(0)"},{transform:"translateY(-22px)"},{transform:"translateY(0)"}],
+      {duration:520, iterations:4, easing:"ease-in-out"});
+    SFX.brilho();
+  }
+}
+
+/* ---------- ETAPA 4 e 5: escolhas narradas ---------- */
+async function narraOpcoes(itens){
+  const cards = $$("#palco .op");
+  for(let i=0;i<cards.length;i++){
+    if(etapaAtual < 0) return;
+    cards[i].classList.add("falando");
+    SFX.toque();
+    await falar(itens[i], {balao:false});
+    cards[i].classList.remove("falando");
+    await espera(120);
+  }
+}
+function rodadaEscolha(){
+  const r = ETAPAS[3].rodadas[rodadaAtual];
+  $("#palco").innerHTML =
+    `<p class="pergunta">${r.cena()}</p>
+     <div class="ops">${r.ops.map((o,i)=>
+       `<button class="op" data-i="${i}">${acao(o.t)}<span class="rot">${o.r}</span></button>`).join("")}</div>`;
+  ligaEscolha(r, o=>o.r);
+}
+function rodadaFala(){
+  const r = ETAPAS[4].rodadas[rodadaAtual];
+  $("#palco").innerHTML =
+    `<p class="pergunta">${r.cena()}</p>
+     <div class="ops">${r.ops.map((o,i)=>
+       `<button class="op fala-op" data-i="${i}">${simbolo(o.t)}<span class="frase">${o.f}</span></button>`).join("")}</div>`;
+  ligaEscolha(r, o=>o.f);
+}
+async function ligaEscolha(r, txt){
+  $$("#palco .op").forEach(b=>{
+    b.addEventListener("click", ()=>{
+      if(ocupado) return;
+      const o = r.ops[+b.dataset.i];
+      SFX.toque();
+      if(o.ok){ b.classList.add("certa"); acertou(r.depois()); }
+      else errou(`Hmm... isso deixa a raiva ainda maior. Que tal outro jeito?`, b);
+    });
+  });
+  ocupado = true;
+  await falar(r.cena());
+  await narraOpcoes(r.ops.map(txt));
+  mostraBalao(`O que você escolhe?`);
+  await falar(`O que você escolhe?`);
+  ocupado = false;
+}
+
+/* ==========================================================
+   7. ETAPA 3 — O VULCÃO (tartaruga + respiração)
+   ========================================================== */
+let respiros = 0, segurando = false, tInsp = null, faseResp = "espera";
+
+function vulcaoSVG(nivel){
+  const alt = 130 * (nivel/3);
+  return `<svg viewBox="0 0 320 260" id="vulc">
+    <defs><clipPath id="cratera"><path d="M60,240 L118,96 h84 l58,144z"/></clipPath></defs>
+    <ellipse cx="160" cy="244" rx="150" ry="16" fill="#3FCB8E" opacity=".35"/>
+    <path d="M60,240 L118,96 h84 l58,144z" fill="#8A6A54"/>
+    <path d="M118,96 h84 l16,40 q-58,22 -116,0z" fill="#6E5240"/>
+    <g clip-path="url(#cratera)">
+      <g id="lava" style="transform:translateY(${130-alt}px)">
+        <rect x="40" y="110" width="240" height="150" fill="#FF5A6E"/>
+        <rect x="40" y="110" width="240" height="14" fill="#FFC93C"/>
+        ${nivel>0?`<circle cx="140" cy="140" r="9" fill="#FF9A3D"><animate attributeName="cy" values="150;120;150" dur="1.6s" repeatCount="indefinite"/></circle>
+        <circle cx="190" cy="160" r="7" fill="#FFC93C"><animate attributeName="cy" values="170;134;170" dur="2.1s" repeatCount="indefinite"/></circle>`:""}
+      </g>
+    </g>
+    ${nivel>0 ? `<g id="fumaca">
+      <ellipse cx="150" cy="70" rx="20" ry="14" fill="#B9A9C9" opacity=".8"><animate attributeName="cy" values="80;24;80" dur="3s" repeatCount="indefinite"/><animate attributeName="opacity" values=".8;0;.8" dur="3s" repeatCount="indefinite"/></ellipse>
+      <ellipse cx="182" cy="60" rx="16" ry="11" fill="#B9A9C9" opacity=".7"><animate attributeName="cy" values="76;16;76" dur="3.8s" repeatCount="indefinite"/><animate attributeName="opacity" values=".7;0;.7" dur="3.8s" repeatCount="indefinite"/></ellipse>
+    </g>` : `<g>
+      <circle cx="132" cy="72" r="9" fill="#FF7EB6"/><circle cx="150" cy="60" r="9" fill="#FFC93C"/>
+      <circle cx="168" cy="60" r="9" fill="#9B6BF2"/><circle cx="186" cy="72" r="9" fill="#3FA9F5"/>
+      <circle cx="159" cy="72" r="8" fill="#fff"/>
+      <path d="M60,240 L118,96 h84 l58,144z" fill="#3FCB8E" opacity=".28"/>
+    </g>`}
+  </svg>`;
+}
+function florSVG(){
+  return `<svg class="flor-svg" id="florsvg" viewBox="0 0 200 200">
+    <g>
+      <ellipse cx="100" cy="52" rx="26" ry="34" fill="#FF7EB6"/>
+      <ellipse cx="148" cy="100" rx="34" ry="26" fill="#FFC93C"/>
+      <ellipse cx="100" cy="148" rx="26" ry="34" fill="#9B6BF2"/>
+      <ellipse cx="52" cy="100" rx="34" ry="26" fill="#3FA9F5"/>
+      <ellipse cx="134" cy="66" rx="26" ry="26" fill="#FF9A3D" opacity=".9"/>
+      <ellipse cx="66" cy="134" rx="26" ry="26" fill="#3FCB8E" opacity=".9"/>
+      <circle cx="100" cy="100" r="30" fill="#fff"/>
+      <circle cx="100" cy="100" r="20" fill="#FFE3B0"/>
+    </g></svg>`;
+}
+function velaSVG(){
+  return `<svg viewBox="0 0 120 170" style="width:100%">
+    <g class="chama" id="chama" style="transform-box:fill-box">
+      <path d="M60,26 q22,26 0,52 q-22,-26 0,-52z" fill="#FFC93C"/>
+      <path d="M60,42 q11,16 0,32 q-11,-16 0,-32z" fill="#FF9A3D"/>
+    </g>
+    <rect x="42" y="80" width="36" height="76" rx="10" fill="#FFF1F6" stroke="#F0CFE0" stroke-width="3"/>
+    <rect x="42" y="80" width="12" height="76" rx="6" fill="#fff" opacity=".8"/>
+    <path d="M60,74 v8" stroke="#3A2B52" stroke-width="4" stroke-linecap="round"/>
+  </svg>`;
+}
+
+function iniciaVulcao(){
+  respiros = 0; faseResp = "espera";
+  cenaRaiva();
+}
+async function cenaRaiva(){
+  rumorLiga();
+  $("#palco").innerHTML =
+    `<p class="pergunta">A raiva virou um vulcão!</p>
+     <div class="vulcao-cena balanca">${vulcaoSVG(3)}</div>
+     <button class="bt gigante pulsa" id="btTartaruga" style="--bg:var(--c4);--dark:#2AA372">
+       <svg width="42" height="42" viewBox="0 0 60 60"><ellipse cx="30" cy="34" rx="22" ry="16" fill="#2AA372"/><ellipse cx="30" cy="32" rx="16" ry="11" fill="#8CE0BC"/><circle cx="30" cy="52" r="5" fill="#2AA372"/><circle cx="52" cy="30" r="7" fill="#2AA372"/><circle cx="54" cy="28" r="2" fill="#fff"/><circle cx="9" cy="42" r="5" fill="#2AA372"/></svg>
+       PARAR
+     </button>`;
+  $("#btTartaruga").addEventListener("click", cenaTartaruga);
+  await falar(`Olha só! A raiva de ${N()} virou um vulcão. Ele tá quase explodindo!`, {pitch:.95});
+  await falar(`Primeiro a gente faz igual a tartaruga: PARA! Aperta o botão!`);
+}
+async function cenaTartaruga(){
+  SFX.pum(); rumorDesliga();
+  $(".vulcao-cena").classList.remove("balanca");
+  await falar(`PAREI! Muito bem. A tartaruga entra no casquinho e para tudo.`);
+  cenaRespira();
+}
+function cenaRespira(){
+  const falta = 3 - respiros;
+  $("#palco").innerHTML =
+    `<p class="pergunta" id="p-resp">Segura a florzinha e cheira bem devagar…</p>
+     <div style="display:flex;align-items:center;justify-content:center;gap:clamp(6px,3vw,26px);width:100%">
+       <div class="vulcao-cena" style="width:min(180px,36vw)">${vulcaoSVG(falta)}</div>
+       <div class="flor-bt" id="florBt"><div class="anel" id="anel"></div>${florSVG()}</div>
+       <div style="width:min(80px,17vw)" id="velaBox">${velaSVG()}</div>
+     </div>
+     <div class="contador">${[0,1,2].map(i=>`<div class="gota ${i<respiros?"on":""}"></div>`).join("")}</div>`;
+  ligaRespiro();
+  falar(respiros===0
+    ? `Agora vamos respirar. Segura o dedinho na flor e cheira o cheirinho dela… bem devagar.`
+    : `Muito bem! Mais uma vez. Segura na flor e cheira devagarinho.`);
+}
+function ligaRespiro(){
+  const bt = $("#florBt"), anel = $("#anel"), flor = $("#florsvg");
+  if(!bt) return;
+  const comeca = ev=>{
+    ev.preventDefault();
+    if(segurando || faseResp === "soltando") return;
+    segurando = true; faseResp = "inspirando";
+    anel.classList.remove("expira"); anel.classList.add("inspira");
+    flor.classList.add("crescendo");
+    SFX.inspira();
+    mostraBalao("Cheira a florzinha… devagaaar…");
+    tInsp = setTimeout(async ()=>{
+      faseResp = "cheio";
+      SFX.brilho();
+      await falar(`Agora solta o ar bem devagar na velinha!`);
+    }, 4000);
+  };
+  const solta = async ev=>{
+    if(ev) ev.preventDefault();
+    if(!segurando) return;
+    segurando = false;
+    clearTimeout(tInsp);
+    anel.classList.remove("inspira");
+    flor.classList.remove("crescendo");
+    if(faseResp !== "cheio"){
+      faseResp = "espera";
+      anel.classList.add("expira");
+      SFX.tentar();
+      await falar(`Quase! Segura mais um pouquinho, cheirando bem devagar.`);
+      return;
+    }
+    faseResp = "soltando";
+    anel.classList.add("expira");
+    const ch = $("#chama"); if(ch) ch.classList.add("soprada");
+    SFX.expira();
+    mostraBalao("Soprando… fuuuuu…");
+    setTimeout(async ()=>{
+      respiros++;
+      $$(".gota").forEach((g,i)=>g.classList.toggle("on", i<respiros));
+      const v = $(".vulcao-cena");
+      if(v) v.innerHTML = vulcaoSVG(3-respiros);
+      SFX.acerto();
+      S.prog[2] = respiros/3; pintaArcoiris(true); salvar();
+      faseResp = "espera";
+      if(respiros >= 3){ await espera(400); cenaCalmo(); }
+      else{
+        await falar(`Olha! A lava desceu um pouquinho. Vamos de novo?`);
+        cenaRespira();
+      }
+    }, 2200);
+  };
+  bt.addEventListener("pointerdown", comeca);
+  bt.addEventListener("pointerup", solta);
+  bt.addEventListener("pointercancel", solta);
+  bt.addEventListener("pointerleave", solta);
+}
+async function cenaCalmo(){
+  $("#palco").innerHTML =
+    `<p class="pergunta">O vulcão virou montanha!</p>
+     <div class="vulcao-cena">${vulcaoSVG(0)}</div>
+     <div style="width:min(150px,34vw)">${boneca("calma")}</div>`;
+  confete(50);
+  await falar(`Você conseguiu! O vulcão virou uma montanha calminha. O corpo de ${N()} tá tranquilo.`);
+  await falar(`E olha o segredo: a raiva não some pra sempre. Ela só fica pequenininha e a gente consegue pensar de novo.`);
+  S.prog[2] = 1; salvar(); pintaArcoiris(true);
+  festa();
+}
+
+/* ==========================================================
+   8. ETAPA 6 — "EU CONSIGO... AINDA!" + O ESPELHO MÁGICO
+   Modelagem por imitação (neurônios-espelho) em três tempos:
+   eu faço  ->  nós fazemos juntas  ->  você faz sozinha.
+   A criança controla o ritmo: nada avança sem ela apertar.
+   ========================================================== */
+let passoAinda = 0;
+function primeiraLetra(){ return (S.nome.trim()[0] || "A").toUpperCase(); }
+
+const AINDAS = [
+  { conta:()=>`Olha só. ${N()} tentou montar uma torre bem alta… e a torre caiu toda no chão.`,
+    pensa:"Eu não consigo…",
+    vitoria:()=>`E olha o que aconteceu! Ela tentou de um jeito diferente, e a torre ficou em pé. Foi de tanto tentar.`,
+    poseFim:"cima" },
+  { conta:()=>`${N()} está aprendendo a andar de bicicleta. Ela pedalou, pedalou… e caiu.`,
+    pensa:"Eu não consigo…",
+    vitoria:()=>`Ela levantou, subiu de novo e pedalou! Cair faz parte de aprender.`,
+    poseFim:"cima" },
+  { conta:()=>`${N()} abriu um livro e ficou tristinha, porque ainda não sabe ler as palavras.`,
+    pensa:"Eu não sei ler…",
+    vitoria:()=>`Mas olha que legal! Essa aqui é a letra ${primeiraLetra()}. É a primeira letra do nome ${N()}. Essa ela já conhece! E cada dia ela vai conhecendo mais uma.`,
+    poseFim:"mao", letra:true }
+];
+
+function iniciaAinda(){ passoAinda = 0; telaAinda(); }
+
+async function telaAinda(){
+  if(passoAinda >= AINDAS.length) return espelho();
+  const a = AINDAS[passoAinda];
+  $("#palco").innerHTML =
+    `<div style="width:min(140px,30vw)" id="fig">${boneca("tristeza")}</div>
+     <div class="pensamento" id="pensa">${a.pensa} <span class="ainda" id="ainda-txt">AINDA!</span></div>
+     <div id="acao"></div>`;
+  ocupado = true;
+  await falar(a.conta());
+  await falar(`Aí ela pensou assim: ${a.pensa}`, {pitch:.92, rate:.78});
+  await falar(`Mas está faltando a palavra mágica no final! Aperta a estrela dourada pra ela aparecer.`);
+  const acao = $("#acao"); if(!acao) return;
+  acao.innerHTML =
+    `<button class="aindabt pulsa" id="btAinda" aria-label="Palavra mágica ainda">
+       <svg viewBox="0 0 200 200" class="gira" style="width:100%"><path d="M100,8 l23,58 62,4 -48,40 16,60 -53,-34 -53,34 16,-60 -48,-40 62,-4z" fill="#FFC93C" stroke="#F0A800" stroke-width="6" stroke-linejoin="round"/></svg>
+       <span class="txt">AINDA</span>
+     </button>`;
+  ocupado = false;
+  $("#btAinda").addEventListener("click", async ()=>{
+    if(ocupado) return; ocupado = true;
+    SFX.estrela(); SFX.brilho();
+    const t = $("#ainda-txt"); if(t) t.classList.add("on");
+    const b = $("#btAinda"); if(b){ b.style.transition="opacity .4s"; b.style.opacity=".2"; }
+    await falar(`Ainda! Agora ela diz assim: eu não consigo… ainda!`, {rate:.8});
+    await falar(`Agora é a sua vez. Fala bem alto comigo: eu não consigo… ainda! Quando terminar, aperta o botão verde.`);
+    const ac = $("#acao"); if(!ac){ ocupado=false; return; }
+    ac.innerHTML = `<button class="bt esperando" id="btFalei" style="--bg:var(--c4);--dark:#2AA372">EU FALEI!</button>`;
+    ocupado = false;
+    $("#btFalei").addEventListener("click", async ()=>{
+      if(ocupado) return; ocupado = true;
+      SFX.acerto(); confete(36, innerWidth/2, innerHeight*.5);
+      await falar(`Eu ouvi daqui! Que voz forte.`);
+      const fig = $("#fig");
+      if(fig){
+        fig.innerHTML = a.letra
+          ? `<div style="display:flex;align-items:center;justify-content:center;gap:8px">
+               <div style="width:52%">${boneca("alegria","",a.poseFim)}</div>
+               <div style="font-family:'Baloo 2';font-weight:800;font-size:clamp(64px,18vw,120px);color:var(--c6);line-height:1">${primeiraLetra()}</div>
+             </div>`
+          : boneca("alegria","",a.poseFim);
+        fig.classList.add("fazGesto");
+      }
+      SFX.brilho(); confete(26, innerWidth/2, innerHeight*.45);
+      await falar(a.vitoria());
+      passoAinda++;
+      S.prog[5] = passoAinda/(AINDAS.length+1); pintaArcoiris(true); salvar();
+      ocupado = false;
+      telaAinda();
+    });
+  });
+}
+
+/* ---------- O ESPELHO MÁGICO: olhar → juntas → sozinha ---------- */
+const AFIRMACOES = [
+  {f:"Eu sou corajosa!",             pose:"forte",   gesto:"Faz os bracinhos bem fortes, igual a ela!"},
+  {f:"Eu consigo tentar de novo!",   pose:"cima",    gesto:"Levanta os dois braços bem alto!"},
+  {f:"Eu sou muito amada!",          pose:"coracao", gesto:"Põe as duas mãos no coração!"},
+  {f:"Eu sou uma boa amiga!",        pose:"mao",     gesto:"Estende a mãozinha pra frente!"},
+  {f:"Errar faz parte de aprender!", pose:"ombros",  gesto:"Levanta os ombros e dá um sorriso!"}
+];
+const PARABENS = [
+  ()=>`Isso! Eu ouvi daqui. Você falou com o corpo todo!`,
+  ()=>`Que voz forte! O espelho brilhou inteirinho.`,
+  ()=>`Você fez o gesto e falou junto. É assim que a gente aprende de verdade!`,
+  ()=>`Perfeito! Seu corpo e sua voz falaram a mesma coisa.`
+];
+let afIdx = 0, ritual = 0;
+
+async function espelho(){
+  afIdx = 0; ocupado = true;
+  $("#palco").innerHTML =
+    `<p class="pergunta">O espelho mágico</p>
+     <div class="moldura brilha"><div class="dentro">${boneca("alegria","","cima")}</div></div>
+     <p class="sub">Primeiro você olha. Depois fala comigo. Depois fala sozinha.</p>`;
+  await falar(`Chegou o espelho mágico! Esse é o jogo de imitar.`);
+  await falar(`São três tempos. Primeiro você só olha a ${N()} fazer. Depois nós duas fazemos juntas. E no fim, você faz sozinha!`);
+  ocupado = false;
+  telaAfirmacao();
+}
+function telaAfirmacao(){
+  if(afIdx >= AFIRMACOES.length) return fimEspelho();
+  ritual = 0; desenhaRitual();
+}
+function desenhaRitual(){
+  const a = AFIRMACOES[afIdx];
+  const passos = [["👀","Olha"],["🤝","Juntas"],["⭐","Só você"]];
+  $("#palco").innerHTML =
+    `<div class="ritual">${passos.map((pp,i)=>
+       `<div class="passo ${i===ritual?"on":""} ${i<ritual?"feito":""}"><span class="ic">${pp[0]}</span>${pp[1]}</div>`).join("")}</div>
+     <div class="moldura ${ritual>0?"brilha":""}"><div class="dentro" id="molduraFig">${boneca("alegria","", ritual===0?"normal":a.pose)}</div></div>
+     <p class="frase-espelho">${a.f}</p>
+     <p class="gesto-dica">${a.gesto}</p>
+     <div id="acaoEsp"></div>
+     <div style="display:flex;gap:7px">${AFIRMACOES.map((_,i)=>
+       `<svg style="width:24px" viewBox="0 0 100 100"><path d="M50,5 l12,29 31,2 -24,20 8,30 -27,-17 -27,17 8,-30 -24,-20 31,-2z" fill="${i<afIdx?CORES[i]:"rgba(58,43,82,.14)"}"/></svg>`).join("")}</div>`;
+  rodaRitual();
+}
+function fazGesto(pose){
+  const d = $("#molduraFig"); if(!d) return;
+  d.innerHTML = boneca("alegria","",pose);
+  d.classList.remove("fazGesto"); void d.offsetWidth; d.classList.add("fazGesto");
+}
+async function rodaRitual(){
+  const a = AFIRMACOES[afIdx];
+  ocupado = true;
+  if(ritual === 0){
+    await falar(`Tempo um: só olhar. Você não precisa falar nada agora, só prestar atenção.`);
+    fazGesto(a.pose); SFX.brilho();
+    await espera(450);
+    await falar(a.f, {pitch:1.42, rate:.78});
+    await falar(`Viu o gesto que ela fez? ${a.gesto}`);
+    botaoRitual("AGORA NÓS DUAS", "#9B6BF2", "#7A4CD1");
+  } else if(ritual === 1){
+    fazGesto(a.pose);
+    await falar(`Tempo dois: nós duas juntas. Faz o gesto e fala junto comigo, bem devagarinho.`);
+    await espera(400);
+    await falar(a.f, {rate:.6, pitch:1.18});
+    await falar(`Quando vocês terminarem, aperta o botão.`);
+    botaoRitual("AGORA SÓ EU", "#FF9A3D", "#DB7620");
+  } else {
+    fazGesto(a.pose);
+    await falar(`Tempo três: agora é só você! Faz o gesto e fala bem alto. Pode demorar o quanto quiser, eu espero aqui.`);
+    botaoRitual("EU FALEI!", "#3FCB8E", "#2AA372", true);
+  }
+  ocupado = false;
+}
+function botaoRitual(txt, bg, dark, esperando){
+  const el = $("#acaoEsp"); if(!el) return;
+  el.innerHTML = `<button class="bt ${esperando?"esperando":""}" id="btRit" style="--bg:${bg};--dark:${dark}">${txt}</button>`;
+  $("#btRit").addEventListener("click", async ()=>{
+    if(ocupado) return;
+    SFX.toque();
+    if(ritual < 2){ ritual++; desenhaRitual(); return; }
+    ocupado = true;
+    SFX.estrela(); SFX.acerto(); confete(44, innerWidth/2, innerHeight*.55);
+    await falar(sorteia(PARABENS)());
+    afIdx++;
+    S.prog[5] = (AINDAS.length + afIdx/AFIRMACOES.length)/(AINDAS.length+1);
+    pintaArcoiris(true); salvar();
+    ocupado = false;
+    telaAfirmacao();
+  });
+}
+async function fimEspelho(){
+  S.prog[5] = 1; salvar(); pintaArcoiris(true);
+  await falar(`Você falou tudo sozinha! Guarda essas frases dentro de você. Elas são suas.`);
+  festa();
+}
+
+/* ==========================================================
+   9. FESTA E FINAL
+   ========================================================== */
+const FESTA_FALA = [
+  ()=>`Você olhou com atenção em cada carinha! Agora você conhece o nome dos sentimentos.`,
+  ()=>`Você descobriu onde os sentimentos moram no corpo. Isso ajuda a perceber a raiva antes dela ficar grande.`,
+  ()=>`Você acalmou um vulcão inteirinho só respirando! Esse poder tá sempre com você.`,
+  ()=>`Você escolheu jeitos bons de resolver, mesmo com raiva. Escolher é coisa de gente grande!`,
+  ()=>`Você aprendeu que as palavras tiram a raiva de dentro sem machucar ninguém.`,
+  ()=>`Você aprendeu a palavra mais mágica do mundo: AINDA.`
+];
+async function festa(){
+  S.prog[etapaAtual] = 1; salvar();
+  const idx = etapaAtual;
+  tela("festa");
+  pintaArcoiris(true);
+  SFX.nivel(); confete(90);
+  $("#palco-festa").innerHTML =
+    `<svg class="medalha" viewBox="0 0 200 200">
+       <circle cx="100" cy="100" r="72" fill="${CORES[idx]}"/>
+       <circle cx="100" cy="100" r="58" fill="#fff" opacity=".22"/>
+       <path d="M100,44 l16,38 42,3 -32,27 10,41 -36,-23 -36,23 10,-41 -32,-27 42,-3z" fill="#fff"/>
+     </svg>
+     <p class="pergunta" style="color:${CORES[idx]}">Você conseguiu!</p>
+     <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center">
+       <button class="bt" id="btDeNovo" style="--bg:#fff;--dark:rgba(58,43,82,.16);color:var(--tinta)">Jogar de novo</button>
+       <button class="bt" id="btSeguir" style="--bg:${CORES[idx]};--dark:${ESCURO[idx]}">Continuar</button>
+     </div>`;
+  $("#btDeNovo").addEventListener("click", ()=>{ SFX.toque(); abreEtapa(idx); });
+  $("#btSeguir").addEventListener("click", ()=>{
+    SFX.toque();
+    if(S.prog.every(p=>p>=1)) return final();
+    irMapa();
+  });
+  await falar(FESTA_FALA[idx]());
+  if(S.prog.every(p=>p>=1)) setTimeout(final, 300);
+}
+
+async function final(){
+  tela("final");
+  SFX.fanfarra(); confete(160);
+  $("#palco-final").innerHTML =
+    `<div class="diploma">
+       <p style="font-weight:800;letter-spacing:.14em;font-size:12px;color:var(--c2)">ARCO-ÍRIS COMPLETO</p>
+       <p class="grande">EU CONSIGO!</p>
+       <p class="nomezao">${S.nome}</p>
+       <div style="display:flex;justify-content:center;gap:6px;margin-top:12px">
+         ${CORES.map(c=>`<span style="width:20px;height:20px;border-radius:50%;background:${c};display:inline-block"></span>`).join("")}
+       </div>
+     </div>
+     <button class="bt" id="btVoltarMapa" style="--bg:var(--c6);--dark:#7A4CD1">Brincar de novo</button>`;
+  $("#btVoltarMapa").addEventListener("click", ()=>{ SFX.toque(); irMapa(); });
+  const u = $("#uni-arco");
+  if(u){
+    u.innerHTML = `<g transform="translate(-70,-70) scale(.7)">${unicornio()}</g>`;
+    u.setAttribute("opacity","1");
+    u.animate([{transform:"translate(30px,545px) rotate(-70deg)"},{transform:"translate(530px,45px) rotate(0deg)"},{transform:"translate(1030px,545px) rotate(70deg)"}],
+      {duration:4200, easing:"linear", fill:"forwards"});
+  }
+  await falar(`Você pintou o arco-íris inteirinho, ${S.nome}! Olha ele lá em cima.`);
+  await falar(`Você sabe o nome dos sentimentos, sabe acalmar o corpo e sabe usar as palavras. E o mais importante: quando alguma coisa é difícil, você lembra da palavra mágica… AINDA!`);
+  setTimeout(()=>{ if(u) u.setAttribute("opacity","0"); }, 9000);
+}
+
+/* ==========================================================
+   10. RESPIRAÇÃO AVULSA (botão da flor, sempre disponível)
+   ========================================================== */
+let respAvulso = 0, segAv = false, tAv = null, faseAv = "espera";
+function abreRespiro(){
+  respAvulso = 0; faseAv = "espera";
+  $("#ov-respiro").classList.add("on");
+  passoRespiro();
+  falar(`Vamos respirar juntinhos. Segura na flor e cheira bem devagar.`);
+}
+function passoRespiro(){
+  $("#folha-respiro").innerHTML =
+    `<p class="pergunta">Respira comigo</p>
+     <div class="flor-bt" id="florAv"><div class="anel" id="anelAv"></div>${florSVG().replace('id="florsvg"','id="florAv2"')}</div>
+     <div class="contador">${[0,1,2].map(i=>`<div class="gota ${i<respAvulso?"on":""}"></div>`).join("")}</div>
+     <button class="bt pequeno" id="fechaResp" style="--bg:#fff;--dark:rgba(58,43,82,.16);color:var(--tinta)">Fechar</button>`;
+  $("#fechaResp").addEventListener("click", ()=>{ SFX.toque(); $("#ov-respiro").classList.remove("on"); calar(); });
+  const bt = $("#florAv"), anel = $("#anelAv"), flor = $("#florAv2");
+  const comeca = ev=>{
+    ev.preventDefault();
+    if(segAv) return;
+    segAv = true; faseAv = "inspirando";
+    anel.classList.remove("expira"); anel.classList.add("inspira");
+    flor.classList.add("crescendo"); SFX.inspira();
+    mostraBalao("Cheira a flor… devagaaar…");
+    tAv = setTimeout(()=>{ faseAv = "cheio"; SFX.brilho(); falar(`Agora solta o ar devagar.`); }, 4000);
+  };
+  const solta = async ev=>{
+    if(ev) ev.preventDefault();
+    if(!segAv) return;
+    segAv = false; clearTimeout(tAv);
+    anel.classList.remove("inspira"); flor.classList.remove("crescendo"); anel.classList.add("expira");
+    if(faseAv !== "cheio"){ faseAv = "espera"; return falar(`Segura mais um pouquinho, bem devagar.`); }
+    faseAv = "espera"; SFX.expira(); mostraBalao("Fuuuuuu…");
+    setTimeout(async ()=>{
+      respAvulso++;
+      $$("#folha-respiro .gota").forEach((g,i)=>g.classList.toggle("on", i<respAvulso));
+      SFX.acerto();
+      if(respAvulso >= 3){
+        await falar(`Prontinho. Seu corpo já tá mais calminho.`);
+        $("#ov-respiro").classList.remove("on");
+      } else falar(`Muito bem. Mais uma vez.`);
+    }, 2000);
+  };
+  bt.addEventListener("pointerdown", comeca);
+  bt.addEventListener("pointerup", solta);
+  bt.addEventListener("pointercancel", solta);
+  bt.addEventListener("pointerleave", solta);
+}
+
+/* ==========================================================
+   11. PAINEL DO ADULTO
+   ========================================================== */
+const DOC_ETAPAS = [
+  ["Que carinha é essa?","Reconhecer e nomear cinco emoções básicas em rostos.",
+   "Rotular emoções (<em>affect labeling</em>) reduz a reatividade da amígdala e aumenta a atividade pré-frontal — dar nome ao que se sente já começa a regular (Lieberman et al., 2007). Vocabulário emocional é a base do RULER, de Marc Brackett / Yale."],
+  ["Onde eu sinto?","Localizar a emoção no corpo: coração acelerado, frio na barriga, cabeça quente.",
+   "Consciência interoceptiva permite perceber a raiva <strong>antes</strong> do pico, quando ainda há janela para escolher. É o passo que torna a autorregulação possível em vez de reativa."],
+  ["O vulcão da raiva","Parar (técnica da tartaruga) e respirar devagar três vezes, com retorno visual imediato.",
+   "A Técnica da Tartaruga vem do currículo <em>Preschool PATHS</em> / Pyramid Model, com evidência de ganho em conhecimento emocional e redução de agressividade na pré-escola (Domitrovich, Cortes &amp; Greenberg, 2007). A expiração lenta e prolongada ativa o ramo parassimpático e baixa a ativação fisiológica."],
+  ["O que eu faço?","Escolher entre respostas úteis e não úteis diante de uma frustração concreta.",
+   "Ensaiar repertório de enfrentamento em situação neutra aumenta a chance de acesso à estratégia sob estresse. Trabalha resolução de problemas sociais, núcleo dos programas de competência socioemocional pré-escolar."],
+  ["O que eu digo?","Trocar grito, ofensa e silêncio por frases: nomear, pedir ajuda, reparar.",
+   "A fala dirigida a si e ao outro é ferramenta de autorregulação (Vygotsky; Luria) e substitui a descarga motora. Reparar o vínculo depois do conflito é parte do <em>emotion coaching</em> de Gottman."],
+  ["Eu consigo… ainda!","Reenquadrar o \"não consigo\" com a palavra AINDA e afirmações em primeira pessoa.",
+   "O espelho roda em três tempos — <em>eu faço, nós fazemos, você faz</em> — que é a modelagem por imitação: observar uma ação recruta no observador parte do mesmo circuito motor de executá-la (sistema de neurônios-espelho, Rizzolatti &amp; Craighero, 2004), e é por isso que o gesto vem junto com a frase. Imitar com o corpo grava mais que só ouvir. O elogio é sempre ao <strong>processo</strong> (esforço, estratégia, persistência) e nunca à pessoa: elogio à pessoa deixa a criança mais frágil diante do erro (Kamins &amp; Dweck, 1999). A conquista dominada é a fonte mais forte de autoeficácia (Bandura). A letra mostrada é a inicial do nome — crianças aprendem primeiro as letras do próprio nome."]
+];
+const PELES = ["#FFE0C4","#F5C9A6","#E0AC80","#C08552","#8D5524","#5C3A21"];
+const CABELOS = ["#3B2418","#000000","#7A4B2A","#C98B3A","#E8C468","#B33A2B","#5C4B8A"];
+
+function montaAdulto(){
+  $("#folha-adulto").innerHTML = `
+    <p class="olho">Para quem cuida</p>
+    <h2>O Vulcão e o Arco-Íris</h2>
+    <p>Um jogo curto para brincar <strong>junto</strong> — cerca de 10 minutos. Não há como perder, não há cronômetro e nenhum erro apaga o progresso: a criança que ainda não lê joga inteiro sozinha pelo som, porque a unicórnia fala todas as instruções em voz alta.</p>
+
+    <h3>Três coisas que mudam o resultado</h3>
+    <ul>
+      <li><strong>Treinar com o mar calmo.</strong> Habilidade de regulação se aprende em baixa ativação. Jogue quando ela estiver <em>tranquila</em>, não no meio da crise — assim a estratégia fica disponível quando a raiva vier.</li>
+      <li><strong>Use as mesmas palavras no dia a dia.</strong> "Seu corpo tá igual o vulcão?", "Vamos cheirar a flor e soprar a vela?", "Você ainda não consegue — ainda!". O jogo só funciona se virar linguagem da casa.</li>
+      <li><strong>Deixe ela responder no tempo dela.</strong> Na etapa roxa nada avança sozinho: o jogo espera ela apertar "EU FALEI!". Não apresse — o silêncio antes da fala é onde a criança está montando a frase.</li>
+      <li><strong>Elogie o esforço, não a menina.</strong> Troque "que inteligente!" por "você tentou de novo mesmo sendo difícil". É o que sustenta a autoestima quando ela erra — e é assim que a unicórnia elogia dentro do jogo.</li>
+    </ul>
+
+    <h3>As seis etapas e por que existem</h3>
+    ${DOC_ETAPAS.map((d,i)=>`
+      <div class="etapa-doc">
+        <div class="bola" style="background:${CORES[i]}">${i+1}</div>
+        <div><h4>${d[0]}</h4><p style="margin-top:2px">${d[1]}</p><p class="base">${d[2]}</p></div>
+      </div>`).join("")}
+
+    <h3>Frases para usar em casa</h3>
+    <ul>
+      <li><strong>Na hora da raiva:</strong> "Você está com muita raiva. Raiva pode. Bater não pode. Vem cá que eu respiro com você."</li>
+      <li><strong>Depois que passou:</strong> "O que seu corpo sentiu antes? Coração rápido? Cabeça quente?"</li>
+      <li><strong>Quando ela diz "eu não consigo":</strong> "Você não consegue… ainda. Já já você consegue."</li>
+      <li><strong>Na leitura:</strong> "Você ainda não lê sozinha, mas já conhece a letra do seu nome. Cada dia você conhece mais uma."</li>
+    </ul>
+
+    <div class="aviso">
+      <p>Um jogo é apoio, não tratamento. Se as explosões de raiva forem muito frequentes, muito intensas, longas demais para a idade, ou atrapalharem a escola e as amizades, vale conversar com o pediatra ou com uma psicóloga infantil — quanto antes, mais leve.</p>
+    </div>
+
+    <hr>
+    <h3>A voz do jogo</h3>
+    <p>A unicórnia usa a voz de leitura do próprio sistema. A voz padrão do macOS em português soa metálica; trocar pela versão <strong>Premium</strong> muda tudo, e leva dois minutos:</p>
+    <ul>
+      <li><strong>Ajustes do Sistema → Acessibilidade → Conteúdo Falado</strong></li>
+      <li>Em <strong>Voz do sistema</strong>, clique no menu e escolha <strong>Gerenciar vozes…</strong></li>
+      <li>Abra <strong>Português (Brasil)</strong> e baixe uma voz marcada <strong>Premium</strong> (a Luciana Premium é a mais natural)</li>
+      <li>Selecione ela como voz do sistema e <strong>recarregue o jogo</strong> — ele passa a usar a melhor voz que encontrar</li>
+    </ul>
+    <p>O jogo também fala devagar e faz uma pausa entre cada frase de propósito. Criança de cinco anos precisa desse espaço para processar — se ainda estiver corrido para ela, me avise que eu alargo mais.</p>
+
+    <hr>
+    <h3>Ajustes</h3>
+    <div class="ajustes">
+      <div class="campo">
+        <label for="in-nome">Nome da personagem (use o nome dela para ela se reconhecer)</label>
+        <input type="text" id="in-nome" maxlength="14" value="${S.nome.replace(/"/g,"&quot;")}">
+      </div>
+      <div class="campo">
+        <label>Cor do vestido</label>
+        <div class="paleta" id="pal-vestido">${CORES.concat(["#FF7EB6","#20C4C4"]).map(c=>
+          `<button class="swatch ${c===S.vestido?"sel":""}" data-c="${c}" style="background:${c}" aria-label="cor ${c}"></button>`).join("")}</div>
+      </div>
+      <div class="campo">
+        <label>Tom de pele</label>
+        <div class="paleta" id="pal-pele">${PELES.map(c=>
+          `<button class="swatch ${c===S.pele?"sel":""}" data-c="${c}" style="background:${c}" aria-label="tom ${c}"></button>`).join("")}</div>
+      </div>
+      <div class="campo">
+        <label>Cor do cabelo</label>
+        <div class="paleta" id="pal-cabelo">${CABELOS.map(c=>
+          `<button class="swatch ${c===S.cabelo?"sel":""}" data-c="${c}" style="background:${c}" aria-label="cabelo ${c}"></button>`).join("")}</div>
+      </div>
+      <div class="campo">
+        <label>Prévia</label>
+        <div style="width:120px" id="previa">${boneca("alegria")}</div>
+      </div>
+    </div>
+    <div class="campo">
+      <label>Voz da unicórnia</label>
+      <div class="paleta">
+        <button class="bt pequeno" id="btVozAdulto" style="--bg:var(--c4);--dark:#2AA372">Voz ligada</button>
+      </div>
+      <p style="font-size:13px;color:var(--tinta-2);margin-top:4px">O botão de mudo saiu da tela da criança — ela desligava sem querer e o jogo ficava mudo.</p>
+    </div>
+    <div class="linha-bt">
+      <button class="bt pequeno" id="btSalvar" style="--bg:var(--c4);--dark:#2AA372">Salvar</button>
+      <button class="bt pequeno" id="btZerar" style="--bg:#fff;--dark:rgba(58,43,82,.16);color:var(--tinta)">Apagar progresso</button>
+    </div>`;
+
+  const liga = (sel, chave)=>{
+    $$(sel + " .swatch").forEach(b=>b.addEventListener("click", ()=>{
+      $$(sel + " .swatch").forEach(x=>x.classList.remove("sel"));
+      b.classList.add("sel"); S[chave] = b.dataset.c;
+      $("#previa").innerHTML = boneca("alegria");
+      SFX.toque();
+    }));
+  };
+  liga("#pal-vestido","vestido"); liga("#pal-pele","pele"); liga("#pal-cabelo","cabelo");
+  $("#in-nome").addEventListener("input", e=>{
+    S.nome = e.target.value.trim() || "Nina";
+  });
+  $("#btSalvar").addEventListener("click", ()=>{
+    S.nome = ($("#in-nome").value.trim() || "Nina");
+    salvar(); SFX.acerto();
+    $("#ov-adulto").classList.remove("on");
+    $("#capa").innerHTML = `<div style="width:min(150px,34vw);margin:0 auto">${boneca("alegria")}</div>`;
+    if(etapaAtual >= 0 && $("#t-mapa").classList.contains("on")) montaMapa();
+  });
+  const pintaVoz=()=>{
+    const b=$("#btVozAdulto"); if(!b) return;
+    b.textContent = S.voz ? "Voz ligada" : "Voz desligada";
+    b.style.setProperty("--bg", S.voz ? "var(--c4)" : "#B9B4C4");
+    b.style.setProperty("--dark", S.voz ? "#2AA372" : "#8E8A9C");
+  };
+  pintaVoz();
+  $("#btVozAdulto").addEventListener("click", ()=>{
+    S.voz=!S.voz; salvar(); calar(); pintaVoz();
+    if(S.voz) falar("Voz ligada!");
+  });
+  $("#btZerar").addEventListener("click", ()=>{
+    S.prog = [0,0,0,0,0,0]; salvar(); pintaArcoiris(true); montaMapa(); SFX.tentar();
+    $("#btZerar").textContent = "Progresso apagado ✓";
+    setTimeout(()=>{ $("#btZerar").textContent = "Apagar progresso"; }, 2200);
+  });
+}
+
+/* ==========================================================
+   12. CONTROLES GLOBAIS
+   ========================================================== */
+montaTrilha(); montaArcoiris();
+$("#uni").innerHTML = unicornio();
+$("#capa").innerHTML = `<div style="width:min(150px,34vw);margin:0 auto">${boneca("alegria")}</div>`;
+if(S.prog.some(p=>p>0)) $("#sub-inicio").textContent = "Seu arco-íris está esperando por você.";
+if(location.hash === "#mapa"){ audio(); setTimeout(irMapa, 60); }
+if(location.hash === "#hub"){ audio(); setTimeout(irHub, 60); }
+
+$("#btJogar").addEventListener("click", ()=>{
+  audio(); SFX.brilho();
+  setTimeout(irHub, 120);
+});
+$("#btCasa").addEventListener("click", ()=>{
+  SFX.toque(); calar();
+  /* sobe um nível: dentro do jogo volta ao mapa; no mapa volta ao hub */
+  if($("#t-mapa").classList.contains("on")) irHub(); else irMapa();
+});
+$("#btRepetir").addEventListener("click", ()=>{ if(ultimaFala) falar(ultimaFala); });
+$("#btFlor").addEventListener("click", ()=>{ audio(); SFX.toque(); abreRespiro(); });
+$("#btSom").addEventListener("click", ()=>{
+  S.voz = !S.voz; salvar(); calar();
+  $("#btSom").classList.toggle("off", !S.voz);
+  $("#btSom").querySelector(".ondas").style.opacity = S.voz ? "1" : "0";
+  if(S.voz) falar("Voz ligada!");
+});
+$("#btSom").classList.toggle("off", !S.voz);
+
+/* portão do adulto: segurar 1,2 s */
+let tGate = null;
+const abreGate = ()=>{ montaAdulto(); $("#ov-adulto").classList.add("on"); calar(); };
+$("#btAdulto").addEventListener("pointerdown", ()=>{ tGate = setTimeout(abreGate, 1200); });
+["pointerup","pointerleave","pointercancel"].forEach(ev=>
+  $("#btAdulto").addEventListener(ev, ()=>clearTimeout(tGate)));
+$("#btAdulto").addEventListener("click", ()=>{
+  if(!$("#ov-adulto").classList.contains("on")) falar("Segure o botãozinho para chamar um adulto.");
+});
+$$(".ov").forEach(o=>o.addEventListener("click", e=>{ if(e.target === o){ o.classList.remove("on"); calar(); } }));
+
+document.addEventListener("visibilitychange", ()=>{ if(document.hidden){ calar(); rumorDesliga(); } });
+addEventListener("contextmenu", e=>{ if(e.target.closest(".flor-bt")) e.preventDefault(); });
+})();
+</script>
+</body>
+</html>
