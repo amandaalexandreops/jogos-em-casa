@@ -5,6 +5,7 @@
 <meta name="theme-color" content="#2E86AB">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icone-192.png">
+<link rel="icon" href="icone-192.png">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no">
 <meta name="theme-color" content="#BFE9FF">
@@ -20,7 +21,8 @@
 <title>O Vulcão e o Arco-Íris</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:ital,wght@0,400;0,600;0,800;1,400&display=swap">
+<!-- a fonte carrega sem segurar a tela: em rede lenta (ou sem rede) o jogo abre na hora com a fonte do aparelho -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:ital,wght@0,400;0,600;0,800;1,400&display=swap" media="print" onload="this.media='all'">
 
 <style>
 /* ============================================================
@@ -41,7 +43,7 @@
 }
 
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%}
+html,body{height:100%;overscroll-behavior:none}
 body{
   background:var(--ceu-2);
   color:var(--tinta);
@@ -49,6 +51,8 @@ body{
   -webkit-font-smoothing:antialiased;
   overflow:hidden;
   -webkit-tap-highlight-color:transparent;
+  -webkit-touch-callout:none;
+  -webkit-text-size-adjust:100%;text-size-adjust:100%;
 }
 button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;touch-action:manipulation}
 svg{display:block}
@@ -57,9 +61,12 @@ svg{display:block}
   position:fixed;inset:0;
   display:flex;flex-direction:column;
   user-select:none;-webkit-user-select:none;
-  touch-action:manipulation;
-  overflow:hidden;
+  /* nada de zoom nem de arrastar a página; só rolam as áreas que
+     declaram pan-y (cartão quando não cabe, folha do adulto) */
+  touch-action:none;
+  overflow:hidden;overflow:clip;
 }
+input{user-select:text;-webkit-user-select:text}
 
 /* ---------- céu + arco-íris de fundo (é a barra de progresso) ---------- */
 .ceu{
@@ -90,32 +97,33 @@ svg{display:block}
 .topo{
   position:relative;z-index:20;
   display:flex;align-items:center;gap:10px;
-  padding:max(10px,env(safe-area-inset-top)) 14px 4px;
+  padding:max(10px,env(safe-area-inset-top)) max(14px,env(safe-area-inset-right)) 4px max(14px,env(safe-area-inset-left));
 }
 .mini{
-  width:52px;height:52px;flex:none;
+  position:relative;z-index:20;
+  width:56px;height:56px;flex:none;
   display:grid;place-items:center;
   background:var(--nuvem);border-radius:50%;
   box-shadow:0 5px 0 rgba(58,43,82,.14), 0 10px 20px rgba(58,43,82,.10);
   transition:transform .1s, box-shadow .1s;
 }
 .mini:active{transform:translateY(4px);box-shadow:0 1px 0 rgba(58,43,82,.14)}
-.mini[hidden]{display:none}
-.mini.off{opacity:.42}
+#btAdulto{touch-action:none}   /* segurar sem o dedo "virar rolagem" e cancelar */
 .espaco{flex:1}
 .trilha{display:flex;gap:7px;align-items:center}
 .pt{width:15px;height:15px;border-radius:50%;background:rgba(58,43,82,.14);transition:.35s}
 .pt.feita{transform:scale(1.25);box-shadow:0 0 0 3px rgba(255,255,255,.75)}
 
 /* ---------- palco ---------- */
-main{position:relative;z-index:10;flex:1;display:flex;min-height:0;padding:0 12px}
+main{position:relative;z-index:10;flex:1;display:flex;min-height:0;
+  padding:0 max(12px,env(safe-area-inset-right)) 0 max(12px,env(safe-area-inset-left))}
 .tela{
   display:none;flex-direction:column;align-items:center;justify-content:center;
   width:100%;max-width:900px;margin:auto;gap:clamp(10px,2.2vh,20px);
-  min-height:0;
+  min-height:0;max-height:100%;
 }
-.tela.on{display:flex;animation:entra .45s cubic-bezier(.2,.9,.3,1.2) both}
-@keyframes entra{from{opacity:0;transform:translateY(18px) scale(.97)}to{opacity:1;transform:none}}
+.tela.on{display:flex;animation:entra .24s cubic-bezier(.2,.9,.3,1.1) both}
+@keyframes entra{from{opacity:0;transform:translateY(12px) scale(.98)}to{opacity:1;transform:none}}
 
 .cartao{
   background:var(--nuvem);border-radius:var(--r-g);
@@ -124,7 +132,13 @@ main{position:relative;z-index:10;flex:1;display:flex;min-height:0;padding:0 12p
   width:100%;
   display:flex;flex-direction:column;align-items:center;gap:clamp(10px,2vh,18px);
   min-height:0;
+  /* rede de segurança: se um dia não couber (tela muito baixa), rola
+     dentro do cartão em vez de ficar escondido atrás do rodapé */
+  overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;touch-action:pan-y;
+  scrollbar-width:none;
 }
+.cartao::-webkit-scrollbar{display:none}
+.cartao > *{flex:none}
 .cartao.tremendo{animation:treme .4s}
 @keyframes treme{0%,100%{transform:none}20%{transform:translateX(-9px)}40%{transform:translateX(9px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
 
@@ -147,7 +161,7 @@ h1,h2,h3,.tit{font-family:"Baloo 2",ui-rounded,system-ui,sans-serif;font-weight:
   background:var(--bg);color:#fff;
   font-family:"Baloo 2",sans-serif;font-weight:800;
   font-size:clamp(19px,4.4vw,26px);
-  padding:16px 34px;border-radius:999px;
+  padding:16px 34px;border-radius:999px;min-height:60px;
   box-shadow:0 8px 0 var(--dark), 0 16px 26px rgba(58,43,82,.22);
   transition:transform .09s, box-shadow .09s, filter .15s;
 }
@@ -166,7 +180,7 @@ h1,h2,h3,.tit{font-family:"Baloo 2",ui-rounded,system-ui,sans-serif;font-weight:
   border:4px solid rgba(58,43,82,.09);
   border-radius:var(--r-m);
   padding:10px 10px 8px;
-  width:clamp(108px,27vw,178px);
+  width:clamp(108px,calc(50% - 6px),178px);   /* duas por linha no celular em pé */
   display:flex;flex-direction:column;align-items:center;gap:4px;
   box-shadow:0 7px 0 rgba(58,43,82,.10);
   transition:transform .12s, box-shadow .12s, border-color .2s, opacity .3s;
@@ -182,20 +196,23 @@ h1,h2,h3,.tit{font-family:"Baloo 2",ui-rounded,system-ui,sans-serif;font-weight:
 /* ---------- guia (unicórnio + balão) ---------- */
 .guia{
   position:relative;z-index:20;
-  display:flex;align-items:flex-end;gap:8px;
-  padding:6px 12px max(10px,env(safe-area-inset-bottom));
+  display:flex;align-items:center;gap:8px;
+  padding:6px max(12px,env(safe-area-inset-right)) max(10px,env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left));
 }
 .uni{width:clamp(72px,17vw,104px);flex:none;animation:flutua 3.4s ease-in-out infinite}
 @keyframes flutua{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-8px) rotate(1.5deg)}}
+/* altura fixa (3 linhas): o balão crescia com frases compridas e
+   empurrava o jogo para cima no meio da fala */
 .balao{
-  flex:1;min-height:56px;
-  background:var(--nuvem);border-radius:22px 22px 22px 6px;
-  padding:11px 15px;box-shadow:var(--sombra);
-  display:flex;align-items:center;
+  flex:1;min-width:0;
   font-weight:800;font-size:clamp(14px,3.5vw,19px);line-height:1.28;
+  height:calc(3.84em + 20px);
+  background:var(--nuvem);border-radius:22px 22px 22px 6px;
+  padding:10px 15px;box-shadow:var(--sombra);
+  display:flex;align-items:center;
   color:var(--tinta);
 }
-.balao p{max-width:60ch}
+.balao p{max-width:60ch;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden}
 .balao.vazio{opacity:0;pointer-events:none}
 
 /* ---------- mapa ---------- */
@@ -216,10 +233,11 @@ h1,h2,h3,.tit{font-family:"Baloo 2",ui-rounded,system-ui,sans-serif;font-weight:
 .ilha .nome{font-family:"Baloo 2",sans-serif;font-weight:700;font-size:clamp(11px,2.7vw,15px);text-align:center;line-height:1.1;color:var(--tinta)}
 .ilha.travada{filter:grayscale(.85) opacity(.55)}
 .ilha.agora{animation:pulsa 2s ease-in-out infinite}
+.ilha.nega{animation:treme .4s}
 .selo{position:absolute;top:4px;right:8px;font-size:clamp(15px,3.6vw,22px)}
 
 /* ---------- corpo (etapa 2) ---------- */
-.corpo-wrap{position:relative;width:min(300px,62vw)}
+.corpo-wrap{position:relative;width:min(300px,68vw,42vh)}
 .zona{position:absolute;border:0;background:rgba(255,255,255,.001);border-radius:50%}
 .zona::after{
   content:"";position:absolute;inset:0;border-radius:50%;
@@ -230,12 +248,25 @@ h1,h2,h3,.tit{font-family:"Baloo 2",ui-rounded,system-ui,sans-serif;font-weight:
 .zona.acertou::after{border:6px solid var(--c4);animation:none}
 
 /* ---------- vulcão (etapa 3) ---------- */
-.vulcao-cena{position:relative;width:min(360px,80vw)}
+.vulcao-cena{position:relative;width:min(360px,80vw,44vh)}
+/* respiração: vulcão em cima, flor grande no meio e a vela ao lado */
+.resp-linha{
+  display:grid;grid-template-columns:1fr auto 1fr;grid-template-areas:"v v v" ". f c";
+  justify-items:center;align-items:center;gap:clamp(6px,1.6vh,14px) 8px;width:100%;
+}
+.resp-linha .mini-v{grid-area:v;width:min(190px,48vw,24vh)}
+.resp-linha .flor-bt{grid-area:f}
+.resp-linha .vela-box{grid-area:c;justify-self:start;width:min(64px,15vw)}
+.boneca-calma{width:min(150px,34vw,18vh)}
+.fig-ainda{width:min(150px,30vw,20vh)}
+.capa-fig{width:min(150px,34vw,22vh);margin:0 auto}
+.linha-festa{display:flex;gap:14px 10px;flex-wrap:wrap;justify-content:center}
+.estrelinhas{display:flex;gap:7px}
 .balanca{animation:balanca .16s linear infinite}
 @keyframes balanca{0%,100%{transform:translate(0,0)}25%{transform:translate(-3px,2px)}50%{transform:translate(3px,-2px)}75%{transform:translate(-2px,-1px)}}
 #lava{transition:transform 1.5s cubic-bezier(.3,.9,.3,1)}
 .flor-bt{
-  position:relative;width:min(200px,52vw);aspect-ratio:1;
+  position:relative;width:min(200px,52vw,30vh);aspect-ratio:1;
   display:grid;place-items:center;touch-action:none;
 }
 .anel{
@@ -259,7 +290,8 @@ h1,h2,h3,.tit{font-family:"Baloo 2",ui-rounded,system-ui,sans-serif;font-weight:
 .op .frase{font-family:"Baloo 2",sans-serif;font-weight:700;font-size:clamp(12px,2.9vw,16px);text-align:center;color:var(--tinta);line-height:1.15}
 
 /* ---------- estrela AINDA (etapa 6) ---------- */
-.aindabt{position:relative;display:grid;place-items:center;width:min(190px,48vw);aspect-ratio:1}
+.aindabt{position:relative;display:grid;place-items:center;width:min(190px,44vw,26vh);aspect-ratio:1;
+  overflow:hidden;border-radius:50%}   /* a estrela girando não pode criar rolagem no cartão */
 .aindabt .txt{
   position:absolute;font-family:"Baloo 2",sans-serif;font-weight:800;
   font-size:clamp(24px,6.6vw,40px);color:#fff;letter-spacing:1px;
@@ -281,7 +313,7 @@ h1,h2,h3,.tit{font-family:"Baloo 2",ui-rounded,system-ui,sans-serif;font-weight:
 .est.usada{opacity:.3;pointer-events:none}
 
 /* ---------- festa / final ---------- */
-.medalha{width:min(220px,52vw)}
+.medalha{width:min(220px,52vw,30vh)}
 .diploma{
   background:var(--creme);border:6px dashed var(--c6);border-radius:28px;
   padding:clamp(16px,3.4vh,28px) 20px;text-align:center;width:100%;
@@ -294,15 +326,23 @@ h1,h2,h3,.tit{font-family:"Baloo 2",ui-rounded,system-ui,sans-serif;font-weight:
 /* ---------- overlays ---------- */
 .ov{
   position:fixed;inset:0;z-index:80;
-  background:rgba(40,28,60,.55);backdrop-filter:blur(6px);
-  display:none;align-items:center;justify-content:center;padding:14px;
+  background:rgba(40,28,60,.66);
+  display:none;align-items:center;justify-content:center;
+  padding:max(14px,env(safe-area-inset-top)) max(14px,env(safe-area-inset-right)) max(14px,env(safe-area-inset-bottom)) max(14px,env(safe-area-inset-left));
 }
-.ov.on{display:flex;animation:entra .3s both}
+.ov.on{display:flex;animation:entra .2s both}
 .folha{
   background:var(--creme);border-radius:var(--r-g);
-  width:100%;max-width:760px;max-height:92vh;overflow-y:auto;
+  width:100%;max-width:760px;max-height:100%;overflow-x:hidden;overflow-y:auto;
+  overscroll-behavior:contain;touch-action:pan-y;
   padding:clamp(20px,4vw,40px);
   box-shadow:0 30px 70px rgba(30,18,48,.4);
+}
+.fecha-x{
+  position:sticky;top:0;float:right;z-index:2;
+  width:56px;height:56px;margin:-6px -6px 0 8px;
+  display:grid;place-items:center;border-radius:50%;
+  background:#fff;box-shadow:0 4px 0 rgba(58,43,82,.14);
 }
 .folha-jogo{max-width:520px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:16px}
 
@@ -338,54 +378,10 @@ h1,h2,h3,.tit{font-family:"Baloo 2",ui-rounded,system-ui,sans-serif;font-weight:
 }
 .campo input:focus{outline:none;border-color:var(--c6)}
 .paleta{display:flex;flex-wrap:wrap;gap:9px}
-.swatch{width:42px;height:42px;border-radius:50%;box-shadow:0 3px 0 rgba(0,0,0,.16);transition:.15s}
+.swatch{width:48px;height:48px;border-radius:50%;box-shadow:0 3px 0 rgba(0,0,0,.16);transition:.15s}
 .swatch.sel{transform:scale(1.16);box-shadow:0 0 0 4px #fff,0 0 0 7px var(--c6)}
 .linha-bt{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
-.bt.pequeno{font-size:16px;padding:12px 22px}
-
-/* ---------- HUB: escolher o jogo ---------- */
-.hub{display:flex;flex-direction:column;gap:clamp(9px,2vh,15px);width:100%}
-.jogo-card{
-  display:flex;align-items:center;gap:clamp(10px,3vw,18px);width:100%;text-align:left;
-  border-radius:30px;padding:clamp(10px,2vh,15px) clamp(12px,3vw,18px);color:#fff;
-  background:var(--cor);
-  box-shadow:0 9px 0 var(--esc), 0 18px 30px rgba(58,43,82,.20);
-  transition:transform .14s cubic-bezier(.3,1.3,.5,1), box-shadow .14s;
-}
-.jogo-card:active{transform:translateY(7px);box-shadow:0 2px 0 var(--esc)}
-.jogo-card .art{width:clamp(72px,19vw,108px);flex:none;background:rgba(255,255,255,.94);
-  border-radius:24px;padding:5px;box-shadow:inset 0 -4px 0 rgba(58,43,82,.10)}
-.jogo-card .art svg{width:100%;height:auto;display:block}
-.jogo-card .txt{flex:1;min-width:0}
-.jogo-card .txt b{font-family:"Baloo 2",sans-serif;font-weight:800;
-  font-size:clamp(20px,5.4vw,32px);display:block;line-height:1.03}
-.jogo-card .txt small{font-size:clamp(11.5px,3vw,15px);opacity:.94;font-weight:800;display:block;margin-top:3px;line-height:1.25}
-.jogo-card .selos{font-size:clamp(13px,3.4vw,18px);white-space:nowrap;letter-spacing:-1px}
-.jogo-card.falando{transform:scale(1.035) translateY(-5px);box-shadow:0 14px 0 var(--esc),0 0 0 5px #fff,0 22px 34px rgba(58,43,82,.25)}
-.hub-tit{font-family:"Baloo 2",sans-serif;font-weight:800;font-size:clamp(22px,5.6vw,34px);text-align:center;color:var(--tinta)}
-
-/* ---------- mais jogos (lista antiga, agora sem uso) ---------- */
-#t-mapa .cartao{max-height:100%;overflow-y:auto}
-.mais{width:100%;margin-top:2px}
-.mais .olho2{
-  font-weight:800;font-size:11px;letter-spacing:.16em;text-transform:uppercase;
-  color:var(--tinta-3);text-align:center;margin-bottom:9px;
-}
-.jogos-lista{display:flex;flex-direction:column;gap:8px}
-.jogo-cartao{
-  display:flex;align-items:center;gap:12px;width:100%;text-align:left;
-  background:#fff;border-radius:24px;padding:10px 14px;
-  box-shadow:0 6px 0 rgba(58,43,82,.10);
-  transition:transform .12s,box-shadow .12s;
-}
-.jogo-cartao:active{transform:translateY(5px);box-shadow:0 1px 0 rgba(58,43,82,.10)}
-.jogo-cartao .cap{width:54px;height:54px;border-radius:17px;display:grid;place-items:center;flex:none}
-.jogo-cartao .cap svg{width:62%;height:62%}
-.jogo-cartao b{font-family:"Baloo 2",sans-serif;font-size:clamp(15px,3.8vw,19px);display:block;line-height:1.1}
-.jogo-cartao small{font-size:clamp(11.5px,3vw,13.5px);color:var(--tinta-2);display:block;line-height:1.3;margin-top:2px}
-.jogo-cartao .seta{margin-left:auto;flex:none;opacity:.4}
-.em-breve{opacity:.5}
-.em-breve .cap{background:#C9BEDD!important}
+.bt.pequeno{font-size:16px;padding:12px 22px;min-height:56px}
 
 /* ---------- etapa 6: ritual do espelho ---------- */
 .ritual{display:flex;gap:7px;justify-content:center;flex-wrap:wrap}
@@ -398,7 +394,7 @@ h1,h2,h3,.tit{font-family:"Baloo 2",ui-rounded,system-ui,sans-serif;font-weight:
 .passo.feito{opacity:.8}
 .passo .ic{font-size:16px}
 .moldura{
-  position:relative;width:min(200px,44vw);padding:9px;border-radius:32px;
+  position:relative;width:min(200px,44vw,24vh);padding:9px;border-radius:32px;
   background:linear-gradient(135deg,#FF5A6E,#FF9A3D,#FFC93C,#3FCB8E,#3FA9F5,#9B6BF2);
   box-shadow:0 12px 28px rgba(58,43,82,.22);
 }
@@ -418,9 +414,76 @@ h1,h2,h3,.tit{font-family:"Baloo 2",ui-rounded,system-ui,sans-serif;font-weight:
   .nuvem-bg,.uni,.pulsa,.gira,.zona::after{animation:none!important}
   *{transition-duration:.01ms!important}
 }
-@media (max-height:560px){
-  .uni{width:64px}
-  .balao{min-height:44px;padding:8px 12px}
+/* ---------- celular deitado (ex.: 800x360) ----------
+   Pouca altura: os botões do topo e o unicórnio vão para as laterais
+   e o jogo fica com a altura inteira. O balão escrito some (ela não
+   lê; a fala continua) e a trilha de pontinhos também. */
+@media (orientation:landscape) and (max-height:520px){
+  #app{
+    display:grid;grid-template-columns:auto minmax(0,1fr) auto;grid-template-rows:auto minmax(0,1fr) auto;
+    column-gap:10px;
+    padding:max(8px,env(safe-area-inset-top)) max(10px,env(safe-area-inset-right)) max(8px,env(safe-area-inset-bottom)) max(10px,env(safe-area-inset-left));
+  }
+  .topo,.guia{display:contents}
+  .espaco,.trilha,.balao{display:none}
+  #btCasa{grid-column:1;grid-row:1}
+  #uni{grid-column:1;grid-row:2;align-self:end;width:56px;position:relative;z-index:20}
+  #btRepetir{grid-column:1;grid-row:3}
+  #btFlor{grid-column:3;grid-row:1}
+  #btAdulto{grid-column:3;grid-row:3}
+  main{grid-column:2;grid-row:1 / 4;padding:0}
+  .tela{gap:8px}
+  .cartao{padding:10px 14px;gap:8px;border-radius:26px}
+  .pergunta{font-size:clamp(17px,5.4vh,24px)}
+  .bt{min-height:56px;padding:10px 28px;font-size:20px}
+  .bt.gigante{font-size:24px;padding:12px 36px}
+
+  /* capa: boneca de um lado, título e JOGAR do outro */
+  #t-inicio.on{display:grid;grid-template-columns:auto auto;grid-template-areas:"c t" "c s" "c b";
+    justify-content:center;align-items:center;justify-items:center;column-gap:28px;row-gap:8px}
+  #t-inicio #capa{grid-area:c}
+  #t-inicio .tit-jogo{grid-area:t;font-size:clamp(28px,11vh,46px)}
+  #t-inicio .sub{grid-area:s}
+  #t-inicio #btJogar{grid-area:b}
+  .capa-fig{width:min(150px,34vh)}
+
+  .mapa{grid-template-columns:repeat(6,1fr);gap:8px}
+  .bolha{width:clamp(56px,20vh,84px)}
+  .op{width:clamp(104px,36vh,160px);padding:6px 8px 5px}
+  .op.fala-op svg{width:56%!important}
+  /* corpo: pergunta de um lado, boneca do outro */
+  #palco:has(.corpo-wrap){flex-direction:row;justify-content:center;gap:16px}
+  #palco:has(.corpo-wrap) .pergunta{flex:1 1 0;min-width:0}
+  .corpo-wrap{width:min(300px,calc((100vh - 38px) * .606))}
+  .vulcao-cena{width:min(360px,42vh)}
+  .resp-linha{grid-template-columns:auto auto auto;grid-template-areas:"v f c";justify-content:center;column-gap:22px}
+  .resp-linha .mini-v{width:min(190px,40vh)}
+  .resp-linha .vela-box{width:min(64px,16vh)}
+  .flor-bt{width:min(200px,46vh)}
+  #palco:has(.boneca-calma){flex-direction:row;flex-wrap:wrap;justify-content:center}
+  #palco:has(.boneca-calma) .pergunta{flex:0 0 100%}
+  .boneca-calma{width:min(150px,30vh)}
+  .fig-ainda{width:min(150px,21vh)}
+  .aindabt{width:min(190px,30vh)}
+  .aindabt .txt{font-size:clamp(18px,6vh,30px)}
+  .pensamento{padding:6px 16px;font-size:clamp(16px,5.4vh,24px)}
+  /* espelho: boneca à esquerda, frase e botão à direita */
+  #palco:has(.ritual){display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-areas:"r r" "m f" "m g" "m a";
+    align-items:center;justify-items:center;column-gap:18px;row-gap:6px}
+  #palco:has(.ritual) .ritual{grid-area:r}
+  #palco:has(.ritual) .moldura{grid-area:m}
+  #palco:has(.ritual) .frase-espelho{grid-area:f}
+  #palco:has(.ritual) .gesto-dica{grid-area:g}
+  #palco:has(.ritual) #acaoEsp{grid-area:a;min-height:60px}
+  #palco:has(.ritual) .estrelinhas{display:none}
+  .moldura{width:min(200px,36vh)}
+  .frase-espelho{font-size:clamp(18px,6.4vh,28px)}
+  .medalha{width:min(220px,34vh)}
+  .diploma{padding:10px 16px}
+  .diploma .grande{font-size:clamp(26px,11vh,44px)}
+  .diploma .nomezao{font-size:clamp(20px,8vh,34px)}
+  .folha{padding:14px 20px}
+  .folha-jogo{gap:8px}
 }
 </style>
 
@@ -436,7 +499,7 @@ h1,h2,h3,.tit{font-family:"Baloo 2",ui-rounded,system-ui,sans-serif;font-weight:
   <svg class="arcoiris" id="arcoiris" viewBox="0 0 1060 560" aria-hidden="true"></svg>
 
   <header class="topo">
-    <button class="mini" id="btCasa" aria-label="Voltar para o mapa" hidden>
+    <button class="mini" id="btCasa" aria-label="Voltar para a escolha de jogos">
       <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#3A2B52" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
     </button>
     <div class="espaco"></div>
@@ -444,9 +507,6 @@ h1,h2,h3,.tit{font-family:"Baloo 2",ui-rounded,system-ui,sans-serif;font-weight:
     <div class="espaco"></div>
     <button class="mini" id="btFlor" aria-label="Preciso respirar">
       <svg width="30" height="30" viewBox="0 0 40 40"><g><circle cx="20" cy="10" r="7" fill="#FF7EB6"/><circle cx="30" cy="20" r="7" fill="#FFC93C"/><circle cx="20" cy="30" r="7" fill="#9B6BF2"/><circle cx="10" cy="20" r="7" fill="#3FA9F5"/><circle cx="20" cy="20" r="6" fill="#fff"/></g></svg>
-    </button>
-    <button class="mini" id="btSom" hidden aria-label="Ligar ou desligar a voz">
-      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#3A2B52" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="#3A2B52"/><path class="ondas" d="M16.5 8.5a5 5 0 010 7M19.5 6a9 9 0 010 12"/></svg>
     </button>
     <button class="mini" id="btAdulto" aria-label="Área do adulto — segure para abrir">
       <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#3A2B52" stroke-width="2.3" stroke-linecap="round"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.5v2.6M12 18.9v2.6M21.5 12h-2.6M5.1 12H2.5M18.7 5.3l-1.8 1.8M7.1 16.9l-1.8 1.8M18.7 18.7l-1.8-1.8M7.1 7.1L5.3 5.3"/></svg>
@@ -462,20 +522,13 @@ h1,h2,h3,.tit{font-family:"Baloo 2",ui-rounded,system-ui,sans-serif;font-weight:
       <button class="bt gigante pulsa" id="btJogar" style="--bg:var(--c4);--dark:#2AA372">JOGAR</button>
     </section>
 
-    <!-- HUB: escolher o jogo -->
-    <section class="tela" id="t-hub">
-      <div class="cartao">
-        <p class="hub-tit">Escolhe o jogo!</p>
-        <div class="hub" id="hub"></div>
-      </div>
-    </section>
-
     <!-- MAPA -->
     <section class="tela" id="t-mapa">
       <div class="cartao">
         <p class="pergunta" id="tit-mapa">Onde a gente vai hoje?</p>
-        <div class="mapa" id="mapa"></div>
-        <div class="mais" id="mais"></div>
+        <!-- o id não pode ser "mapa": o endereço termina em #mapa e o navegador
+             rolava a tela até este elemento, empurrando o topo para fora -->
+        <div class="mapa" id="ilhas"></div>
       </div>
     </section>
 
@@ -498,7 +551,7 @@ h1,h2,h3,.tit{font-family:"Baloo 2",ui-rounded,system-ui,sans-serif;font-weight:
   <footer class="guia">
     <div class="uni" id="uni"></div>
     <div class="balao vazio" id="balao"><p id="fala"></p></div>
-    <button class="mini" id="btRepetir" aria-label="Ouvir de novo" style="align-self:center">
+    <button class="mini" id="btRepetir" aria-label="Ouvir de novo">
       <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#3A2B52" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11a8 8 0 10-2.3 5.7"/><path d="M20 4v7h-7"/></svg>
     </button>
   </footer>
@@ -539,8 +592,10 @@ function carregar(){
   try{
     const b = localStorage.getItem("vulcao-arcoiris");
     if(b) S = Object.assign({}, PADRAO, JSON.parse(b));
-    if(!Array.isArray(S.prog) || S.prog.length!==6) S.prog=[0,0,0,0,0,0];
   }catch(e){}
+  if(!Array.isArray(S.prog) || S.prog.length!==6) S.prog=[0,0,0,0,0,0];
+  S.prog = S.prog.map(p=>Math.max(0, Math.min(1, +p || 0)));
+  if(typeof S.nome !== "string" || !S.nome.trim()) S.nome = PADRAO.nome;
 }
 carregar();
 
@@ -551,6 +606,9 @@ try{
   const o=b?JSON.parse(b):{};
   if(!o.vozRestaurada){ o.voz=true; o.vozRestaurada=true;
     localStorage.setItem("vulcao-arcoiris",JSON.stringify(o)); S.voz=true; }
+  /* a marca precisa ir junto no S: sem isso o próximo salvar() apagava a
+     marca e a voz voltava ligada a cada abertura, mesmo desligada pelo adulto */
+  S.vozRestaurada = true;
 }catch(e){}
 
 
@@ -621,7 +679,11 @@ function rumorLiga(){
 }
 function rumorDesliga(){
   if(!rumor) return;
-  try{ rumorG.gain.exponentialRampToValueAtTime(.0001, AC.currentTime+.8); rumor.stop(AC.currentTime+1); }catch(e){}
+  try{
+    rumorG.gain.cancelScheduledValues(AC.currentTime);
+    rumorG.gain.setTargetAtTime(.0001, AC.currentTime, .12);
+    rumor.stop(AC.currentTime+.6);
+  }catch(e){ try{ rumor.stop(); }catch(e2){} }
   rumor = null;
 }
 
@@ -632,30 +694,64 @@ function rumorDesliga(){
    (pasta "voz/"). Isso não depende da síntese do navegador, que
    estava muda aqui. Se faltar algum clipe, cai na voz do navegador.
    ------------------------------------------------------------------ */
-let clipeAtual = null;
+let clipeAtual = null, soltaClipe = null;
 function temClipe(t){ return !!(window.VOZ && window.VOZ[t]); }
+
+/* Clipes já pedidos ficam guardados (os 60 mais recentes): o mesmo
+   <audio> que foi pré-carregado é o que toca, sem baixar de novo. */
+const PRE = new Map();
+function pegaAudio(nome){
+  let a = PRE.get(nome);
+  if(a && a.error) a = null;                 // falhou antes (sem rede): tenta de novo
+  PRE.delete(nome);
+  if(!a){ a = new Audio("voz/" + nome + ".m4a"); try{ a.preload = "auto"; }catch(e){} }
+  PRE.set(nome, a);
+  if(PRE.size > 60) PRE.delete(PRE.keys().next().value);
+  return a;
+}
+/* adianta o download das próximas falas (aceita vários textos) */
+function preCarrega(){
+  if(!S.voz || !window.VOZ) return;
+  for(let i=0;i<arguments.length;i++){
+    const t = arguments[i]; if(!t) continue;
+    partesComNome(humaniza(t)).forEach(c=>{ if(temClipe(c)) pegaAudio(window.VOZ[c]); });
+  }
+}
 function tocaClipe(trecho, op){
   return new Promise(res=>{
-    const nome = window.VOZ[trecho];
-    const a = new Audio("voz/" + nome + ".m4a");
-    let pronto = false;
-    const fim = ()=>{ if(!pronto){ pronto = true; if(clipeAtual===a) clipeAtual=null; res(); } };
+    pararClipe();
+    const a = pegaAudio(window.VOZ[trecho]);
+    let pronto = false, teto = null;
+    const fim = ()=>{
+      if(pronto) return;
+      pronto = true; clearTimeout(teto);
+      a.onended = null; a.onerror = null;
+      if(clipeAtual === a) clipeAtual = null;
+      if(soltaClipe === fim) soltaClipe = null;
+      res();
+    };
     a.onended = fim;
     a.onerror = fim;
     try{
+      if(a.currentTime) a.currentTime = 0;
       a.preservesPitch = true; a.mozPreservesPitch = true; a.webkitPreservesPitch = true;
       const r = (op && op.rate) ? op.rate/0.87 : 1;
       a.playbackRate = Math.max(.55, Math.min(1.5, r));
     }catch(e){}
-    pararClipe();
-    clipeAtual = a;
+    clipeAtual = a; soltaClipe = fim;
     const pr = a.play();
     if(pr && pr.catch) pr.catch(()=>fim());
-    setTimeout(fim, 16000);
+    teto = setTimeout(fim, 16000);
   });
 }
+/* Parar o clipe também SOLTA quem estava esperando ele acabar. Antes o
+   pause() não disparava "ended" e a fala cortada só era liberada 16 s
+   depois — e aí continuava o roteiro por cima de outra tela. */
 function pararClipe(){
-  if(clipeAtual){ try{ clipeAtual.pause(); clipeAtual.currentTime = 0; }catch(e){} clipeAtual = null; }
+  const a = clipeAtual, f = soltaClipe;
+  clipeAtual = null; soltaClipe = null;
+  if(a){ try{ a.pause(); }catch(e){} }
+  if(f) f();
 }
 
 /* ---- DESTRAVA DA VOZ ------------------------------------------
@@ -665,14 +761,16 @@ function pararClipe(){
    Texto curto e volume zero: silencioso, e sem travar a fila. --- */
 let vozDestravada = false;
 function destravaVoz(){
-  if(vozDestravada || !("speechSynthesis" in window)) return;
+  if(vozDestravada) return;
   vozDestravada = true;
-  try{
-    const u = new SpeechSynthesisUtterance("oi");
-    u.volume = 0; u.rate = 2; u.lang = "pt-BR";
-    speechSynthesis.speak(u);
-  }catch(e){}
-  try{ speechSynthesis.getVoices(); }catch(e){}
+  if("speechSynthesis" in window){
+    try{
+      const u = new SpeechSynthesisUtterance("oi");
+      u.volume = 0; u.rate = 2; u.lang = "pt-BR";
+      speechSynthesis.speak(u);
+    }catch(e){}
+    try{ speechSynthesis.getVoices(); }catch(e){}
+  }
   try{ const a=new Audio(); a.muted=true; const p=a.play(); if(p&&p.catch) p.catch(()=>{}); }catch(e){}
 }
 document.addEventListener("pointerdown", destravaVoz, true);
@@ -680,6 +778,9 @@ document.addEventListener("keydown", destravaVoz, true);
 
 /* se mesmo assim a voz não sair, o adulto precisa saber */
 function avisaVozMuda(){
+  /* com os clipes gravados carregados, a síntese muda não é problema:
+     o aviso (texto para adulto) não deve aparecer na tela da criança */
+  if(window.VOZ) return;
   if(document.getElementById("aviso-voz")) return;
   const d=document.createElement("div");
   d.id="aviso-voz";
@@ -748,7 +849,7 @@ function pedacos(t){
 /* ---- O NOME DA CRIANÇA É UM CLIPE À PARTE ----------------------
    Assim o jogo serve a qualquer família: a fala é quebrada no nome
    e o nome vira um áudio separado, escolhido pelo cadastro. -------- */
-function partesComNome(t){
+function quebraPeloNome(t){
   const nome=(S.nome||"").trim();
   if(!nome || t.indexOf(nome)<0) return pedacos(t);
   const saida=[];
@@ -759,11 +860,51 @@ function partesComNome(t){
   });
   return saida.length?saida:pedacos(t);
 }
+/* ---- QUEBRA QUE CASA COM OS CLIPES GRAVADOS ---------------------
+   A quebra de cima às vezes junta frases de um jeito que não foi
+   gravado ("Tenta outra. Cadê a carinha de Raiva?", "Aí é a cabeça.
+   Quando") e o trecho caía na voz do navegador, mesmo existindo os
+   clipes das frases separadas. Quando isso acontece, procura-se a
+   divisão (nos mesmos pontos: pontuação e o nome da criança) com o
+   menor número de pedaços sem clipe. Se nada melhora, fica a de cima. */
+function semClipe(lista){ let n=0; lista.forEach(c=>{ if(!temClipe(c)) n++; }); return n; }
+function partesComNome(t){
+  const velha = quebraPeloNome(t);
+  const faltaVelha = semClipe(velha);
+  if(!faltaVelha || !window.VOZ) return velha;
+  const nome=(S.nome||"").trim();
+  const cortes = new Set([0, t.length]);
+  for(let i=0;i<t.length;i++){ if(".!?…:;,".indexOf(t[i]) >= 0) cortes.add(i+1); }
+  if(nome){ let k=-1; while((k=t.indexOf(nome,k+1)) >= 0){ cortes.add(k); cortes.add(k+nome.length); } }
+  const P = Array.from(cortes).sort((a,b)=>a-b), n = P.length;
+  if(n > 40) return velha;
+  const melhor = new Array(n); melhor[0] = {f:0, q:0, ant:-1, s:""};
+  for(let j=1;j<n;j++){
+    for(let i=0;i<j;i++){
+      if(!melhor[i]) continue;
+      const s = t.slice(P[i], P[j]).trim();
+      let f, q;
+      if(!/[0-9A-Za-zÀ-ÿ]/.test(s)){ f=0; q=0; }        // só pontuação: nada a dizer
+      else if(temClipe(s)){ f=0; q=1; }
+      else if(j === i+1){ f=1; q=1; }                    // pedaço mínimo sem clipe
+      else continue;                                     // junção só vale se estiver gravada
+      const c = {f:melhor[i].f+f, q:melhor[i].q+q, ant:i, s:(q?s:"")};
+      if(!melhor[j] || c.f < melhor[j].f || (c.f === melhor[j].f && c.q < melhor[j].q)) melhor[j] = c;
+    }
+  }
+  const fim = melhor[n-1];
+  if(!fim || fim.f >= faltaVelha) return velha;
+  const saida = [];
+  for(let j=n-1; j>0; j=melhor[j].ant){ if(melhor[j].s) saida.unshift(melhor[j].s); }
+  return saida.length ? saida : velha;
+}
 
 
 let ultimaFala = "";
-function mostraBalao(txt){
-  ultimaFala = txt;
+/* `falada` = texto que tem voz. As dicas só escritas ("Soprando… fuuuuu…")
+   não viram a fala do botão "ouvir de novo" (não têm clipe gravado). */
+function mostraBalao(txt, falada){
+  if(falada) ultimaFala = txt;
   const b = $("#balao");
   if(!b) return;
   $("#fala").textContent = txt;
@@ -806,39 +947,53 @@ function dizNavegador(trecho, op){
   });
 }
 
+const temSintese = ("speechSynthesis" in window);
 function diz(trecho, op){
   op = op || {};
   if(temClipe(trecho)) return tocaClipe(trecho, op);
+  /* sem clipe e sem síntese no aparelho: pula o trecho sem travar */
+  if(!temSintese) return espera(Math.min(1200, 250 + trecho.length*30));
   return dizNavegador(trecho, op);
 }
 
-let falaId = 0;
+/* falar() devolve true se a fala foi até o fim e false se foi cortada
+   (outra fala começou, ou calar()). Quem encadeia falas confere isso
+   ou a senha da cena antes de continuar. */
+let falaId = 0, falaViva = 0;
 async function falar(txt, opts){
   opts = opts || {};
-  if(opts.balao !== false) mostraBalao(txt);
+  if(opts.balao !== false) mostraBalao(txt, true);
   const limpo = humaniza(txt);
-  if(!S.voz || !("speechSynthesis" in window) || !limpo){
+  const meu = ++falaId;
+  falaViva = meu;
+  pararClipe();
+  const terminou = ()=>{ const ok = (meu === falaId); if(ok) falaViva = 0; return ok; };
+  if(!S.voz || !limpo){
     await espera(opts.pausa === undefined ? 600 : opts.pausa);
-    return;
+    return terminou();
   }
   const chunks = partesComNome(limpo);
-  if(!chunks.every(temClipe)) await esperaVozes();
-  const meu = ++falaId;
-  try{
-    if(speechSynthesis.speaking || speechSynthesis.pending){
-      speechSynthesis.cancel();
-      await espera(140);
-    }
-  }catch(e){}
-  for(const trecho of chunks){
-    if(meu !== falaId) return;
-    await diz(trecho, opts);
-    if(meu !== falaId) return;
-    await espera(opts.gap === undefined ? 170 : opts.gap);
+  if(temSintese){
+    /* a síntese do navegador só é necessária se faltar algum clipe gravado */
+    if(!chunks.every(temClipe)){ await esperaVozes(); if(meu !== falaId) return false; }
+    try{
+      if(speechSynthesis.speaking || speechSynthesis.pending){
+        speechSynthesis.cancel();
+        await espera(140);
+        if(meu !== falaId) return false;
+      }
+    }catch(e){}
   }
-  await espera(opts.pausa === undefined ? 420 : opts.pausa);
+  const gap = opts.gap === undefined ? 60 : opts.gap;
+  for(let i=0;i<chunks.length;i++){
+    await diz(chunks[i], opts);
+    if(meu !== falaId) return false;
+    if(i < chunks.length-1){ await espera(gap); if(meu !== falaId) return false; }
+  }
+  await espera(opts.pausa === undefined ? 160 : opts.pausa);
+  return terminou();
 }
-function calar(){ falaId++; pararClipe(); try{ speechSynthesis.cancel(); }catch(e){} }
+function calar(){ falaId++; falaViva = 0; pararClipe(); if(temSintese){ try{ speechSynthesis.cancel(); }catch(e){} } }
 
 /* ==========================================================
    2. DESENHOS — personagem, unicórnio, cenas
@@ -1192,21 +1347,64 @@ const ETAPAS = [
 /* ==========================================================
    6. NAVEGAÇÃO
    ========================================================== */
-let etapaAtual = 0, rodadaAtual = 0, ocupado = false;
+let etapaAtual = -1, rodadaAtual = 0, ocupado = false;
 
+/* ---- CENAS ------------------------------------------------
+   Cada passo do jogo é uma "cena" com uma senha (cenaId). Tudo
+   que espera uma fala ou um timer confere a senha antes de
+   continuar: se a criança saiu da etapa, abriu a flor ou a área
+   do adulto, a senha mudou e o resto daquela cena é abandonado
+   (antes ele continuava rodando por cima da tela seguinte).
+   `retoma` guarda como voltar ao ponto em que ela estava e
+   `repete` o que o botão "ouvir de novo" deve fazer na cena.
+   ----------------------------------------------------------- */
+let cenaId = 0, retoma = null, repete = null;
+let comIntro = false, emIntro = false;
+function novaCena(volta){
+  retoma = volta || null; repete = null;
+  ocupado = false; emIntro = false;
+  return ++cenaId;
+}
+const viva = tk => tk === cenaId;
+function pausaCena(){
+  cenaId++; ocupado = false; emIntro = false;
+  calar(); rumorDesliga(); paraRespiroVulcao();
+}
+function retomar(){
+  if($(".ov.on")) return;
+  if(retoma && $("#t-jogo").classList.contains("on")) retoma();
+}
+
+/* toque duplo: o segundo toque caía no botão da tela que acabou de entrar */
+let travaToque = 0;
 function tela(id){
   $$(".tela").forEach(t=>t.classList.remove("on"));
   $("#t-"+id).classList.add("on");
-  $("#btCasa").hidden = (id === "inicio" || id === "hub");
+  travaToque = performance.now() + 320;
+  const fora = (id === "inicio" || id === "mapa");
+  $("#btCasa").setAttribute("aria-label", fora ? "Voltar para a escolha de jogos" : "Voltar para o mapa");
 }
+$("#app").addEventListener("click", e=>{
+  if(performance.now() < travaToque){ e.stopPropagation(); e.preventDefault(); }
+}, true);
+/* o app nunca rola (âncora na URL, foco em campo): se rolar, volta ao lugar */
+$("#app").addEventListener("scroll", e=>{ const a = e.currentTarget; if(a.scrollTop || a.scrollLeft){ a.scrollTop = 0; a.scrollLeft = 0; } });
+addEventListener("scroll", ()=>{ if(scrollX || scrollY) scrollTo(0,0); });
+
 function liberadas(){
   let n = 1;
   for(let i=0;i<6;i++){ if((S.prog[i]||0) >= 1) n = i+2; }
   return Math.min(n, 6);
 }
+/* o progresso só sobe: estrela conquistada não se perde ao jogar de novo */
+function marca(i, f){
+  if(i < 0 || i > 5) return;
+  S.prog[i] = Math.max(S.prog[i]||0, Math.min(1, f));
+  pintaArcoiris(true); salvar();
+}
 function montaMapa(){
   const lib = liberadas();
-  $("#mapa").innerHTML = ETAPAS.map((e,i)=>{
+  $("#ilhas").innerHTML = ETAPAS.map((e,i)=>{
     const trava = i >= lib;
     const feita = (S.prog[i]||0) >= 1;
     return `<button class="ilha ${trava?"travada":""} ${(!trava&&!feita&&i===lib-1)?"agora":""}" data-e="${i}">
@@ -1215,11 +1413,12 @@ function montaMapa(){
       <span class="nome">${e.nome.replace(/\n/g,"<br>")}</span>
     </button>`;
   }).join("");
-  $$("#mapa .ilha").forEach(b=>{
+  $$("#ilhas .ilha").forEach(b=>{
     b.addEventListener("click", ()=>{
       const i = +b.dataset.e;
       SFX.toque();
       if(i >= liberadas()){
+        b.classList.remove("nega"); void b.offsetWidth; b.classList.add("nega");
         falar(`Essa ilha ainda está dormindo. Termina a de antes que ela acorda!`);
         return;
       }
@@ -1228,168 +1427,71 @@ function montaMapa(){
   });
 }
 
-/* --- arte grande de cada jogo, para ela reconhecer sem ler --- */
-const ART_EMO = `<svg viewBox="0 0 200 200">
-  <g fill="none" stroke-width="13" stroke-linecap="round">
-    <path d="M20,178 a80,80 0 01160,0" stroke="#FF5A6E"/>
-    <path d="M40,178 a60,60 0 01120,0" stroke="#FFC93C"/>
-    <path d="M60,178 a40,40 0 0180,0" stroke="#3FA9F5"/></g>
-  <path d="M62,178 L94,96 h22 l32,82z" fill="#8A6A54"/>
-  <path d="M94,96 h22 l7,18 q-19,8 -36,0z" fill="#FF5A6E"/>
-  <circle cx="105" cy="74" r="9" fill="#FF9A3D"/><circle cx="122" cy="60" r="6" fill="#FFC93C"/>
-  <circle cx="46" cy="60" r="30" fill="#FFC93C"/>
-  <circle cx="37" cy="54" r="4" fill="#3A2B52"/><circle cx="55" cy="54" r="4" fill="#3A2B52"/>
-  <path d="M36,68 q10,10 20,0" stroke="#3A2B52" stroke-width="5" fill="none" stroke-linecap="round"/></svg>`;
-const ART_CAR = `<svg viewBox="0 0 200 200">
-  <path d="M0,200 L70,70 h60 l70,130z" fill="#EFE7F7"/>
-  <g fill="#FF5A6E"><path d="M84,86 h32 l4,20 h-40z"/></g>
-  <g fill="#FFC93C"><path d="M78,120 h44 l5,24 h-54z"/></g>
-  <g fill="#3FCB8E"><path d="M70,158 h60 l6,28 h-72z"/></g>
-  <g><rect x="52" y="112" width="24" height="46" rx="10" fill="#2C2440"/>
-     <rect x="124" y="112" width="24" height="46" rx="10" fill="#2C2440"/>
-     <rect x="62" y="96" width="76" height="76" rx="24" fill="#FF5A6E"/>
-     <rect x="74" y="108" width="52" height="26" rx="11" fill="#BFE9FF"/>
-     <circle cx="100" cy="150" r="17" fill="#3B2418"/><circle cx="100" cy="150" r="12" fill="#F5C9A6"/>
-     <circle cx="78" cy="148" r="8" fill="#3B2418"/><circle cx="122" cy="148" r="8" fill="#3B2418"/>
-     <rect x="68" y="88" width="18" height="9" rx="4" fill="#FFC93C"/>
-     <rect x="114" y="88" width="18" height="9" rx="4" fill="#FFC93C"/></g></svg>`;
-const ART_ABC = `<svg viewBox="0 0 200 200">
-  <g font-family="Baloo 2, sans-serif" font-weight="800" font-size="46" text-anchor="middle">
-    <rect x="16" y="52" width="54" height="54" rx="14" fill="#FF5A6E"/><text x="43" y="90" fill="#fff">A</text>
-    <rect x="73" y="42" width="54" height="54" rx="14" fill="#3FA9F5"/><text x="100" y="80" fill="#fff">B</text>
-    <rect x="130" y="52" width="54" height="54" rx="14" fill="#3FCB8E"/><text x="157" y="90" fill="#fff">C</text>
-  </g>
-  <path d="M100,124 q-30,-14 -62,-8 v58 q32,-6 62,8z" fill="#fff" stroke="#C9BEDD" stroke-width="4"/>
-  <path d="M100,124 q30,-14 62,-8 v58 q-32,-6 62,8z" fill="#FFFDF6" stroke="#C9BEDD" stroke-width="4"/>
-  <path d="M100,124 q30,-14 62,-8 v58 q-32,-6 -62,8z" fill="#FFFDF6" stroke="#C9BEDD" stroke-width="4"/>
-  <rect x="95" y="120" width="10" height="62" rx="4" fill="#9B6BF2"/></svg>`;
-
-const ART_ESP = `<svg viewBox="0 0 200 200">
-  <ellipse cx="100" cy="90" rx="62" ry="74" fill="#EADCFF" stroke="#9B6BF2" stroke-width="9"/>
-  <path d="M62,48 q18,-14 38,-4" stroke="#fff" stroke-width="13" fill="none" stroke-linecap="round"/>
-  <circle cx="86" cy="84" r="6" fill="#3A2B52"/><circle cx="114" cy="84" r="6" fill="#3A2B52"/>
-  <path d="M84,106 q16,14 32,0" stroke="#3A2B52" stroke-width="6" fill="none" stroke-linecap="round"/>
-  <ellipse cx="74" cy="100" rx="9" ry="6" fill="#FF9CB4" opacity=".75"/>
-  <ellipse cx="126" cy="100" rx="9" ry="6" fill="#FF9CB4" opacity=".75"/>
-  <rect x="86" y="162" width="28" height="20" rx="7" fill="#9B6BF2"/>
-  <g fill="#FFC93C"><path d="M40,30 l4,11 11,4 -11,4 -4,11 -4,-11 -11,-4 11,-4z"/>
-  <path d="M164,132 l3,9 9,3 -9,3 -3,9 -3,-9 -9,-3 9,-3z"/></g></svg>`;
-
-const JOGOS = [
-  {id:"emocoes",  nome:"As Emoções",  desc:"O vulcão e o arco-íris",       cor:"#FF5A6E", esc:"#D93E52",
-   art:ART_EMO, fala:"Este é o jogo das emoções. O vulcão e o arco-íris."},
-  {id:"carrinho", nome:"O Carrinho",  desc:"Corrida com cocô e sentimentos", cor:"#3FA9F5", esc:"#2585C9",
-   art:ART_CAR, arq:"2-carrinho-do-arco-iris.html", fala:"Este é o jogo do carrinho. Uma corrida com cocô e sentimentos."},
-  {id:"palavras", nome:"As Palavras", desc:"Monta palavras com letrinhas",  cor:"#FF9A3D", esc:"#DB7620",
-   art:ART_ABC, arq:"3-qual-e-a-palavra.html", fala:"Este é o jogo das palavras. Montar palavras com as letrinhas."},
-  {id:"espelho",  nome:"O Espelho",    desc:"Falar coisas boas pra você",   cor:"#9B6BF2", esc:"#7A4CD1",
-   art:ART_ESP, arq:"4-espelho-magico.html", fala:"Este é o jogo do espelho. Falar coisas boas pra você mesma."}
-];
-
-function montaHub(){
-  const feitas = S.prog.filter(p=>p>=1).length;
-  $("#hub").innerHTML = JOGOS.map((j,i)=>{
-    let selo = "";
-    if(j.id==="emocoes") selo = "⭐".repeat(feitas) + "☆".repeat(6-feitas);
-    return `<button class="jogo-card" data-i="${i}" style="--cor:${j.cor};--esc:${j.esc}">
-      <span class="art">${j.art}</span>
-      <span class="txt"><b>${j.nome}</b><small>${j.desc}</small></span>
-      <span class="selos">${selo}</span>
-    </button>`;
-  }).join("");
-  $$("#hub .jogo-card").forEach(b=>b.addEventListener("click",()=>{
-    const j = JOGOS[+b.dataset.i];
-    SFX.toque(); calar();
-    if(j.arq) location.href = j.arq;
-    else irMapa();
-  }));
-}
-/* apresenta os três em voz alta, acendendo um por vez */
-async function apresentaJogos(){
-  const cards = $$("#hub .jogo-card");
-  await falar("Escolhe o jogo!");
-  for(let i=0;i<cards.length;i++){
-    if(!$("#t-hub").classList.contains("on")) return;
-    cards[i].classList.add("falando");
-    SFX.toque();
-    await falar(JOGOS[i].fala, {balao:true});
-    cards[i].classList.remove("falando");
-    await espera(120);
-  }
-}
-function irHub(){
-  calar(); etapaAtual = -1;
-  montaHub(); tela("hub");
-  apresentaJogos();
-}
-
-const OUTROS_JOGOS = [
-  { arq:"2-carrinho-do-arco-iris.html", nome:"O Carrinho do Arco-Íris", cor:"#3FA9F5",
-    desc:"Corrida com cocô, sentimentos e magia de unicórnio",
-    icone:`<svg viewBox="0 0 40 40"><rect x="11" y="7" width="18" height="26" rx="7" fill="#fff"/><rect x="14" y="10" width="12" height="7" rx="3" fill="#BFE9FF"/><circle cx="20" cy="24" r="5" fill="#3A2B52" opacity=".25"/><rect x="7" y="11" width="5" height="8" rx="2.4" fill="#fff"/><rect x="28" y="11" width="5" height="8" rx="2.4" fill="#fff"/><rect x="7" y="22" width="5" height="8" rx="2.4" fill="#fff"/><rect x="28" y="22" width="5" height="8" rx="2.4" fill="#fff"/></svg>` },
-  { arq:"3-qual-e-a-palavra.html", nome:"Qual É a Palavra?", cor:"#FF9A3D",
-    desc:"Letras, sílabas e as primeiras palavras pra ler",
-    icone:`<svg viewBox="0 0 40 40"><text x="20" y="27" font-family="Baloo 2, sans-serif" font-size="20" font-weight="800" fill="#fff" text-anchor="middle">Aa</text><path d="M8 32 h24" stroke="#fff" stroke-width="3" stroke-linecap="round"/></svg>` }
-];
-function montaMais(){
-  const el = $("#mais"); if(!el) return;
-  el.innerHTML =
-    `<p class="olho2">Mais jogos</p>
-     <div class="jogos-lista">${OUTROS_JOGOS.map(j=>
-       `<button class="jogo-cartao" data-arq="${j.arq}">
-          <span class="cap" style="background:${j.cor}">${j.icone}</span>
-          <span><b>${j.nome}</b><small>${j.desc}</small></span>
-          <svg class="seta" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3A2B52" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
-        </button>`).join("")}</div>`;
-  $$("#mais .jogo-cartao").forEach(b=>b.addEventListener("click",()=>{
-    SFX.toque(); calar();
-    location.href = b.dataset.arq;
-  }));
-}
-
-function irMapa(){
-  calar(); rumorDesliga();
+/* a fala tem clipe gravado para todos os pedaços? */
+function temVoz(t){ return partesComNome(humaniza(t)).every(temClipe); }
+function irMapa(deFesta){
+  novaCena(null);
+  calar(); rumorDesliga(); paraRespiroVulcao();
   etapaAtual = -1;
   montaMapa(); pintaArcoiris(true); tela("mapa");
   const done = S.prog.filter(p=>p>=1).length;
+  /* "Já são N ilhas. Qual é a próxima?" ainda não tem clipe gravado e caía
+     na voz do navegador. Enquanto não for gravada, usa falas que já existem;
+     quando o clipe existir no voz-pacote.js, ela volta sozinha. */
+  const contagem = `Muito bem! Já são ${done} ${done===1?"ilha":"ilhas"}. Qual é a próxima?`;
   falar(done===0 ? `Escolhe uma ilha pra gente começar!`
        : done>=6 ? `Você já fez todas! Pode brincar de novo na que quiser.`
-       : `Muito bem! Já são ${done} ${done===1?"ilha":"ilhas"}. Qual é a próxima?`);
+       : temVoz(contagem) ? contagem
+       : deFesta ? `Muito bem!`
+       : `Escolhe uma ilha pra gente começar!`);
+  /* adianta o download da voz da ilha que ela provavelmente vai abrir */
+  const prox = ETAPAS[Math.min(liberadas(), 6) - 1];
+  if(prox && prox.rodadas) preCarrega(prox.intro());
 }
 
 function abreEtapa(i){
-  etapaAtual = i; rodadaAtual = 0;
-  S.prog[i] = 0; pintaArcoiris(true); salvar();
+  etapaAtual = i; rodadaAtual = 0; comIntro = true;
+  /* só zera o que estava pela metade; etapa concluída continua com a estrela */
+  if((S.prog[i]||0) < 1){ S.prog[i] = 0; salvar(); }
+  pintaArcoiris(true);
   tela("jogo");
   const e = ETAPAS[i];
   if(e.especial === "vulcao") return iniciaVulcao();
   if(e.especial === "ainda")  return iniciaAinda();
-  falar(e.intro()).then(()=>rodada());
+  rodada();
 }
-function fracao(){
+/* A abertura da ilha é falada com a primeira rodada já na tela.
+   Enquanto ela toca, um toque nas opções só pula a abertura. */
+async function abertura(tk){
+  if(!comIntro) return;
+  comIntro = false; emIntro = true;
+  await falar(ETAPAS[etapaAtual].intro());
+  if(viva(tk)) emIntro = false;
+}
+async function acertou(msg){
+  if(ocupado) return;
   const e = ETAPAS[etapaAtual];
-  return (rodadaAtual+1) / e.rodadas.length;
-}
-async function acertou(msg, semAvancar){
+  if(!e || !e.rodadas) return;
   ocupado = true;
+  const tk = cenaId;
   SFX.acerto(); confete(26, innerWidth/2, innerHeight*.55);
-  const e = ETAPAS[etapaAtual];
-  if(e.rodadas){ S.prog[etapaAtual] = fracao(); pintaArcoiris(true); salvar(); }
-  await falar(msg);
-  ocupado = false;
-  if(semAvancar) return;
   rodadaAtual++;
-  if(e.rodadas && rodadaAtual >= e.rodadas.length) festa();
-  else rodada();
-}
-async function errou(msg, alvo){
-  SFX.tentar();
-  $("#palco").classList.add("tremendo");
-  setTimeout(()=>$("#palco").classList.remove("tremendo"), 420);
-  if(alvo){ alvo.classList.add("errada"); setTimeout(()=>alvo.classList.remove("errada"), 900); }
-  ocupado = true;
+  marca(etapaAtual, rodadaAtual / e.rodadas.length);
+  const fim = rodadaAtual >= e.rodadas.length;
+  retoma = fim ? festa : rodada;          // se interromper agora, segue daqui
+  if(fim) preCarrega(FESTA_FALA[etapaAtual]()); else preRodada();
   await falar(msg);
-  ocupado = false;
+  if(!viva(tk)) return;
+  if(fim) festa(); else rodada();
+}
+/* errar não trava nada: ela pode tocar em outra opção por cima da fala */
+function errou(msg, alvo){
+  SFX.tentar();
+  const p = $("#palco");
+  p.classList.add("tremendo");
+  setTimeout(()=>p.classList.remove("tremendo"), 420);
+  if(alvo){ alvo.classList.add("errada"); setTimeout(()=>alvo.classList.remove("errada"), 700); }
+  falar(msg);
 }
 
 const ELOGIOS = [
@@ -1407,40 +1509,56 @@ const sorteia = a => a[(Math.random()*a.length)|0];
 
 /* ---------- roteador de rodada ---------- */
 function rodada(){
-  const e = ETAPAS[etapaAtual];
   if(etapaAtual === 0) return rodadaCaras();
   if(etapaAtual === 1) return rodadaCorpo();
   if(etapaAtual === 3) return rodadaEscolha();
   if(etapaAtual === 4) return rodadaFala();
 }
+/* deixa a voz da rodada já baixada, para não atrasar em rede lenta */
+function preRodada(){
+  const e = ETAPAS[etapaAtual]; if(!e || !e.rodadas) return;
+  const r = e.rodadas[rodadaAtual]; if(!r) return;
+  if(etapaAtual === 0) preCarrega(`Cadê a carinha de ${NOMES_EMO[r.alvo]}?`, r.depois());
+  else if(etapaAtual === 1) preCarrega(r.pede(), r.depois());
+  else preCarrega.apply(null, [r.cena()].concat(r.ops.map(o=>o.r||o.f), [`O que você escolhe?`, r.depois()]));
+}
 
 /* ---------- ETAPA 1: reconhecer emoções ---------- */
 const NOMES_EMO = {alegria:"ALEGRIA", raiva:"RAIVA", tristeza:"TRISTEZA", medo:"MEDO", calma:"CALMA"};
-function rodadaCaras(){
+async function rodadaCaras(){
+  const tk = novaCena(rodadaCaras);
   const r = ETAPAS[0].rodadas[rodadaAtual];
   const cor = CORES[0];
   $("#palco").innerHTML =
     `<p class="pergunta">Cadê a carinha de <em style="background:${cor}">${NOMES_EMO[r.alvo]}</em>?</p>
      <div class="ops">${r.ops.map(e=>`<button class="op" data-e="${e}">${cabeca(e)}</button>`).join("")}</div>`;
+  const pergunta = `Cadê a carinha de ${NOMES_EMO[r.alvo]}?`;
+  const tom = {pitch: r.alvo==="raiva"?.95:1.25};
+  repete = ()=>falar(pergunta, tom);
   $$("#palco .op").forEach(b=>{
-    b.addEventListener("click", async ()=>{
-      if(ocupado) return;
+    b.addEventListener("click", ()=>{
+      if(ocupado || !viva(tk)) return;
+      if(emIntro){ calar(); return; }
       SFX.toque();
       if(b.dataset.e === r.alvo){ b.classList.add("certa"); acertou(r.depois()); }
       else errou(sorteia(DICAS_ERRO)() + ` Cadê a carinha de ${NOMES_EMO[r.alvo]}?`, b);
     });
   });
-  falar(`Cadê a carinha de ${NOMES_EMO[r.alvo]}?`, {pitch: r.alvo==="raiva"?.95:1.25});
+  preRodada();
+  await abertura(tk);
+  if(!viva(tk)) return;
+  falar(pergunta, tom);
 }
 
 /* ---------- ETAPA 2: mapa corporal ---------- */
 const ZONAS = {
   cabeca: {x:50, y:29, w:66, h:40, nome:"a cabeça"},
-  peito:  {x:50, y:58, w:48, h:12, nome:"o peito"},
-  barriga:{x:50, y:71, w:48, h:12, nome:"a barriga"},
-  pes:    {x:50, y:88, w:52, h:12, nome:"os pés"}
+  peito:  {x:50, y:57.5, w:60, h:14, nome:"o peito"},
+  barriga:{x:50, y:71.5, w:60, h:14, nome:"a barriga"},
+  pes:    {x:50, y:89, w:60, h:16, nome:"os pés"}
 };
-function rodadaCorpo(){
+async function rodadaCorpo(){
+  const tk = novaCena(rodadaCorpo);
   const r = ETAPAS[1].rodadas[rodadaAtual];
   $("#palco").innerHTML =
     `<p class="pergunta" id="p-corpo"></p>
@@ -1452,9 +1570,11 @@ function rodadaCorpo(){
        }).join("")}
      </div>`;
   $("#p-corpo").textContent = r.pede();
+  repete = ()=>falar(r.pede());
   $$("#palco .zona").forEach(b=>{
     b.addEventListener("click", ()=>{
-      if(ocupado) return;
+      if(ocupado || !viva(tk)) return;
+      if(emIntro){ calar(); return; }
       SFX.toque();
       if(b.dataset.z === r.zona){
         b.classList.add("acertou");
@@ -1466,6 +1586,9 @@ function rodadaCorpo(){
       }
     });
   });
+  preRodada();
+  await abertura(tk);
+  if(!viva(tk)) return;
   falar(r.pede());
 }
 function animaZona(z){
@@ -1489,24 +1612,13 @@ function animaZona(z){
     }
   } else {
     g.style.transformOrigin = "100px 300px";
-    g.animate([{transform:"translateY(0)"},{transform:"translateY(-22px)"},{transform:"translateY(0)"}],
+    if(g.animate) g.animate([{transform:"translateY(0)"},{transform:"translateY(-22px)"},{transform:"translateY(0)"}],
       {duration:520, iterations:4, easing:"ease-in-out"});
     SFX.brilho();
   }
 }
 
 /* ---------- ETAPA 4 e 5: escolhas narradas ---------- */
-async function narraOpcoes(itens){
-  const cards = $$("#palco .op");
-  for(let i=0;i<cards.length;i++){
-    if(etapaAtual < 0) return;
-    cards[i].classList.add("falando");
-    SFX.toque();
-    await falar(itens[i], {balao:false});
-    cards[i].classList.remove("falando");
-    await espera(120);
-  }
-}
 function rodadaEscolha(){
   const r = ETAPAS[3].rodadas[rodadaAtual];
   $("#palco").innerHTML =
@@ -1523,28 +1635,47 @@ function rodadaFala(){
        `<button class="op fala-op" data-i="${i}">${simbolo(o.t)}<span class="frase">${o.f}</span></button>`).join("")}</div>`;
   ligaEscolha(r, o=>o.f);
 }
+/* As opções já respondem enquanto a unicórnia ainda está lendo:
+   o toque corta a leitura. O botão "ouvir de novo" lê tudo outra vez. */
 async function ligaEscolha(r, txt){
-  $$("#palco .op").forEach(b=>{
+  const tk = novaCena(rodada);
+  const cards = $$("#palco .op");
+  cards.forEach(b=>{
     b.addEventListener("click", ()=>{
-      if(ocupado) return;
+      if(ocupado || !viva(tk)) return;
+      if(emIntro){ calar(); return; }
       const o = r.ops[+b.dataset.i];
       SFX.toque();
       if(o.ok){ b.classList.add("certa"); acertou(r.depois()); }
       else errou(`Hmm... isso deixa a raiva ainda maior. Que tal outro jeito?`, b);
     });
   });
-  ocupado = true;
-  await falar(r.cena());
-  await narraOpcoes(r.ops.map(txt));
-  mostraBalao(`O que você escolhe?`);
-  await falar(`O que você escolhe?`);
-  ocupado = false;
+  const narra = async ()=>{
+    cards.forEach(c=>c.classList.remove("falando"));
+    if(!(await falar(r.cena())) || !viva(tk)) return;
+    for(let i=0;i<cards.length;i++){
+      cards[i].classList.add("falando");
+      const ok = await falar(txt(r.ops[i]), {balao:false});
+      cards[i].classList.remove("falando");
+      if(!ok || !viva(tk)) return;
+    }
+    falar(`O que você escolhe?`);
+  };
+  repete = ()=>{ if(!ocupado && viva(tk)) narra(); };
+  preRodada();
+  await abertura(tk);
+  if(!viva(tk)) return;
+  narra();
 }
 
 /* ==========================================================
    7. ETAPA 3 — O VULCÃO (tartaruga + respiração)
    ========================================================== */
-let respiros = 0, segurando = false, tInsp = null, faseResp = "espera";
+let respiros = 0, segurando = false, tInsp = null, tSopro = null, dedoFlor = null, faseResp = "espera";
+function paraRespiroVulcao(){
+  clearTimeout(tInsp); clearTimeout(tSopro);
+  segurando = false; dedoFlor = null; faseResp = "espera";
+}
 
 function vulcaoSVG(nivel){
   const alt = 130 * (nivel/3);
@@ -1598,10 +1729,11 @@ function velaSVG(){
 }
 
 function iniciaVulcao(){
-  respiros = 0; faseResp = "espera";
+  respiros = 0; paraRespiroVulcao();
   cenaRaiva();
 }
 async function cenaRaiva(){
+  const tk = novaCena(cenaRaiva);
   rumorLiga();
   $("#palco").innerHTML =
     `<p class="pergunta">A raiva virou um vulcão!</p>
@@ -1611,51 +1743,73 @@ async function cenaRaiva(){
        PARAR
      </button>`;
   $("#btTartaruga").addEventListener("click", cenaTartaruga);
-  await falar(`Olha só! A raiva de ${N()} virou um vulcão. Ele tá quase explodindo!`, {pitch:.95});
-  await falar(`Primeiro a gente faz igual a tartaruga: PARA! Aperta o botão!`);
+  preCarrega(`Primeiro a gente faz igual a tartaruga: PARA! Aperta o botão!`,
+             `PAREI! Muito bem. A tartaruga entra no casquinho e para tudo.`);
+  /* o botão já vale durante a fala: apertar corta a narração */
+  if(!(await falar(`Olha só! A raiva de ${N()} virou um vulcão. Ele tá quase explodindo!`, {pitch:.95})) || !viva(tk)) return;
+  falar(`Primeiro a gente faz igual a tartaruga: PARA! Aperta o botão!`);
 }
 async function cenaTartaruga(){
+  if(ocupado) return;
+  const tk = novaCena(cenaRespira);
+  ocupado = true;
   SFX.pum(); rumorDesliga();
-  $(".vulcao-cena").classList.remove("balanca");
+  const v = $(".vulcao-cena"); if(v) v.classList.remove("balanca");
+  const b = $("#btTartaruga"); if(b) b.classList.remove("pulsa");
+  preCarrega(`Agora vamos respirar. Segura o dedinho na flor e cheira o cheirinho dela… bem devagar.`);
   await falar(`PAREI! Muito bem. A tartaruga entra no casquinho e para tudo.`);
+  if(!viva(tk)) return;
   cenaRespira();
 }
 function cenaRespira(){
+  const tk = novaCena(cenaRespira);
+  paraRespiroVulcao();
   const falta = 3 - respiros;
   $("#palco").innerHTML =
     `<p class="pergunta" id="p-resp">Segura a florzinha e cheira bem devagar…</p>
-     <div style="display:flex;align-items:center;justify-content:center;gap:clamp(6px,3vw,26px);width:100%">
-       <div class="vulcao-cena" style="width:min(180px,36vw)">${vulcaoSVG(falta)}</div>
+     <div class="resp-linha">
+       <div class="vulcao-cena mini-v">${vulcaoSVG(falta)}</div>
        <div class="flor-bt" id="florBt"><div class="anel" id="anel"></div>${florSVG()}</div>
-       <div style="width:min(80px,17vw)" id="velaBox">${velaSVG()}</div>
+       <div class="vela-box" id="velaBox">${velaSVG()}</div>
      </div>
      <div class="contador">${[0,1,2].map(i=>`<div class="gota ${i<respiros?"on":""}"></div>`).join("")}</div>`;
-  ligaRespiro();
+  ligaRespiro(tk);
+  preCarrega(`Agora solta o ar bem devagar na velinha!`,
+             `Quase! Segura mais um pouquinho, cheirando bem devagar.`,
+             `Olha! A lava desceu um pouquinho. Vamos de novo?`);
   falar(respiros===0
     ? `Agora vamos respirar. Segura o dedinho na flor e cheira o cheirinho dela… bem devagar.`
     : `Muito bem! Mais uma vez. Segura na flor e cheira devagarinho.`);
 }
-function ligaRespiro(){
+/* O ritmo da respiração (4 s puxando, 2,2 s soltando) é o conteúdo:
+   não mexer nesses tempos. */
+function ligaRespiro(tk){
   const bt = $("#florBt"), anel = $("#anel"), flor = $("#florsvg");
   if(!bt) return;
   const comeca = ev=>{
     ev.preventDefault();
-    if(segurando || faseResp === "soltando") return;
-    segurando = true; faseResp = "inspirando";
+    if(!viva(tk) || segurando || faseResp !== "espera") return;
+    segurando = true; dedoFlor = ev.pointerId; faseResp = "inspirando";
+    try{ bt.setPointerCapture(ev.pointerId); }catch(e){}
     anel.classList.remove("expira"); anel.classList.add("inspira");
     flor.classList.add("crescendo");
     SFX.inspira();
     mostraBalao("Cheira a florzinha… devagaaar…");
-    tInsp = setTimeout(async ()=>{
+    tInsp = setTimeout(()=>{
+      if(!viva(tk) || !segurando) return;
       faseResp = "cheio";
       SFX.brilho();
-      await falar(`Agora solta o ar bem devagar na velinha!`);
+      falar(`Agora solta o ar bem devagar na velinha!`);
     }, 4000);
   };
-  const solta = async ev=>{
-    if(ev) ev.preventDefault();
-    if(!segurando) return;
-    segurando = false;
+  const solta = ev=>{
+    if(ev){
+      ev.preventDefault();
+      /* outro dedo encostando e saindo não conta como soltar */
+      if(dedoFlor !== null && ev.pointerId !== undefined && ev.pointerId !== dedoFlor) return;
+    }
+    if(!segurando || !viva(tk)) return;
+    segurando = false; dedoFlor = null;
     clearTimeout(tInsp);
     anel.classList.remove("inspira");
     flor.classList.remove("crescendo");
@@ -1663,7 +1817,7 @@ function ligaRespiro(){
       faseResp = "espera";
       anel.classList.add("expira");
       SFX.tentar();
-      await falar(`Quase! Segura mais um pouquinho, cheirando bem devagar.`);
+      falar(`Quase! Segura mais um pouquinho, cheirando bem devagar.`);
       return;
     }
     faseResp = "soltando";
@@ -1671,19 +1825,25 @@ function ligaRespiro(){
     const ch = $("#chama"); if(ch) ch.classList.add("soprada");
     SFX.expira();
     mostraBalao("Soprando… fuuuuu…");
-    setTimeout(async ()=>{
+    tSopro = setTimeout(()=>{
+      if(!viva(tk)) return;
       respiros++;
-      $$(".gota").forEach((g,i)=>g.classList.toggle("on", i<respiros));
-      const v = $(".vulcao-cena");
+      $$("#palco .gota").forEach((g,i)=>g.classList.toggle("on", i<respiros));
+      const v = $("#palco .vulcao-cena");
       if(v) v.innerHTML = vulcaoSVG(3-respiros);
       SFX.acerto();
-      S.prog[2] = respiros/3; pintaArcoiris(true); salvar();
-      faseResp = "espera";
-      if(respiros >= 3){ await espera(400); cenaCalmo(); }
-      else{
-        await falar(`Olha! A lava desceu um pouquinho. Vamos de novo?`);
-        cenaRespira();
+      marca(2, respiros/3);
+      if(respiros >= 3){
+        retoma = cenaCalmo;
+        tSopro = setTimeout(()=>{ if(viva(tk)) cenaCalmo(); }, 400);
+        return;
       }
+      /* fica na mesma tela, sem redesenhar: redesenhar com o dedo já na
+         flor deixava a flor morta. Ela pode segurar de novo na hora. */
+      faseResp = "espera";
+      anel.classList.remove("expira");
+      const c2 = $("#chama"); if(c2) c2.classList.remove("soprada");
+      falar(`Olha! A lava desceu um pouquinho. Vamos de novo?`);
     }, 2200);
   };
   bt.addEventListener("pointerdown", comeca);
@@ -1692,14 +1852,19 @@ function ligaRespiro(){
   bt.addEventListener("pointerleave", solta);
 }
 async function cenaCalmo(){
+  const tk = novaCena(cenaCalmo);
+  paraRespiroVulcao();
   $("#palco").innerHTML =
     `<p class="pergunta">O vulcão virou montanha!</p>
      <div class="vulcao-cena">${vulcaoSVG(0)}</div>
-     <div style="width:min(150px,34vw)">${boneca("calma")}</div>`;
+     <div class="boneca-calma">${boneca("calma")}</div>`;
   confete(50);
+  marca(2, 1);
+  preCarrega(FESTA_FALA[2]());
   await falar(`Você conseguiu! O vulcão virou uma montanha calminha. O corpo de ${N()} tá tranquilo.`);
+  if(!viva(tk)) return;
   await falar(`E olha o segredo: a raiva não some pra sempre. Ela só fica pequenininha e a gente consegue pensar de novo.`);
-  S.prog[2] = 1; salvar(); pintaArcoiris(true);
+  if(!viva(tk)) return;
   festa();
 }
 
@@ -1721,8 +1886,11 @@ const AINDAS = [
     pensa:"Eu não consigo…",
     vitoria:()=>`Ela levantou, subiu de novo e pedalou! Cair faz parte de aprender.`,
     poseFim:"cima" },
+  /* o pensamento era "Eu não sei ler…", mas a fala seguinte (gravada) é
+     "eu não consigo… ainda!" — a tela mostrava uma frase e a voz dizia outra.
+     Fica igual às outras duas histórias, que é o que tem clipe. */
   { conta:()=>`${N()} abriu um livro e ficou tristinha, porque ainda não sabe ler as palavras.`,
-    pensa:"Eu não sei ler…",
+    pensa:"Eu não consigo…",
     vitoria:()=>`Mas olha que legal! Essa aqui é a letra ${primeiraLetra()}. É a primeira letra do nome ${N()}. Essa ela já conhece! E cada dia ela vai conhecendo mais uma.`,
     poseFim:"mao", letra:true }
 ];
@@ -1731,54 +1899,69 @@ function iniciaAinda(){ passoAinda = 0; telaAinda(); }
 
 async function telaAinda(){
   if(passoAinda >= AINDAS.length) return espelho();
+  const tk = novaCena(telaAinda);
   const a = AINDAS[passoAinda];
   $("#palco").innerHTML =
-    `<div style="width:min(140px,30vw)" id="fig">${boneca("tristeza")}</div>
+    `<div class="fig-ainda" id="fig">${boneca("tristeza")}</div>
      <div class="pensamento" id="pensa">${a.pensa} <span class="ainda" id="ainda-txt">AINDA!</span></div>
      <div id="acao"></div>`;
-  ocupado = true;
+  preCarrega(`Aí ela pensou assim: ${a.pensa}`,
+             `Mas está faltando a palavra mágica no final! Aperta a estrela dourada pra ela aparecer.`,
+             `Ainda! Agora ela diz assim: eu não consigo… ainda!`);
   await falar(a.conta());
+  if(!viva(tk)) return;
   await falar(`Aí ela pensou assim: ${a.pensa}`, {pitch:.92, rate:.78});
-  await falar(`Mas está faltando a palavra mágica no final! Aperta a estrela dourada pra ela aparecer.`);
+  if(!viva(tk)) return;
   const acao = $("#acao"); if(!acao) return;
+  /* a estrela aparece junto com o convite: apertar corta a fala */
   acao.innerHTML =
     `<button class="aindabt pulsa" id="btAinda" aria-label="Palavra mágica ainda">
        <svg viewBox="0 0 200 200" class="gira" style="width:100%"><path d="M100,8 l23,58 62,4 -48,40 16,60 -53,-34 -53,34 16,-60 -48,-40 62,-4z" fill="#FFC93C" stroke="#F0A800" stroke-width="6" stroke-linejoin="round"/></svg>
        <span class="txt">AINDA</span>
      </button>`;
+  $("#btAinda").addEventListener("click", ()=>apertaAinda(tk, a));
+  falar(`Mas está faltando a palavra mágica no final! Aperta a estrela dourada pra ela aparecer.`);
+}
+async function apertaAinda(tk, a){
+  if(ocupado || !viva(tk)) return;
+  ocupado = true;
+  SFX.estrela(); SFX.brilho();
+  const t = $("#ainda-txt"); if(t) t.classList.add("on");
+  const b = $("#btAinda"); if(b){ b.classList.remove("pulsa"); b.style.transition="opacity .3s"; b.style.opacity=".2"; }
+  preCarrega(`Agora é a sua vez. Fala bem alto comigo: eu não consigo… ainda! Quando terminar, aperta o botão verde.`,
+             `Eu ouvi daqui! Que voz forte.`, a.vitoria());
+  await falar(`Ainda! Agora ela diz assim: eu não consigo… ainda!`, {rate:.8});
+  if(!viva(tk)) return;
+  const ac = $("#acao"); if(!ac) return;
+  ac.innerHTML = `<button class="bt esperando" id="btFalei" style="--bg:var(--c4);--dark:#2AA372">EU FALEI!</button>`;
   ocupado = false;
-  $("#btAinda").addEventListener("click", async ()=>{
-    if(ocupado) return; ocupado = true;
-    SFX.estrela(); SFX.brilho();
-    const t = $("#ainda-txt"); if(t) t.classList.add("on");
-    const b = $("#btAinda"); if(b){ b.style.transition="opacity .4s"; b.style.opacity=".2"; }
-    await falar(`Ainda! Agora ela diz assim: eu não consigo… ainda!`, {rate:.8});
-    await falar(`Agora é a sua vez. Fala bem alto comigo: eu não consigo… ainda! Quando terminar, aperta o botão verde.`);
-    const ac = $("#acao"); if(!ac){ ocupado=false; return; }
-    ac.innerHTML = `<button class="bt esperando" id="btFalei" style="--bg:var(--c4);--dark:#2AA372">EU FALEI!</button>`;
-    ocupado = false;
-    $("#btFalei").addEventListener("click", async ()=>{
-      if(ocupado) return; ocupado = true;
-      SFX.acerto(); confete(36, innerWidth/2, innerHeight*.5);
-      await falar(`Eu ouvi daqui! Que voz forte.`);
-      const fig = $("#fig");
-      if(fig){
-        fig.innerHTML = a.letra
-          ? `<div style="display:flex;align-items:center;justify-content:center;gap:8px">
-               <div style="width:52%">${boneca("alegria","",a.poseFim)}</div>
-               <div style="font-family:'Baloo 2';font-weight:800;font-size:clamp(64px,18vw,120px);color:var(--c6);line-height:1">${primeiraLetra()}</div>
-             </div>`
-          : boneca("alegria","",a.poseFim);
-        fig.classList.add("fazGesto");
-      }
-      SFX.brilho(); confete(26, innerWidth/2, innerHeight*.45);
-      await falar(a.vitoria());
-      passoAinda++;
-      S.prog[5] = passoAinda/(AINDAS.length+1); pintaArcoiris(true); salvar();
-      ocupado = false;
-      telaAinda();
-    });
-  });
+  $("#btFalei").addEventListener("click", ()=>apertaFalei(tk, a));
+  falar(`Agora é a sua vez. Fala bem alto comigo: eu não consigo… ainda! Quando terminar, aperta o botão verde.`);
+}
+async function apertaFalei(tk, a){
+  if(ocupado || !viva(tk)) return;
+  ocupado = true;
+  const bf = $("#btFalei"); if(bf) bf.classList.remove("esperando");
+  SFX.acerto(); confete(36, innerWidth/2, innerHeight*.5);
+  passoAinda++;
+  marca(5, passoAinda/(AINDAS.length+1));
+  retoma = telaAinda;                      // se interromper agora, segue na próxima história
+  await falar(`Eu ouvi daqui! Que voz forte.`);
+  if(!viva(tk)) return;
+  const fig = $("#fig");
+  if(fig){
+    fig.innerHTML = a.letra
+      ? `<div style="display:flex;align-items:center;justify-content:center;gap:8px">
+           <div style="width:52%">${boneca("alegria","",a.poseFim)}</div>
+           <div style="font-family:'Baloo 2';font-weight:800;font-size:clamp(64px,18vw,120px);color:var(--c6);line-height:1">${primeiraLetra()}</div>
+         </div>`
+      : boneca("alegria","",a.poseFim);
+    fig.classList.add("fazGesto");
+  }
+  SFX.brilho(); confete(26, innerWidth/2, innerHeight*.45);
+  await falar(a.vitoria());
+  if(!viva(tk)) return;
+  telaAinda();
 }
 
 /* ---------- O ESPELHO MÁGICO: olhar → juntas → sozinha ---------- */
@@ -1798,14 +1981,17 @@ const PARABENS = [
 let afIdx = 0, ritual = 0;
 
 async function espelho(){
-  afIdx = 0; ocupado = true;
+  const tk = novaCena(espelho);
+  afIdx = 0;
   $("#palco").innerHTML =
     `<p class="pergunta">O espelho mágico</p>
      <div class="moldura brilha"><div class="dentro">${boneca("alegria","","cima")}</div></div>
      <p class="sub">Primeiro você olha. Depois fala comigo. Depois fala sozinha.</p>`;
+  preCarrega(`Tempo um: só olhar. Você não precisa falar nada agora, só prestar atenção.`, AFIRMACOES[0].f);
   await falar(`Chegou o espelho mágico! Esse é o jogo de imitar.`);
+  if(!viva(tk)) return;
   await falar(`São três tempos. Primeiro você só olha a ${N()} fazer. Depois nós duas fazemos juntas. E no fim, você faz sozinha!`);
-  ocupado = false;
+  if(!viva(tk)) return;
   telaAfirmacao();
 }
 function telaAfirmacao(){
@@ -1813,6 +1999,7 @@ function telaAfirmacao(){
   ritual = 0; desenhaRitual();
 }
 function desenhaRitual(){
+  const tk = novaCena(desenhaRitual);
   const a = AFIRMACOES[afIdx];
   const passos = [["👀","Olha"],["🤝","Juntas"],["⭐","Só você"]];
   $("#palco").innerHTML =
@@ -1822,59 +2009,76 @@ function desenhaRitual(){
      <p class="frase-espelho">${a.f}</p>
      <p class="gesto-dica">${a.gesto}</p>
      <div id="acaoEsp"></div>
-     <div style="display:flex;gap:7px">${AFIRMACOES.map((_,i)=>
+     <div class="estrelinhas">${AFIRMACOES.map((_,i)=>
        `<svg style="width:24px" viewBox="0 0 100 100"><path d="M50,5 l12,29 31,2 -24,20 8,30 -27,-17 -27,17 8,-30 -24,-20 31,-2z" fill="${i<afIdx?CORES[i]:"rgba(58,43,82,.14)"}"/></svg>`).join("")}</div>`;
-  rodaRitual();
+  rodaRitual(tk);
 }
 function fazGesto(pose){
   const d = $("#molduraFig"); if(!d) return;
   d.innerHTML = boneca("alegria","",pose);
   d.classList.remove("fazGesto"); void d.offsetWidth; d.classList.add("fazGesto");
 }
-async function rodaRitual(){
-  const a = AFIRMACOES[afIdx];
-  ocupado = true;
+/* A explicação comprida de cada tempo é dita na primeira frase do espelho.
+   Nas seguintes vai só o começo dela ("Tempo um: só olhar."), que é o
+   mesmo clipe gravado — as cinco frases repetiam a explicação inteira.
+   O botão de cada tempo aparece junto com a última fala (apertar corta). */
+async function rodaRitual(tk){
+  const a = AFIRMACOES[afIdx], curto = afIdx > 0;
   if(ritual === 0){
-    await falar(`Tempo um: só olhar. Você não precisa falar nada agora, só prestar atenção.`);
+    preCarrega(a.f, `Viu o gesto que ela fez? ${a.gesto}`, `Tempo dois: nós duas juntas. Faz o gesto e fala junto comigo, bem devagarinho.`);
+    await falar(curto ? `Tempo um: só olhar.`
+                      : `Tempo um: só olhar. Você não precisa falar nada agora, só prestar atenção.`);
+    if(!viva(tk)) return;
     fazGesto(a.pose); SFX.brilho();
-    await espera(450);
+    await espera(300);
+    if(!viva(tk)) return;
     await falar(a.f, {pitch:1.42, rate:.78});
-    await falar(`Viu o gesto que ela fez? ${a.gesto}`);
-    botaoRitual("AGORA NÓS DUAS", "#9B6BF2", "#7A4CD1");
+    if(!viva(tk)) return;
+    botaoRitual(tk, "AGORA NÓS DUAS", "#9B6BF2", "#7A4CD1");
+    falar(`Viu o gesto que ela fez? ${a.gesto}`);
   } else if(ritual === 1){
     fazGesto(a.pose);
-    await falar(`Tempo dois: nós duas juntas. Faz o gesto e fala junto comigo, bem devagarinho.`);
-    await espera(400);
+    preCarrega(`Quando vocês terminarem, aperta o botão.`, `Tempo três: agora é só você! Faz o gesto e fala bem alto. Pode demorar o quanto quiser, eu espero aqui.`);
+    await falar(curto ? `Tempo dois: nós duas juntas.`
+                      : `Tempo dois: nós duas juntas. Faz o gesto e fala junto comigo, bem devagarinho.`);
+    if(!viva(tk)) return;
+    await espera(300);
+    if(!viva(tk)) return;
     await falar(a.f, {rate:.6, pitch:1.18});
-    await falar(`Quando vocês terminarem, aperta o botão.`);
-    botaoRitual("AGORA SÓ EU", "#FF9A3D", "#DB7620");
+    if(!viva(tk)) return;
+    botaoRitual(tk, "AGORA SÓ EU", "#FF9A3D", "#DB7620");
+    falar(`Quando vocês terminarem, aperta o botão.`);
   } else {
     fazGesto(a.pose);
-    await falar(`Tempo três: agora é só você! Faz o gesto e fala bem alto. Pode demorar o quanto quiser, eu espero aqui.`);
-    botaoRitual("EU FALEI!", "#3FCB8E", "#2AA372", true);
+    botaoRitual(tk, "EU FALEI!", "#3FCB8E", "#2AA372", true);
+    falar(curto ? `Tempo três: agora é só você!`
+                : `Tempo três: agora é só você! Faz o gesto e fala bem alto. Pode demorar o quanto quiser, eu espero aqui.`);
   }
-  ocupado = false;
 }
-function botaoRitual(txt, bg, dark, esperando){
+function botaoRitual(tk, txt, bg, dark, esperando){
   const el = $("#acaoEsp"); if(!el) return;
   el.innerHTML = `<button class="bt ${esperando?"esperando":""}" id="btRit" style="--bg:${bg};--dark:${dark}">${txt}</button>`;
   $("#btRit").addEventListener("click", async ()=>{
-    if(ocupado) return;
+    if(ocupado || !viva(tk)) return;
     SFX.toque();
     if(ritual < 2){ ritual++; desenhaRitual(); return; }
     ocupado = true;
+    $("#btRit").classList.remove("esperando");
     SFX.estrela(); SFX.acerto(); confete(44, innerWidth/2, innerHeight*.55);
-    await falar(sorteia(PARABENS)());
     afIdx++;
-    S.prog[5] = (AINDAS.length + afIdx/AFIRMACOES.length)/(AINDAS.length+1);
-    pintaArcoiris(true); salvar();
-    ocupado = false;
+    marca(5, (AINDAS.length + afIdx/AFIRMACOES.length)/(AINDAS.length+1));
+    retoma = telaAfirmacao;                // se interromper agora, segue na próxima frase
+    await falar(sorteia(PARABENS)());
+    if(!viva(tk)) return;
     telaAfirmacao();
   });
 }
 async function fimEspelho(){
-  S.prog[5] = 1; salvar(); pintaArcoiris(true);
+  const tk = novaCena(fimEspelho);
+  marca(5, 1);
+  preCarrega(FESTA_FALA[5]());
   await falar(`Você falou tudo sozinha! Guarda essas frases dentro de você. Elas são suas.`);
+  if(!viva(tk)) return;
   festa();
 }
 
@@ -1889,12 +2093,17 @@ const FESTA_FALA = [
   ()=>`Você aprendeu que as palavras tiram a raiva de dentro sem machucar ninguém.`,
   ()=>`Você aprendeu a palavra mais mágica do mundo: AINDA.`
 ];
+/* o diploma aparece sozinho só na vez em que o arco-íris fecha; quem já
+   tinha tudo e joga uma ilha de novo volta direto para o mapa */
+let diplomaVisto = S.prog.every(p=>p>=1);
 async function festa(){
-  S.prog[etapaAtual] = 1; salvar();
   const idx = etapaAtual;
+  if(idx < 0 || idx > 5) return;
+  const tk = novaCena(null);
+  marca(idx, 1);
   tela("festa");
-  pintaArcoiris(true);
   SFX.nivel(); confete(90);
+  const completo = ()=> S.prog.every(p=>p>=1) && !diplomaVisto;
   $("#palco-festa").innerHTML =
     `<svg class="medalha" viewBox="0 0 200 200">
        <circle cx="100" cy="100" r="72" fill="${CORES[idx]}"/>
@@ -1902,88 +2111,120 @@ async function festa(){
        <path d="M100,44 l16,38 42,3 -32,27 10,41 -36,-23 -36,23 10,-41 -32,-27 42,-3z" fill="#fff"/>
      </svg>
      <p class="pergunta" style="color:${CORES[idx]}">Você conseguiu!</p>
-     <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center">
+     <div class="linha-festa">
        <button class="bt" id="btDeNovo" style="--bg:#fff;--dark:rgba(58,43,82,.16);color:var(--tinta)">Jogar de novo</button>
        <button class="bt" id="btSeguir" style="--bg:${CORES[idx]};--dark:${ESCURO[idx]}">Continuar</button>
      </div>`;
   $("#btDeNovo").addEventListener("click", ()=>{ SFX.toque(); abreEtapa(idx); });
   $("#btSeguir").addEventListener("click", ()=>{
     SFX.toque();
-    if(S.prog.every(p=>p>=1)) return final();
-    irMapa();
+    if(completo()) return final();
+    irMapa(true);
   });
   await falar(FESTA_FALA[idx]());
-  if(S.prog.every(p=>p>=1)) setTimeout(final, 300);
+  if(!viva(tk)) return;
+  if(completo()) final();
 }
 
 async function final(){
+  const tk = novaCena(null);
+  diplomaVisto = true;
+  etapaAtual = -1;
   tela("final");
   SFX.fanfarra(); confete(160);
   $("#palco-final").innerHTML =
     `<div class="diploma">
        <p style="font-weight:800;letter-spacing:.14em;font-size:12px;color:var(--c2)">ARCO-ÍRIS COMPLETO</p>
        <p class="grande">EU CONSIGO!</p>
-       <p class="nomezao">${S.nome}</p>
+       <p class="nomezao"></p>
        <div style="display:flex;justify-content:center;gap:6px;margin-top:12px">
          ${CORES.map(c=>`<span style="width:20px;height:20px;border-radius:50%;background:${c};display:inline-block"></span>`).join("")}
        </div>
      </div>
      <button class="bt" id="btVoltarMapa" style="--bg:var(--c6);--dark:#7A4CD1">Brincar de novo</button>`;
+  $("#palco-final .nomezao").textContent = S.nome;
   $("#btVoltarMapa").addEventListener("click", ()=>{ SFX.toque(); irMapa(); });
   const u = $("#uni-arco");
   if(u){
     u.innerHTML = `<g transform="translate(-70,-70) scale(.7)">${unicornio()}</g>`;
     u.setAttribute("opacity","1");
-    u.animate([{transform:"translate(30px,545px) rotate(-70deg)"},{transform:"translate(530px,45px) rotate(0deg)"},{transform:"translate(1030px,545px) rotate(70deg)"}],
+    if(u.animate) u.animate([{transform:"translate(30px,545px) rotate(-70deg)"},{transform:"translate(530px,45px) rotate(0deg)"},{transform:"translate(1030px,545px) rotate(70deg)"}],
       {duration:4200, easing:"linear", fill:"forwards"});
+    setTimeout(()=>{ u.setAttribute("opacity","0"); }, 9000);
   }
   await falar(`Você pintou o arco-íris inteirinho, ${S.nome}! Olha ele lá em cima.`);
-  await falar(`Você sabe o nome dos sentimentos, sabe acalmar o corpo e sabe usar as palavras. E o mais importante: quando alguma coisa é difícil, você lembra da palavra mágica… AINDA!`);
-  setTimeout(()=>{ if(u) u.setAttribute("opacity","0"); }, 9000);
+  if(!viva(tk)) return;
+  falar(`Você sabe o nome dos sentimentos, sabe acalmar o corpo e sabe usar as palavras. E o mais importante: quando alguma coisa é difícil, você lembra da palavra mágica… AINDA!`);
 }
 
 /* ==========================================================
    10. RESPIRAÇÃO AVULSA (botão da flor, sempre disponível)
+   Abrir pausa a cena que estava rodando; fechar retoma dela.
    ========================================================== */
-let respAvulso = 0, segAv = false, tAv = null, faseAv = "espera";
+let respAvulso = 0, segAv = false, tAv = null, tAv2 = null, faseAv = "espera", respId = 0, dedoAv = null;
 function abreRespiro(){
-  respAvulso = 0; faseAv = "espera";
+  if($(".ov.on")) return;
+  pausaCena();
+  respAvulso = 0;
   $("#ov-respiro").classList.add("on");
   passoRespiro();
   falar(`Vamos respirar juntinhos. Segura na flor e cheira bem devagar.`);
 }
+function fechaRespiro(){
+  respId++;
+  clearTimeout(tAv); clearTimeout(tAv2);
+  segAv = false; dedoAv = null; faseAv = "espera";
+  $("#ov-respiro").classList.remove("on");
+  calar();
+  retomar();
+}
 function passoRespiro(){
+  const meu = ++respId;
+  clearTimeout(tAv); clearTimeout(tAv2);
+  segAv = false; dedoAv = null; faseAv = "espera";
   $("#folha-respiro").innerHTML =
     `<p class="pergunta">Respira comigo</p>
      <div class="flor-bt" id="florAv"><div class="anel" id="anelAv"></div>${florSVG().replace('id="florsvg"','id="florAv2"')}</div>
      <div class="contador">${[0,1,2].map(i=>`<div class="gota ${i<respAvulso?"on":""}"></div>`).join("")}</div>
      <button class="bt pequeno" id="fechaResp" style="--bg:#fff;--dark:rgba(58,43,82,.16);color:var(--tinta)">Fechar</button>`;
-  $("#fechaResp").addEventListener("click", ()=>{ SFX.toque(); $("#ov-respiro").classList.remove("on"); calar(); });
+  $("#fechaResp").addEventListener("click", ()=>{ SFX.toque(); fechaRespiro(); });
+  preCarrega(`Agora solta o ar devagar.`, `Segura mais um pouquinho, bem devagar.`, `Muito bem. Mais uma vez.`, `Prontinho. Seu corpo já tá mais calminho.`);
   const bt = $("#florAv"), anel = $("#anelAv"), flor = $("#florAv2");
   const comeca = ev=>{
     ev.preventDefault();
-    if(segAv) return;
-    segAv = true; faseAv = "inspirando";
+    if(meu !== respId || segAv || faseAv !== "espera") return;
+    segAv = true; dedoAv = ev.pointerId; faseAv = "inspirando";
+    try{ bt.setPointerCapture(ev.pointerId); }catch(e){}
     anel.classList.remove("expira"); anel.classList.add("inspira");
     flor.classList.add("crescendo"); SFX.inspira();
     mostraBalao("Cheira a flor… devagaaar…");
-    tAv = setTimeout(()=>{ faseAv = "cheio"; SFX.brilho(); falar(`Agora solta o ar devagar.`); }, 4000);
+    tAv = setTimeout(()=>{
+      if(meu !== respId || !segAv) return;
+      faseAv = "cheio"; SFX.brilho(); falar(`Agora solta o ar devagar.`);
+    }, 4000);
   };
-  const solta = async ev=>{
-    if(ev) ev.preventDefault();
-    if(!segAv) return;
-    segAv = false; clearTimeout(tAv);
+  const solta = ev=>{
+    if(ev){
+      ev.preventDefault();
+      if(dedoAv !== null && ev.pointerId !== undefined && ev.pointerId !== dedoAv) return;
+    }
+    if(meu !== respId || !segAv) return;
+    segAv = false; dedoAv = null; clearTimeout(tAv);
     anel.classList.remove("inspira"); flor.classList.remove("crescendo"); anel.classList.add("expira");
-    if(faseAv !== "cheio"){ faseAv = "espera"; return falar(`Segura mais um pouquinho, bem devagar.`); }
-    faseAv = "espera"; SFX.expira(); mostraBalao("Fuuuuuu…");
-    setTimeout(async ()=>{
+    if(faseAv !== "cheio"){ faseAv = "espera"; falar(`Segura mais um pouquinho, bem devagar.`); return; }
+    faseAv = "soltando"; SFX.expira(); mostraBalao("Fuuuuuu…");
+    tAv2 = setTimeout(async ()=>{
+      if(meu !== respId) return;
       respAvulso++;
       $$("#folha-respiro .gota").forEach((g,i)=>g.classList.toggle("on", i<respAvulso));
       SFX.acerto();
       if(respAvulso >= 3){
         await falar(`Prontinho. Seu corpo já tá mais calminho.`);
-        $("#ov-respiro").classList.remove("on");
-      } else falar(`Muito bem. Mais uma vez.`);
+        if(meu === respId) fechaRespiro();
+      } else {
+        faseAv = "espera"; anel.classList.remove("expira");
+        falar(`Muito bem. Mais uma vez.`);
+      }
     }, 2000);
   };
   bt.addEventListener("pointerdown", comeca);
@@ -2014,6 +2255,9 @@ const CABELOS = ["#3B2418","#000000","#7A4B2A","#C98B3A","#E8C468","#B33A2B","#5
 
 function montaAdulto(){
   $("#folha-adulto").innerHTML = `
+    <button class="fecha-x" id="btFechaAdulto" aria-label="Fechar a área do adulto">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3A2B52" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
     <p class="olho">Para quem cuida</p>
     <h2>O Vulcão e o Arco-Íris</h2>
     <p>Um jogo curto para brincar <strong>junto</strong> — cerca de 10 minutos. Não há como perder, não há cronômetro e nenhum erro apaga o progresso: a criança que ainda não lê joga inteiro sozinha pelo som, porque a unicórnia fala todas as instruções em voz alta.</p>
@@ -2047,14 +2291,8 @@ function montaAdulto(){
 
     <hr>
     <h3>A voz do jogo</h3>
-    <p>A unicórnia usa a voz de leitura do próprio sistema. A voz padrão do macOS em português soa metálica; trocar pela versão <strong>Premium</strong> muda tudo, e leva dois minutos:</p>
-    <ul>
-      <li><strong>Ajustes do Sistema → Acessibilidade → Conteúdo Falado</strong></li>
-      <li>Em <strong>Voz do sistema</strong>, clique no menu e escolha <strong>Gerenciar vozes…</strong></li>
-      <li>Abra <strong>Português (Brasil)</strong> e baixe uma voz marcada <strong>Premium</strong> (a Luciana Premium é a mais natural)</li>
-      <li>Selecione ela como voz do sistema e <strong>recarregue o jogo</strong> — ele passa a usar a melhor voz que encontrar</li>
-    </ul>
-    <p>O jogo também fala devagar e faz uma pausa entre cada frase de propósito. Criança de cinco anos precisa desse espaço para processar — se ainda estiver corrido para ela, me avise que eu alargo mais.</p>
+    <p>A unicórnia fala com <strong>áudios gravados</strong> (a pasta <strong>voz/</strong> que acompanha o jogo), então a voz é a mesma no celular e no computador e não depende da voz do aparelho. Se alguma frase sair muda, é porque o arquivo dela não carregou — confira a internet.</p>
+    <p>A criança não precisa esperar a unicórnia terminar: tocar numa resposta corta a fala. O botão da setinha redonda, ao lado do balão, repete a pergunta. Só a respiração tem tempo fixo — o ritmo lento dela é o exercício.</p>
 
     <hr>
     <h3>Ajustes</h3>
@@ -2110,10 +2348,9 @@ function montaAdulto(){
   $("#btSalvar").addEventListener("click", ()=>{
     S.nome = ($("#in-nome").value.trim() || "Nina");
     salvar(); SFX.acerto();
-    $("#ov-adulto").classList.remove("on");
-    $("#capa").innerHTML = `<div style="width:min(150px,34vw);margin:0 auto">${boneca("alegria")}</div>`;
-    if(etapaAtual >= 0 && $("#t-mapa").classList.contains("on")) montaMapa();
+    fechaAdulto(true);
   });
+  $("#btFechaAdulto").addEventListener("click", ()=>{ SFX.toque(); fechaAdulto(false); });
   const pintaVoz=()=>{
     const b=$("#btVozAdulto"); if(!b) return;
     b.textContent = S.voz ? "Voz ligada" : "Voz desligada";
@@ -2125,55 +2362,108 @@ function montaAdulto(){
     S.voz=!S.voz; salvar(); calar(); pintaVoz();
     if(S.voz) falar("Voz ligada!");
   });
+  /* dois toques para apagar: um toque só apagava todas as estrelas sem perguntar */
+  let armado = false, tArma = null;
   $("#btZerar").addEventListener("click", ()=>{
-    S.prog = [0,0,0,0,0,0]; salvar(); pintaArcoiris(true); montaMapa(); SFX.tentar();
-    $("#btZerar").textContent = "Progresso apagado ✓";
-    setTimeout(()=>{ $("#btZerar").textContent = "Apagar progresso"; }, 2200);
+    const b = $("#btZerar"); if(!b) return;
+    clearTimeout(tArma);
+    const volta = ()=>{ armado = false; const x = $("#btZerar"); if(x) x.textContent = "Apagar progresso"; };
+    if(!armado){
+      armado = true; b.textContent = "Toque de novo para apagar";
+      tArma = setTimeout(volta, 3500);
+      return;
+    }
+    armado = false;
+    S.prog = [0,0,0,0,0,0]; diplomaVisto = false;
+    salvar(); pintaArcoiris(true); montaMapa(); SFX.tentar();
+    b.textContent = "Progresso apagado ✓";
+    tArma = setTimeout(volta, 2200);
   });
 }
 
 /* ==========================================================
    12. CONTROLES GLOBAIS
+   O menu de jogos agora é o index.html (arquivo separado).
    ========================================================== */
+const MENU = "index.html";
+/* o index abre este arquivo com #adulto quando a engrenagem de lá é usada */
+const veioDoIndex = (location.hash === "#adulto");
+
+function desenhaCapa(){
+  $("#capa").innerHTML = `<div class="capa-fig">${boneca("alegria")}</div>`;
+}
+let antesAdulto = null;
+function abreAdulto(){
+  pausaCena();
+  antesAdulto = {nome:S.nome, vestido:S.vestido, pele:S.pele, cabelo:S.cabelo};
+  montaAdulto();
+  $("#ov-adulto").classList.add("on");
+  $("#folha-adulto").scrollTop = 0;
+}
+function fechaAdulto(salvou){
+  $("#ov-adulto").classList.remove("on");
+  calar();
+  /* fechou sem salvar: nome e cores voltam ao que eram */
+  if(!salvou && antesAdulto) Object.assign(S, antesAdulto);
+  antesAdulto = null;
+  if(veioDoIndex){ location.replace(MENU); return; }
+  desenhaCapa();
+  if($("#t-mapa").classList.contains("on")) montaMapa();
+  retomar();                               // redesenha a cena com o nome e as cores novas
+}
+
 montaTrilha(); montaArcoiris();
 $("#uni").innerHTML = unicornio();
-$("#capa").innerHTML = `<div style="width:min(150px,34vw);margin:0 auto">${boneca("alegria")}</div>`;
+desenhaCapa();
+tela("inicio");
 if(S.prog.some(p=>p>0)) $("#sub-inicio").textContent = "Seu arco-íris está esperando por você.";
 if(location.hash === "#mapa"){ audio(); setTimeout(irMapa, 60); }
-if(location.hash === "#hub"){ audio(); setTimeout(irHub, 60); }
+else if(veioDoIndex){ abreAdulto(); }
 
 $("#btJogar").addEventListener("click", ()=>{
   audio(); SFX.brilho();
-  setTimeout(irHub, 120);
+  irMapa();
 });
 $("#btCasa").addEventListener("click", ()=>{
-  SFX.toque(); calar();
-  /* sobe um nível: dentro do jogo volta ao mapa; no mapa volta ao hub */
-  if($("#t-mapa").classList.contains("on")) irHub(); else irMapa();
+  SFX.toque();
+  /* sobe um nível: dentro de uma etapa volta ao mapa; do mapa e da capa vai para o menu de jogos */
+  if($("#t-mapa").classList.contains("on") || $("#t-inicio").classList.contains("on")){
+    pausaCena();
+    location.href = MENU;
+  } else irMapa();
 });
-$("#btRepetir").addEventListener("click", ()=>{ if(ultimaFala) falar(ultimaFala); });
+$("#btRepetir").addEventListener("click", ()=>{
+  if(falaViva) return;                     // já está falando: não recomeça por cima
+  if($("#ov-respiro").classList.contains("on")){ if(ultimaFala) falar(ultimaFala); return; }
+  if(repete) repete();
+  else if(ultimaFala) falar(ultimaFala);
+});
 $("#btFlor").addEventListener("click", ()=>{ audio(); SFX.toque(); abreRespiro(); });
-$("#btSom").addEventListener("click", ()=>{
-  S.voz = !S.voz; salvar(); calar();
-  $("#btSom").classList.toggle("off", !S.voz);
-  $("#btSom").querySelector(".ondas").style.opacity = S.voz ? "1" : "0";
-  if(S.voz) falar("Voz ligada!");
-});
-$("#btSom").classList.toggle("off", !S.voz);
 
 /* portão do adulto: segurar 1,2 s */
 let tGate = null;
-const abreGate = ()=>{ montaAdulto(); $("#ov-adulto").classList.add("on"); calar(); };
-$("#btAdulto").addEventListener("pointerdown", ()=>{ tGate = setTimeout(abreGate, 1200); });
+const btAd = $("#btAdulto");
+btAd.addEventListener("pointerdown", ()=>{ clearTimeout(tGate); tGate = setTimeout(abreAdulto, 1200); });
 ["pointerup","pointerleave","pointercancel"].forEach(ev=>
-  $("#btAdulto").addEventListener(ev, ()=>clearTimeout(tGate)));
-$("#btAdulto").addEventListener("click", ()=>{
-  if(!$("#ov-adulto").classList.contains("on")) falar("Segure o botãozinho para chamar um adulto.");
+  btAd.addEventListener(ev, ()=>clearTimeout(tGate)));
+btAd.addEventListener("click", ()=>{
+  if(!$(".ov.on")) falar("Segure o botãozinho para chamar um adulto.");
 });
-$$(".ov").forEach(o=>o.addEventListener("click", e=>{ if(e.target === o){ o.classList.remove("on"); calar(); } }));
+/* tocar fora da folha fecha */
+$("#ov-respiro").addEventListener("click", e=>{ if(e.target === e.currentTarget) fechaRespiro(); });
+$("#ov-adulto").addEventListener("click", e=>{ if(e.target === e.currentTarget) fechaAdulto(false); });
 
-document.addEventListener("visibilitychange", ()=>{ if(document.hidden){ calar(); rumorDesliga(); } });
-addEventListener("contextmenu", e=>{ if(e.target.closest(".flor-bt")) e.preventDefault(); });
+/* saiu do app (tela apagou, trocou de aplicativo): pausa; voltou: retoma a cena */
+document.addEventListener("visibilitychange", ()=>{
+  if(document.hidden){
+    if($("#ov-respiro").classList.contains("on")) fechaRespiro();
+    pausaCena();
+  } else retomar();
+});
+/* segurar o dedo (engrenagem, flor) não pode abrir o menu do Android */
+addEventListener("contextmenu", e=>{ if(!e.target.closest("input,textarea")) e.preventDefault(); });
+/* sem zoom por pinça nem por dois toques (Safari ignora o user-scalable) */
+["gesturestart","gesturechange"].forEach(ev=>addEventListener(ev, e=>e.preventDefault()));
 })();
 </script>
 </body>

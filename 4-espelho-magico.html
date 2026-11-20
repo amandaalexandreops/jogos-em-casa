@@ -5,6 +5,7 @@
 <meta name="theme-color" content="#2E86AB">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icone-192.png">
+<link rel="icon" href="icone-192.png">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no">
 <meta name="theme-color" content="#F3ECFF">
@@ -30,7 +31,8 @@
 html,body{height:100%}
 body{background:var(--ceu-2);color:var(--tinta);
   font-family:"Nunito",ui-rounded,system-ui,-apple-system,sans-serif;
-  -webkit-font-smoothing:antialiased;overflow:hidden;-webkit-tap-highlight-color:transparent}
+  -webkit-font-smoothing:antialiased;overflow:hidden;-webkit-tap-highlight-color:transparent;
+  touch-action:manipulation;overscroll-behavior:none;-webkit-touch-callout:none;position:fixed;inset:0}
 button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;touch-action:manipulation}
 svg{display:block}
 #app{position:fixed;inset:0;display:flex;flex-direction:column;user-select:none;-webkit-user-select:none;overflow:hidden}
@@ -40,25 +42,30 @@ svg{display:block}
 .brilhos{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.6}
 h1,h2{font-family:"Baloo 2",ui-rounded,system-ui,sans-serif;font-weight:800;line-height:1.05;text-wrap:balance}
 
-.topo{position:relative;z-index:20;display:flex;align-items:center;gap:9px;padding:max(9px,env(safe-area-inset-top)) 14px 3px}
-.mini{width:46px;height:46px;flex:none;display:grid;place-items:center;background:var(--nuvem);border-radius:50%;
+.topo{position:relative;z-index:20;display:flex;align-items:center;gap:9px;
+  padding:max(9px,env(safe-area-inset-top)) max(12px,env(safe-area-inset-right)) 3px max(12px,env(safe-area-inset-left))}
+.mini{width:56px;height:56px;flex:none;display:grid;place-items:center;background:var(--nuvem);border-radius:50%;
   box-shadow:0 5px 0 rgba(58,43,82,.14),0 10px 20px rgba(58,43,82,.08);transition:transform .1s,box-shadow .1s}
 .mini:active{transform:translateY(4px);box-shadow:0 1px 0 rgba(58,43,82,.14)}
 .mini[hidden]{display:none}
 .espaco{flex:1}
 /* o pote de tesouros vai enchendo */
-.pote{position:relative;width:44px;height:52px;flex:none}
+.pote{width:60px;height:60px;flex:none;display:grid;place-items:center;transition:transform .1s}
+.pote:active{transform:scale(.92)}
+.pote .jarro{position:relative;display:block;width:42px;height:48px;margin-top:6px}
+.pote .vidro,.pote .cheio,.pote .tampa{display:block}
+.nega{animation:treme .35s}
 .pote .vidro{position:absolute;inset:0;border:3px solid rgba(58,43,82,.28);border-radius:8px 8px 14px 14px;background:rgba(255,255,255,.5);overflow:hidden}
 .pote .cheio{position:absolute;left:0;right:0;bottom:0;background:linear-gradient(0deg,#FFC93C,#FF7EB6);transition:height .8s cubic-bezier(.2,.8,.3,1)}
 .pote .tampa{position:absolute;top:-6px;left:4px;right:4px;height:9px;border-radius:5px;background:#C9873F}
 .pote b{position:absolute;inset:0;display:grid;place-items:center;font-family:"Baloo 2",sans-serif;font-size:15px;color:#fff;text-shadow:0 2px 3px rgba(58,43,82,.5)}
 
 main{position:relative;z-index:10;flex:1;display:flex;min-height:0;padding:0 11px}
-.tela{display:none;flex-direction:column;align-items:center;justify-content:center;width:100%;max-width:780px;margin:auto;gap:clamp(8px,1.8vh,16px);min-height:0}
-.tela.on{display:flex;animation:entra .45s cubic-bezier(.2,.9,.3,1.2) both}
-@keyframes entra{from{opacity:0;transform:translateY(18px) scale(.97)}to{opacity:1;transform:none}}
+.tela{display:none;flex-direction:column;align-items:center;justify-content:center;width:100%;max-width:780px;margin:auto;gap:clamp(8px,1.8vh,16px);min-height:0;max-height:100%}
+.tela.on{display:flex;animation:entra .22s ease-out both}
+@keyframes entra{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:none}}
 .cartao{background:var(--nuvem);border-radius:32px;padding:clamp(12px,2.4vh,22px);box-shadow:var(--sombra);
-  width:100%;max-height:100%;overflow-y:auto;display:flex;flex-direction:column;align-items:center;gap:clamp(8px,1.8vh,16px)}
+  width:100%;max-height:100%;overflow-y:auto;overscroll-behavior:contain;touch-action:pan-y;display:flex;flex-direction:column;align-items:center;gap:clamp(8px,1.8vh,16px)}
 
 .tit-jogo{font-size:clamp(30px,8vw,60px);text-align:center;letter-spacing:-1px}
 .tit-jogo .l1{display:block;color:var(--c6)}
@@ -73,7 +80,11 @@ main{position:relative;z-index:10;flex:1;display:flex;min-height:0;padding:0 11p
 .bt:active{transform:translateY(7px);box-shadow:0 1px 0 var(--dark)}
 .bt.gigante{font-size:clamp(24px,6.4vw,38px);padding:21px 50px}
 .bt.claro{--bg:#fff;--dark:rgba(58,43,82,.16);color:var(--tinta)}
-.bt.pequeno{font-size:15px;padding:10px 20px}
+.bt.pequeno{font-size:16px;padding:10px 20px;min-height:56px}
+.bt{min-height:56px}
+.botoes{display:flex;gap:10px 12px;flex-wrap:wrap;justify-content:center;padding-bottom:9px}
+#acaoEsp{min-height:68px;display:grid;place-items:start center}
+.estrelinhas{display:flex;gap:6px}
 .pulsa{animation:pulsa 1.7s ease-in-out infinite}
 @keyframes pulsa{0%,100%{transform:scale(1)}50%{transform:scale(1.055)}}
 .esperando{animation:pulsa 1.3s ease-in-out infinite}
@@ -118,10 +129,11 @@ main{position:relative;z-index:10;flex:1;display:flex;min-height:0;padding:0 11p
 
 /* ---------- eu já sei fazer ---------- */
 .conquistas{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(6px,1.8vw,11px);width:100%}
-.conq{display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 4px;border-radius:20px;
+.conq{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:8px 4px;border-radius:20px;min-height:76px;
   background:var(--creme);box-shadow:0 6px 0 rgba(58,43,82,.09);transition:.2s}
 .conq svg{width:clamp(34px,9vw,50px);height:auto}
 .conq span{font-size:clamp(9.5px,2.4vw,12px);font-weight:800;color:var(--tinta-2);text-align:center;line-height:1.1}
+.conq:active{transform:translateY(4px);box-shadow:0 2px 0 rgba(58,43,82,.09)}
 .conq.feita{background:#DFF7EA;box-shadow:0 6px 0 #9EDCC0;animation:comemora .55s}
 @keyframes comemora{0%{transform:scale(1)}45%{transform:scale(1.16) rotate(-4deg)}100%{transform:scale(1)}}
 
@@ -129,11 +141,13 @@ main{position:relative;z-index:10;flex:1;display:flex;min-height:0;padding:0 11p
 .nuvem-ruim{position:relative;width:min(230px,58vw);transition:transform .5s,opacity .5s}
 .nuvem-ruim.encolhe{transform:scale(.3) translateY(-30px);opacity:0}
 .nuvem-ruim.cresce{transform:scale(1.12)}
-.nuvem-ruim .diz{position:absolute;inset:0;display:grid;place-items:center;padding:14% 16% 22%;
-  font-family:"Baloo 2",sans-serif;font-weight:700;font-size:clamp(13px,3.4vw,19px);color:#5A5170;text-align:center;line-height:1.15}
-.escudos{display:flex;flex-direction:column;gap:8px;width:100%}
+.nuvem-ruim .diz{position:absolute;inset:0;display:grid;place-items:center;padding:38% 15% 22%;
+  font-family:"Baloo 2",sans-serif;font-weight:700;font-size:clamp(13px,3.4vw,19px);color:#fff;text-shadow:0 1px 2px rgba(58,43,82,.45);text-align:center;line-height:1.1}
+.escudos{display:flex;flex-direction:column;gap:10px;width:100%;padding-bottom:7px;transition:opacity .2s}
+/* enquanto a nuvem fala, as respostas esperam (e mostram que estão esperando) */
+.escudos.dormindo{opacity:.45;pointer-events:none}
 .escudo{display:flex;align-items:center;gap:11px;background:#fff;border:4px solid rgba(58,43,82,.09);
-  border-radius:22px;padding:10px 14px;text-align:left;box-shadow:0 6px 0 rgba(58,43,82,.10);transition:.15s}
+  border-radius:22px;padding:10px 14px;min-height:60px;text-align:left;box-shadow:0 6px 0 rgba(58,43,82,.10);transition:.15s}
 .escudo:active{transform:translateY(5px);box-shadow:0 1px 0 rgba(58,43,82,.10)}
 .escudo b{font-family:"Baloo 2",sans-serif;font-weight:800;font-size:clamp(15px,3.9vw,20px);color:var(--tinta);flex:1}
 .escudo .em{font-size:clamp(22px,5.6vw,30px)}
@@ -143,12 +157,15 @@ main{position:relative;z-index:10;flex:1;display:flex;min-height:0;padding:0 11p
 
 /* ---------- pote de tesouros ---------- */
 .tesouros{display:flex;flex-wrap:wrap;gap:9px;justify-content:center}
-.tesouro{display:flex;align-items:center;gap:8px;background:#fff;border-radius:999px;padding:9px 16px;
+.tesouro{display:flex;align-items:center;gap:8px;background:#fff;border-radius:999px;padding:9px 16px;min-height:56px;text-align:left;
   box-shadow:0 5px 0 rgba(58,43,82,.10);font-family:"Baloo 2",sans-serif;font-weight:800;
   font-size:clamp(13px,3.4vw,17px);color:var(--c6);transition:.15s}
 .tesouro:active{transform:translateY(4px);box-shadow:0 1px 0 rgba(58,43,82,.10)}
+.tesouro.toca{animation:comemora .5s}
+.tesouros{padding-bottom:6px}
 
-.guia{position:relative;z-index:20;display:flex;align-items:flex-end;gap:8px;padding:4px 12px max(9px,env(safe-area-inset-bottom))}
+.guia{position:relative;z-index:20;display:flex;align-items:center;gap:8px;
+  padding:4px max(12px,env(safe-area-inset-right)) max(9px,env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left))}
 .uni{width:clamp(58px,13.5vw,86px);flex:none;animation:flutua 3.4s ease-in-out infinite}
 @keyframes flutua{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-8px) rotate(1.5deg)}}
 .balao{flex:1;min-height:48px;background:var(--nuvem);border-radius:22px 22px 22px 6px;padding:10px 14px;
@@ -160,6 +177,42 @@ main{position:relative;z-index:10;flex:1;display:flex;min-height:0;padding:0 11p
 #fx{position:fixed;inset:0;z-index:60;pointer-events:none}
 @media (prefers-reduced-motion:reduce){ .uni,.pulsa,.gira,.brilhos{animation:none!important} *{transition-duration:.01ms!important} }
 @media (max-height:620px){ .uni{width:54px} .balao{min-height:40px;padding:7px 11px} }
+/* ---------- celular deitado: botões nas laterais, palco no meio, em duas colunas ---------- */
+@media (orientation:landscape) and (max-height:520px){
+  #app{flex-direction:row}
+  .topo{flex-direction:column;gap:6px;
+    padding:max(8px,env(safe-area-inset-top)) 4px max(8px,env(safe-area-inset-bottom)) max(10px,env(safe-area-inset-left))}
+  .guia{flex-direction:column;justify-content:flex-end;gap:8px;
+    padding:max(8px,env(safe-area-inset-top)) max(10px,env(safe-area-inset-right)) max(8px,env(safe-area-inset-bottom)) 4px}
+  .balao{display:none}
+  .uni{width:56px}
+  main{padding:max(8px,env(safe-area-inset-top)) 8px max(10px,env(safe-area-inset-bottom))}
+  .tela{gap:8px}
+  .cartao{padding:10px 14px 12px;gap:6px;border-radius:26px}
+  .moldura{width:calc((100vh - 118px)*.56)!important;padding:7px;border-radius:26px}
+  .moldura .dentro{border-radius:20px;padding:4px}
+  #t-inicio.on{display:grid;grid-template-columns:auto auto;justify-content:center;align-items:center;column-gap:30px;row-gap:8px}
+  #t-inicio .moldura{grid-row:1 / span 3}
+  #t-inicio .tit-jogo{font-size:clamp(30px,11vh,46px);align-self:end}
+  #t-inicio .sub{max-width:26ch}
+  #t-inicio .bt{align-self:start;justify-self:center;padding:14px 44px;font-size:28px}
+  .palco-ritual,#palco-festa{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:18px;row-gap:6px;
+    align-items:center;justify-items:center;align-content:center}
+  .palco-ritual .moldura,#palco-festa .moldura{grid-column:1;grid-row:1 / span 7}
+  .palco-ritual>:not(.moldura),#palco-festa>:not(.moldura){grid-column:2}
+  .frase-espelho{font-size:clamp(20px,7.4vh,30px)}
+  #acaoEsp{min-height:64px}
+  .palco-conq .conquistas{gap:8px}
+  .conq{min-height:0;height:calc((100vh - 128px)/2);max-height:104px}
+  .conq svg{width:clamp(30px,11vh,46px)}
+  .palco-nuvem{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);column-gap:16px;row-gap:4px;
+    align-items:center;justify-items:center;align-content:center}
+  .palco-nuvem>*{grid-column:1}
+  .palco-nuvem .escudos{grid-column:2;grid-row:1 / span 3;gap:9px;padding-bottom:7px}
+  .nuvem-ruim{width:min(200px,46vh)}
+  .escudo{min-height:56px;padding:7px 14px}
+  .diploma{padding:8px 16px;border-width:4px}
+}
 </style>
 </head>
 <body>
@@ -170,10 +223,10 @@ main{position:relative;z-index:10;flex:1;display:flex;min-height:0;padding:0 11p
       <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="#3A2B52" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
     </button>
     <div class="espaco"></div>
-    <div class="pote" id="pote" aria-label="pote de tesouros">
-      <div class="vidro"><div class="cheio" id="poteCheio" style="height:0%"></div></div>
-      <div class="tampa"></div><b id="poteN"></b>
-    </div>
+    <button class="pote" id="pote" aria-label="Abrir o pote de tesouros">
+      <span class="jarro"><span class="vidro"><span class="cheio" id="poteCheio" style="height:0%"></span></span>
+      <span class="tampa"></span><b id="poteN"></b></span>
+    </button>
     <div class="espaco"></div>
     <button class="mini" id="btSom" hidden aria-label="voz"><svg width="1" height="1"><path class="ondas"/></svg></button>
     <button class="mini" id="btHub" aria-label="Mapa dos jogos">
@@ -200,7 +253,7 @@ main{position:relative;z-index:10;flex:1;display:flex;min-height:0;padding:0 11p
   <footer class="guia">
     <div class="uni" id="uni"></div>
     <div class="balao vazio" id="balao"><p id="fala"></p></div>
-    <button class="mini" id="btRepetir" aria-label="Ouvir de novo" style="align-self:center">
+    <button class="mini" id="btRepetir" aria-label="Ouvir de novo">
       <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="#3A2B52" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11a8 8 0 10-2.3 5.7"/><path d="M20 4v7h-7"/></svg>
     </button>
   </footer>
@@ -313,8 +366,10 @@ function tocaClipe(trecho, op){
   return new Promise(res=>{
     const nome = window.VOZ[trecho];
     const a = new Audio("voz/" + nome + ".m4a");
-    let pronto = false;
-    const fim = ()=>{ if(!pronto){ pronto = true; if(clipeAtual===a) clipeAtual=null; res(); } };
+    let pronto = false, teto = null;
+    const fim = ()=>{ if(!pronto){ pronto = true; clearTimeout(teto); if(clipeAtual===a) clipeAtual=null; res(); } };
+    /* quem interrompe o clipe também solta quem estava esperando ele acabar */
+    a._fim = fim;
     a.onended = fim;
     a.onerror = fim;
     try{
@@ -326,11 +381,14 @@ function tocaClipe(trecho, op){
     clipeAtual = a;
     const pr = a.play();
     if(pr && pr.catch) pr.catch(()=>fim());
-    setTimeout(fim, 16000);
+    teto = setTimeout(fim, 16000);
   });
 }
+/* pause() não dispara "ended": sem chamar o _fim, a fala interrompida ficava
+   presa até 16 s e só então a sequência antiga continuava, na tela errada */
 function pararClipe(){
-  if(clipeAtual){ try{ clipeAtual.pause(); clipeAtual.currentTime = 0; }catch(e){} clipeAtual = null; }
+  const a = clipeAtual;
+  if(a){ clipeAtual = null; try{ a.pause(); }catch(e){} if(a._fim) a._fim(); }
 }
 
 /* ---- DESTRAVA DA VOZ ------------------------------------------
@@ -407,7 +465,8 @@ async function esperaVozes(){
 /* CAIXA ALTA sai robótica na síntese — só o balão mostra maiúscula */
 function humaniza(t){
   return String(t)
-    .replace(/\b[A-ZÁÂÃÀÉÊÍÓÔÕÚÜÇ]{2,}\b/g, m => m.charAt(0)+m.slice(1).toLowerCase())
+    /* \b não enxerga letra acentuada ("JÁ" passava direto e ficava sem clipe) */
+    .replace(/(?<![A-Za-zÀ-ÿ])[A-ZÁÂÃÀÉÊÍÓÔÕÚÜÇ]{2,}(?![A-Za-zÀ-ÿ])/g, m => m.charAt(0)+m.slice(1).toLowerCase())
     .replace(/\s+/g, " ").trim();
 }
 function pedacos(t){
@@ -430,7 +489,8 @@ function partesComNome(t){
   t.split(nome).forEach((frag,i)=>{
     if(i) saida.push(nome);
     frag=frag.trim().replace(/^[,;]\s*/,"");
-    if(frag) pedacos(frag).forEach(c=>saida.push(c));
+    /* sobra só de pontuação (o "." depois do nome) não é fala */
+    if(frag && /[A-Za-zÀ-ÿ0-9]/.test(frag)) pedacos(frag).forEach(c=>saida.push(c));
   });
   return saida.length?saida:pedacos(t);
 }
@@ -484,34 +544,43 @@ function dizNavegador(trecho, op){
 function diz(trecho, op){
   op = op || {};
   if(temClipe(trecho)) return tocaClipe(trecho, op);
+  if(!temSintese) return espera(300);
   return dizNavegador(trecho, op);
 }
 
 let falaId = 0;
+const temSintese = "speechSynthesis" in window;
+/* devolve true se falou até o fim, false se foi interrompida.
+   Fala nova corta a anterior na hora (nunca enfileira). */
 async function falar(txt, opts){
   opts = opts || {};
+  const meu = ++falaId;
+  pararClipe();
   if(opts.balao !== false) mostraBalao(txt);
   const limpo = humaniza(txt);
-  if(!S.voz || !("speechSynthesis" in window) || !limpo){
+  const chunks = limpo ? partesComNome(limpo) : [];
+  const tudoGravado = chunks.every(temClipe);
+  /* com clipe gravado não precisa da síntese do navegador para falar */
+  if(!S.voz || !limpo || (!tudoGravado && !temSintese)){
     await espera(opts.pausa === undefined ? 600 : opts.pausa);
-    return;
+    return meu === falaId;
   }
-  const chunks = partesComNome(limpo);
-  if(!chunks.every(temClipe)) await esperaVozes();
-  const meu = ++falaId;
+  if(!tudoGravado) await esperaVozes();
+  if(meu !== falaId) return false;
   try{
-    if(speechSynthesis.speaking || speechSynthesis.pending){
+    if(temSintese && (speechSynthesis.speaking || speechSynthesis.pending)){
       speechSynthesis.cancel();
-      await espera(140);
+      if(!tudoGravado) await espera(140);
     }
   }catch(e){}
-  for(const trecho of chunks){
-    if(meu !== falaId) return;
-    await diz(trecho, opts);
-    if(meu !== falaId) return;
-    await espera(opts.gap === undefined ? 170 : opts.gap);
+  for(let i=0;i<chunks.length;i++){
+    if(meu !== falaId) return false;
+    await diz(chunks[i], opts);
+    if(meu !== falaId) return false;
+    if(i < chunks.length-1) await espera(opts.gap === undefined ? 90 : opts.gap);
   }
-  await espera(opts.pausa === undefined ? 420 : opts.pausa);
+  await espera(opts.pausa === undefined ? 160 : opts.pausa);
+  return meu === falaId;
 }
 function calar(){ falaId++; pararClipe(); try{ speechSynthesis.cancel(); }catch(e){} }
 
@@ -766,20 +835,39 @@ const MODULOS=[
 /* ==========================================================
    NAVEGAÇÃO
    ========================================================== */
-let mod=0, idx=0, ocupado=false;
+let mod=0, idx=0, tinhaTudoAoEntrar=false;
+/* "vez": cada tela ou etapa nova ganha um número. Toda sequência
+   com espera (fala, pausa) guarda o seu e desiste se o número já
+   mudou — assim nenhuma fala atrasada toca na tela errada.
+   "refaz": o que o botão de ouvir de novo (e a volta ao app) refaz. */
+let vez=0, refaz=null;
+function novaVez(){ refaz=null; return ++vez; }
 function tela(id){
   $$(".tela").forEach(t=>t.classList.remove("on"));
-  $("#t-"+id).classList.add("on");
+  const t=$("#t-"+id); t.classList.add("on");
+  const c=t.querySelector(".cartao"); if(c) c.scrollTop=0;
+  $("#app").dataset.tela=id;
   $("#btCasa").hidden=(id==="inicio"||id==="mapa");
 }
+/* duas frases aparecem em dois módulos; o pote enche contando sem repetir */
+function totalTesouros(){
+  const s=new Set();
+  CORAGEM.forEach(a=>s.add(a.f)); AFIRMACOES.forEach(a=>s.add(a.f));
+  CONQUISTAS.forEach(c=>s.add(typeof c.fala==="function"?c.fala():c.fala));
+  NUVENS.forEach(n=>s.add(n.certa));
+  return s.size;
+}
 function pintaPote(){
-  const n=TESOUROS.length, alvo=CORAGEM.length+AFIRMACOES.length+CONQUISTAS.length+NUVENS.length;
+  const n=TESOUROS.length, alvo=totalTesouros();
   $("#poteCheio").style.height=Math.min(100, n/alvo*100)+"%";
   $("#poteN").textContent=n||"";
 }
 function guardaTesouro(t){
   if(TESOUROS.indexOf(t)<0){ TESOUROS.push(t); salvar(); pintaPote(); }
 }
+/* o progresso só sobe: brincar de novo não apaga a estrela nem tranca o módulo seguinte */
+function marcaProg(m,v){ if(!(PROG[m]>=v)){ PROG[m]=v; salvar(); } }
+const tudoFeito=()=>PROG.every(p=>p>=1);
 function liberados(){ let n=1; for(let i=0;i<4;i++){ if(PROG[i]>=1) n=i+2; } return Math.min(n,4); }
 function montaMapa(){
   const lib=liberados();
@@ -793,18 +881,21 @@ function montaMapa(){
     </button>`;
   }).join("");
   $$("#modulos .mod").forEach(b=>b.addEventListener("click",()=>{
-    const i=+b.dataset.i; SFX.toque(); calar();
-    if(i>=liberados()) return falar("Esse ainda está fechado. Termina o de antes que ele abre!");
+    const i=+b.dataset.i; SFX.toque();
+    if(i>=liberados()){
+      b.classList.remove("nega"); void b.offsetWidth; b.classList.add("nega");
+      return falar("Esse ainda está fechado. Termina o de antes que ele abre!");
+    }
     abreModulo(i);
   }));
 }
 function irMapa(){
-  calar(); montaMapa(); pintaPote(); tela("mapa");
-  const f=PROG.filter(p=>p>=1).length;
-  falar(f>=4 ? "Você já fez tudo! Pode brincar de novo no que quiser." : "O que a gente vai fazer?");
+  novaVez(); calar(); montaMapa(); pintaPote(); tela("mapa");
+  falar(tudoFeito() ? "Você já fez tudo! Pode brincar de novo no que quiser." : "O que a gente vai fazer?");
 }
 function abreModulo(i){
-  mod=i; idx=0; PROG[i]=0; salvar(); tela("jogo");
+  novaVez(); calar();
+  mod=i; idx=0; tinhaTudoAoEntrar=tudoFeito(); tela("jogo");
   if(i===0 || i===1) telaAfirmacao();
   else if(i===2) telaConquistas();
   else telaNuvem();
@@ -824,15 +915,16 @@ function telaAfirmacao(){
 function desenhaRitual(){
   const L=listaAtual(), a=L[idx];
   const passos=[["👀","Olha"],["🤝","Juntas"],["⭐","Só você"]];
+  $("#palco").className="cartao palco-ritual";
   $("#palco").innerHTML=
     `<div class="ritual">${passos.map((pp,i)=>
        `<div class="passo ${i===ritual?"on":""} ${i<ritual?"feito":""}"><span>${pp[0]}</span>${pp[1]}</div>`).join("")}</div>
-     ${(a.cena&&ritual===0)?`<p class="gesto-dica">${a.cena()}</p>`:""}
+     ${(a.cena&&ritual===0)?`<p class="gesto-dica cena">${a.cena()}</p>`:""}
      <div class="moldura ${ritual>0?"brilha":""}"><div class="dentro" id="molduraFig">${boneca("alegria","",ritual===0?"normal":a.pose)}</div></div>
      <p class="frase-espelho">${a.f}</p>
      <p class="gesto-dica">${a.gesto}</p>
      <div id="acaoEsp"></div>
-     <div style="display:flex;gap:6px">${L.map((_,i)=>
+     <div class="estrelinhas">${L.map((_,i)=>
        `<svg style="width:22px" viewBox="0 0 100 100"><path d="M50,5 l12,29 31,2 -24,20 8,30 -27,-17 -27,17 8,-30 -24,-20 31,-2z" fill="${i<idx?CORES[i%6]:"rgba(58,43,82,.14)"}"/></svg>`).join("")}</div>`;
   rodaRitual();
 }
@@ -841,74 +933,91 @@ function fazGesto(pose){
   d.innerHTML=boneca("alegria","",pose);
   d.classList.remove("fazGesto"); void d.offsetWidth; d.classList.add("fazGesto");
 }
+/* narra a etapa atual; o botão só aparece no fim da fala (ela ouve antes
+   de repetir) e depois o jogo espera o toque — nunca avança por tempo */
 async function rodaRitual(){
+  const v=novaVez(); refaz=rodaRitual;
   const a=listaAtual()[idx];
-  ocupado=true;
   if(ritual===0){
-    if(a.cena) await falar(a.cena());
-    else await falar("Olha só a " + N() + ".");
-    fazGesto(a.pose); SFX.brilho(); await espera(400);
-    await falar(a.f,{rate:.78});
+    await falar(a.cena ? a.cena() : "Olha só a " + N() + ".");
+    if(v!==vez) return;
+    fazGesto(a.pose); SFX.brilho();
+    await espera(200); if(v!==vez) return;
+    await falar(a.f,{rate:.78}); if(v!==vez) return;
     botaoRitual("AGORA NÓS DUAS","#9B6BF2","#7A4CD1");
   } else if(ritual===1){
     fazGesto(a.pose);
-    await falar("Agora nós duas juntas!");
-    await espera(300);
-    await falar(a.f,{rate:.6});
+    await falar("Agora nós duas juntas!"); if(v!==vez) return;
+    await falar(a.f,{rate:.6}); if(v!==vez) return;
     botaoRitual("AGORA SÓ EU","#FF9A3D","#DB7620");
   } else {
     fazGesto(a.pose);
-    await falar("Agora só você! Eu espero.");
+    await falar("Agora só você! Eu espero."); if(v!==vez) return;
     botaoRitual("EU FALEI!","#3FCB8E","#2AA372",true);
   }
-  ocupado=false;
 }
 function botaoRitual(txt,bg,dark,esperando){
-  const el=$("#acaoEsp"); if(!el) return;
+  const el=$("#acaoEsp"); if(!el || $("#btRit")) return;
   el.innerHTML=`<button class="bt ${esperando?"esperando":""}" id="btRit" style="--bg:${bg};--dark:${dark}">${txt}</button>`;
-  $("#btRit").addEventListener("click",async ()=>{
-    if(ocupado) return;
+  $("#btRit").addEventListener("click",()=>{
     SFX.toque();
     if(ritual<2){ ritual++; desenhaRitual(); return; }
-    ocupado=true;
-    SFX.estrela(); SFX.acerto(); confete(44,innerWidth/2,innerHeight*.55);
-    await falar(sorteia(PARABENS));
-    const L=listaAtual();
-    guardaTesouro(L[idx].f);
-    idx++; PROG[mod]=idx/L.length; salvar();
-    ocupado=false; telaAfirmacao();
-  });
+    concluiFrase();
+  },{once:true});
+}
+async function concluiFrase(){
+  const v=novaVez(); refaz=telaAfirmacao;
+  const L=listaAtual();
+  /* grava primeiro: sair no meio do parabéns não perde o tesouro */
+  guardaTesouro(L[idx].f);
+  idx++; marcaProg(mod, idx/L.length);
+  const el=$("#acaoEsp"); if(el) el.innerHTML="";
+  SFX.estrela(); SFX.acerto(); confete(44,innerWidth/2,innerHeight*.55);
+  await falar(sorteia(PARABENS)); if(v!==vez) return;
+  telaAfirmacao();
 }
 
 /* ---------- MÓDULO 3: EU JÁ SEI FAZER ---------- */
-async function telaConquistas(){
+function telaConquistas(){
   const feitas=new Set();
+  const falaDe=c=>typeof c.fala==="function"?c.fala():c.fala;
+  $("#palco").className="cartao palco-conq";
   $("#palco").innerHTML=
     `<p class="pergunta">Aperta tudo o que você <b style="color:var(--c4)">já sabe</b> fazer!</p>
      <div class="conquistas" id="conqs">
        ${CONQUISTAS.map((c,i)=>`<button class="conq" data-i="${i}">
           ${typeof c.ic==="function"?c.ic():(c.ic||IC.letra())}<span>${c.nome}</span></button>`).join("")}
-     </div>
-     <div id="acaoConq"></div>`;
+     </div>`;
+  const fecha=async ()=>{
+    const v=novaVez(); refaz=fecha;
+    await falar(`Olha quanta coisa você já sabe fazer, ${N()}! Tudo isso você não sabia antes e aprendeu.`);
+    if(v!==vez) return;
+    festa();
+  };
+  const abre=async ()=>{
+    const v=novaVez(); refaz=abre;
+    await falar("Agora o melhor de todos: a lista do que você JÁ sabe fazer."); if(v!==vez) return;
+    await falar("Aperta cada figurinha e fala comigo: eu já sei!");
+  };
   $$("#conqs .conq").forEach(b=>b.addEventListener("click",async ()=>{
-    const i=+b.dataset.i;
-    if(feitas.has(i)) return;
+    const i=+b.dataset.i, c=CONQUISTAS[i], f=falaDe(c);
+    const completo=()=>feitas.size>=CONQUISTAS.length;
+    if(feitas.has(i)){
+      /* já marcada: só ouve de novo (menos no fecho, para não cortar a festa) */
+      if(completo()) return;
+      novaVez(); SFX.toque(); falar(f,{rate:.85}); return;
+    }
     feitas.add(i);
-    calar(); SFX.acerto(); SFX.brilho();
+    const v=novaVez(); if(completo()) refaz=fecha;
+    SFX.acerto(); SFX.brilho();
     b.classList.add("feita");
     confete(16,innerWidth/2,innerHeight*.5);
-    const c=CONQUISTAS[i];
-    const f=typeof c.fala==="function"?c.fala():c.fala;
     guardaTesouro(f);
-    PROG[2]=feitas.size/CONQUISTAS.length; salvar();
-    await falar(f,{rate:.85});
-    if(feitas.size>=CONQUISTAS.length){
-      await falar(`Olha quanta coisa você já sabe fazer, ${N()}! Tudo isso você não sabia antes e aprendeu.`);
-      festa();
-    }
+    marcaProg(2, feitas.size/CONQUISTAS.length);
+    await falar(f,{rate:.85}); if(v!==vez) return;
+    if(completo()) fecha();
   }));
-  await falar("Agora o melhor de todos: a lista do que você JÁ sabe fazer.");
-  await falar("Aperta cada figurinha e fala comigo: eu já sei!");
+  abre();
 }
 
 /* ---------- MÓDULO 4: A NUVEM CHATINHA ---------- */
@@ -916,51 +1025,62 @@ function nuvemSVG(){
   return `<svg viewBox="0 0 240 150"><g fill="#9E99AE">
     <ellipse cx="120" cy="72" rx="82" ry="46"/><ellipse cx="62" cy="82" rx="46" ry="34"/>
     <ellipse cx="178" cy="82" rx="46" ry="34"/><ellipse cx="120" cy="46" rx="52" ry="34"/></g>
-    <g fill="#3A2B52"><circle cx="96" cy="66" r="6"/><circle cx="144" cy="66" r="6"/></g>
-    <path d="M100,96 q20,-12 40,0" stroke="#3A2B52" stroke-width="5" fill="none" stroke-linecap="round"/>
+    <g fill="#3A2B52"><circle cx="102" cy="34" r="5.5"/><circle cx="138" cy="34" r="5.5"/></g>
+    <path d="M108,54 q12,-9 24,0" stroke="#3A2B52" stroke-width="4.5" fill="none" stroke-linecap="round"/>
     <g stroke="#5B8FD6" stroke-width="6" stroke-linecap="round" opacity=".8">
       <path d="M74,118 l-5,16"/><path d="M120,120 l-5,20"/><path d="M166,118 l-5,16"/></g></svg>`;
 }
-async function telaNuvem(){
+function telaNuvem(){
   if(idx>=NUVENS.length) return festa();
   const n=NUVENS[idx];
+  let resolvida=false, comIntro=(idx===0);
+  $("#palco").className="cartao palco-nuvem";
   $("#palco").innerHTML=
     `<p class="pergunta">A nuvem chatinha voltou…</p>
      <div class="nuvem-ruim" id="nuvem">${nuvemSVG()}<div class="diz">${n.diz}</div></div>
      <p class="gesto-dica">O que você responde pra ela?</p>
-     <div class="escudos" id="escudos">
+     <div class="escudos dormindo" id="escudos">
        ${n.ops.map((o,i)=>`<button class="escudo" data-i="${i}"><span class="em">${o.em}</span><b>${o.t}</b></button>`).join("")}
      </div>`;
+  const esc=$("#escudos"), nv=$("#nuvem");
+  /* as respostas acordam assim que a nuvem termina de falar */
+  const conta=async ()=>{
+    const v=novaVez(); refaz=conta;
+    if(comIntro){
+      await falar("Às vezes vem um pensamento chatinho, que fala coisa ruim pra gente."); if(v!==vez) return;
+      await falar("Ele não manda em você. A gente pode responder!"); if(v!==vez) return;
+      comIntro=false;
+    }
+    await falar(`A nuvem disse: ${n.diz}`,{rate:.8}); if(v!==vez) return;
+    esc.classList.remove("dormindo");
+    await falar("O que você responde pra ela?");
+  };
   $$("#escudos .escudo").forEach(b=>b.addEventListener("click",async ()=>{
-    if(ocupado) return;
+    if(resolvida || esc.classList.contains("dormindo")) return;
     const o=n.ops[+b.dataset.i];
-    calar(); SFX.toque();
+    SFX.toque();
     if(o.ok){
-      ocupado=true;
-      b.classList.add("certa");
-      await falar(o.t,{rate:.82});
-      $("#nuvem").classList.add("encolhe");
-      SFX.pum(); SFX.brilho(); confete(40,innerWidth/2,innerHeight*.45);
-      await falar(n.depois);
+      resolvida=true;
+      const v=novaVez(); refaz=telaNuvem;
+      /* grava primeiro: sair no meio da comemoração não perde o tesouro */
       guardaTesouro(n.certa);
-      idx++; PROG[3]=idx/NUVENS.length; salvar();
-      ocupado=false; telaNuvem();
+      idx++; marcaProg(3, idx/NUVENS.length);
+      b.classList.add("certa");
+      await falar(o.t,{rate:.82}); if(v!==vez) return;
+      nv.classList.add("encolhe");
+      SFX.pum(); SFX.brilho(); confete(40,innerWidth/2,innerHeight*.45);
+      await falar(n.depois); if(v!==vez) return;
+      telaNuvem();
     } else {
+      novaVez(); refaz=conta;
       b.classList.add("fraca");
-      const nv=$("#nuvem"); nv.classList.add("cresce");
+      nv.classList.remove("cresce"); void nv.offsetWidth; nv.classList.add("cresce");
       setTimeout(()=>nv.classList.remove("cresce"),600);
       SFX.tentar();
       falar("Hmm… a nuvem continua aí. Que tal falar uma coisa bem forte pra ela?");
     }
   }));
-  ocupado=true;
-  if(idx===0){
-    await falar("Às vezes vem um pensamento chatinho, que fala coisa ruim pra gente.");
-    await falar("Ele não manda em você. A gente pode responder!");
-  }
-  await falar(`A nuvem disse: ${n.diz}`,{rate:.8});
-  await falar("O que você responde pra ela?");
-  ocupado=false;
+  conta();
 }
 
 /* ==========================================================
@@ -973,22 +1093,25 @@ const FESTA_FALA=[
  "Você aprendeu a responder pro pensamento chatinho. Ele não manda em você."
 ];
 async function festa(){
-  PROG[mod]=1; salvar(); pintaPote();
+  const v=novaVez();
   const i=mod;
+  marcaProg(i,1); pintaPote();
   tela("festa"); SFX.nivel(); confete(90);
   $("#palco-festa").innerHTML=
     `<div class="moldura brilha" style="width:min(150px,36vw)"><div class="dentro">${boneca("alegria","","cima")}</div></div>
      <p class="pergunta" style="color:${MODULOS[i].cor}">Você conseguiu!</p>
-     <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center">
+     <div class="botoes">
        <button class="bt claro pequeno" id="btDeNovo">Fazer de novo</button>
        <button class="bt" id="btSeguir" style="--bg:${MODULOS[i].cor};--dark:${MODULOS[i].esc}">Continuar</button>
      </div>`;
-  $("#btDeNovo").addEventListener("click",()=>{SFX.toque(); calar(); abreModulo(i);});
-  $("#btSeguir").addEventListener("click",()=>{SFX.toque(); calar(); PROG.every(p=>p>=1)?oPote():irMapa();});
-  await falar(FESTA_FALA[i]);
-  if(PROG.every(p=>p>=1)) setTimeout(oPote,200);
+  $("#btDeNovo").addEventListener("click",()=>{SFX.toque(); abreModulo(i);});
+  $("#btSeguir").addEventListener("click",()=>{SFX.toque(); tudoFeito()?oPote():irMapa();});
+  await falar(FESTA_FALA[i]); if(v!==vez) return;
+  /* o pote só abre sozinho na vez em que ela completa os quatro */
+  if(!tinhaTudoAoEntrar && tudoFeito()){ tinhaTudoAoEntrar=true; oPote(); }
 }
 async function oPote(){
+  const v=novaVez(); calar();
   tela("final"); SFX.fanfarra(); confete(160);
   $("#palco-final").innerHTML=
     `<div class="diploma">
@@ -996,36 +1119,60 @@ async function oPote(){
        <p class="nomezao">${S.nome}</p>
        <p class="grande" style="font-size:clamp(18px,4.4vw,26px);margin-top:8px;color:var(--tinta-2)">Aperta cada um para ouvir de novo</p>
      </div>
-     <div class="tesouros" id="tesouros">
-       ${TESOUROS.map((t,i)=>`<button class="tesouro" data-i="${i}">✨ ${t}</button>`).join("")}
-     </div>
-     <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center">
+     <div class="tesouros" id="tesouros"></div>
+     <div class="botoes">
        <button class="bt claro pequeno" id="btVoltarMapa">Brincar de novo</button>
        <button class="bt pequeno" id="btHub4">Mapa dos jogos</button>
      </div>`;
-  $$("#tesouros .tesouro").forEach(b=>b.addEventListener("click",()=>{
-    calar(); SFX.estrela();
-    falar(TESOUROS[+b.dataset.i],{rate:.85});
-  }));
-  $("#btVoltarMapa").addEventListener("click",()=>{SFX.toque(); calar(); irMapa();});
+  /* textContent: o que vem do armazenamento nunca vira HTML */
+  TESOUROS.forEach(t=>{
+    const b=document.createElement("button");
+    b.className="tesouro"; b.textContent="✨ "+t;
+    b.addEventListener("click",()=>{
+      novaVez(); SFX.estrela();
+      b.classList.remove("toca"); void b.offsetWidth; b.classList.add("toca");
+      falar(t,{rate:.85});
+    });
+    $("#tesouros").appendChild(b);
+  });
+  $("#btVoltarMapa").addEventListener("click",()=>{SFX.toque(); irMapa();});
   $("#btHub4").addEventListener("click",paraHub);
-  await falar(`Olha o seu pote, ${S.nome}! Cada frase aí dentro é sua.`);
+  await falar(`Olha o seu pote, ${S.nome}! Cada frase aí dentro é sua.`); if(v!==vez) return;
   await falar("Quando você estiver tristinha, pode voltar aqui e ouvir todas de novo.");
 }
 
 /* ==========================================================
    CONTROLES
    ========================================================== */
-const paraHub=()=>{ calar(); location.href="1-vulcao-e-arcoiris.html#hub"; };
+const paraHub=()=>{ novaVez(); calar(); location.href="index.html"; };
 $("#uni").innerHTML=unicornio();
 $("#capa").innerHTML=boneca("alegria","","cima");
 pintaPote();
 if(TESOUROS.length) $("#sub-inicio").textContent=`Você já tem ${TESOUROS.length} tesouros no pote.`;
-$("#btJogar").addEventListener("click",()=>{ audio(); SFX.brilho(); setTimeout(irMapa,120); });
-$("#btCasa").addEventListener("click",()=>{SFX.toque(); calar(); irMapa();});
+$("#btJogar").addEventListener("click",()=>{ audio(); SFX.brilho(); irMapa(); });
+$("#btCasa").addEventListener("click",()=>{SFX.toque(); irMapa();});
 $("#btHub").addEventListener("click",paraHub);
-$("#btRepetir").addEventListener("click",()=>{ if(ultimaFala) falar(ultimaFala); });
-document.addEventListener("visibilitychange",()=>{ if(document.hidden) calar(); });
+/* o pote lá em cima abre os tesouros já guardados, a qualquer hora */
+$("#pote").addEventListener("click",()=>{
+  audio();
+  if(!TESOUROS.length || $("#t-final").classList.contains("on")){
+    SFX.toque();
+    const p=$("#pote"); p.classList.remove("nega"); void p.offsetWidth; p.classList.add("nega");
+    return;
+  }
+  oPote();
+});
+$("#btRepetir").addEventListener("click",()=>{
+  SFX.toque();
+  if(refaz) refaz(); else if(ultimaFala) falar(ultimaFala);
+});
+/* saiu do app: cala e para a sequência; voltou: refaz a etapa em que estava */
+document.addEventListener("visibilitychange",()=>{
+  if(document.hidden){ vez++; calar(); }
+  else if(refaz) refaz();
+});
+/* dedo parado no botão não abre menu de contexto no Android */
+document.addEventListener("contextmenu",e=>e.preventDefault());
 })();
 </script>
 </body>

@@ -5,6 +5,7 @@
 <meta name="theme-color" content="#2E86AB">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icone-192.png">
+<link rel="icon" href="icone-192.png">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no">
 <meta name="theme-color" content="#FFF3DE">
@@ -29,20 +30,22 @@
   --sombra:0 14px 34px rgba(58,43,82,.16);
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%}
+html,body{height:100%;overscroll-behavior:none;touch-action:manipulation}
 body{background:var(--ceu-2);color:var(--tinta);
   font-family:"Nunito",ui-rounded,system-ui,-apple-system,sans-serif;
-  -webkit-font-smoothing:antialiased;overflow:hidden;-webkit-tap-highlight-color:transparent}
+  -webkit-font-smoothing:antialiased;overflow:hidden;-webkit-tap-highlight-color:transparent;
+  -webkit-touch-callout:none}
 button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;touch-action:manipulation}
 svg{display:block}
-#app{position:fixed;inset:0;display:flex;flex-direction:column;user-select:none;-webkit-user-select:none;overflow:hidden}
+#app{position:fixed;inset:0;display:flex;flex-direction:column;user-select:none;-webkit-user-select:none;overflow:hidden;
+  padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right)}
 .ceu{position:absolute;inset:0;z-index:0;
   background:radial-gradient(120% 70% at 50% 0%,#fff 0%,transparent 55%),
              linear-gradient(178deg,var(--ceu-1) 0%,var(--ceu-2) 45%,var(--ceu-3) 100%)}
 h1,h2{font-family:"Baloo 2",ui-rounded,system-ui,sans-serif;font-weight:800;line-height:1.06;text-wrap:balance}
 
 .topo{position:relative;z-index:20;display:flex;align-items:center;gap:9px;padding:max(9px,env(safe-area-inset-top)) 14px 3px}
-.mini{width:46px;height:46px;flex:none;display:grid;place-items:center;background:var(--nuvem);border-radius:50%;
+.mini{width:56px;height:56px;flex:none;display:grid;place-items:center;background:var(--nuvem);border-radius:50%;
   box-shadow:0 5px 0 rgba(58,43,82,.14),0 10px 20px rgba(58,43,82,.08);transition:transform .1s,box-shadow .1s}
 .mini:active{transform:translateY(4px);box-shadow:0 1px 0 rgba(58,43,82,.14)}
 .mini.off{opacity:.42}
@@ -55,7 +58,7 @@ h1,h2{font-family:"Baloo 2",ui-rounded,system-ui,sans-serif;font-weight:800;line
 .letras b.on{background:var(--cor);color:#fff;transform:translateY(-3px) rotate(-3deg);box-shadow:0 4px 0 rgba(58,43,82,.15)}
 
 main{position:relative;z-index:10;flex:1;display:flex;min-height:0;padding:0 10px}
-.tela{display:none;flex-direction:column;align-items:center;justify-content:center;width:100%;max-width:820px;margin:auto;gap:clamp(7px,1.6vh,15px);min-height:0}
+.tela{display:none;flex-direction:column;align-items:center;justify-content:center;width:100%;max-width:820px;margin:auto;max-height:100%;gap:clamp(7px,1.6vh,15px);min-height:0}
 .tela.on{display:flex;animation:entra .4s cubic-bezier(.2,.9,.3,1.2) both}
 @keyframes entra{from{opacity:0;transform:translateY(16px) scale(.97)}to{opacity:1;transform:none}}
 .cartao{background:var(--nuvem);border-radius:32px;padding:clamp(11px,2.2vh,20px);box-shadow:var(--sombra);
@@ -74,21 +77,25 @@ main{position:relative;z-index:10;flex:1;display:flex;min-height:0;padding:0 10p
 .bt:active{transform:translateY(7px);box-shadow:0 1px 0 var(--dark)}
 .bt.gigante{font-size:clamp(24px,6.4vw,38px);padding:21px 50px}
 .bt.claro{--bg:#fff;--dark:rgba(58,43,82,.16);color:var(--tinta)}
-.bt.pequeno{font-size:14.5px;padding:9px 17px}
+.bt.pequeno{font-size:15.5px;padding:9px 20px;min-height:56px}
 .pulsa{animation:pulsa 1.7s ease-in-out infinite}
 @keyframes pulsa{0%,100%{transform:scale(1)}50%{transform:scale(1.055)}}
 
 .carta{position:relative;background:#fff;border:7px solid var(--c1);border-radius:22px;padding:7px;
-  width:min(178px,36vw);aspect-ratio:1;box-shadow:0 12px 0 rgba(58,43,82,.13),0 20px 34px rgba(58,43,82,.16);
-  transform:rotate(-1.6deg);overflow:hidden}
-.carta svg,.carta img{width:100%;height:100%;border-radius:15px;object-fit:contain;background:#FFFBF4;display:block}
+  width:min(190px,44vw,23vh);aspect-ratio:1;box-shadow:0 12px 0 rgba(58,43,82,.13),0 20px 34px rgba(58,43,82,.16);
+  transform:rotate(-1.6deg);overflow:hidden;flex:none}
+/* pointer-events:none: segurar o dedo na foto não abre o menu "baixar imagem" do Android */
+.carta svg,.carta img{width:100%;height:100%;border-radius:15px;object-fit:contain;background:#FFFBF4;display:block;
+  pointer-events:none;-webkit-user-drag:none}
 .carta.pula{animation:pulinho .65s}
 @keyframes pulinho{0%,100%{transform:rotate(-1.6deg)}35%{transform:rotate(2deg) translateY(-16px) scale(1.07)}}
 
-.bandeja{display:flex;gap:clamp(4px,1.3vw,8px);justify-content:center;flex-wrap:wrap;
+.bandeja{display:flex;gap:clamp(4px,1.3vw,8px);justify-content:center;flex-wrap:nowrap;
+  width:min(100%,calc(var(--n,4)*68px + 18px));
   background:linear-gradient(180deg,var(--roxo),var(--roxo-esc));padding:clamp(8px,2vw,13px);border-radius:20px;
   box-shadow:inset 0 -6px 0 rgba(0,0,0,.16),0 10px 24px rgba(58,43,82,.2)}
-.casa{width:clamp(38px,9.5vw,60px);aspect-ratio:1;border-radius:11px;background:rgba(0,0,0,.22);
+/* as casinhas encolhem juntas: palavra de 7 letras cabe numa linha só em 360px */
+.casa{flex:1 1 0;min-width:0;aspect-ratio:1;border-radius:11px;background:rgba(0,0,0,.22);
   box-shadow:inset 0 3px 8px rgba(0,0,0,.3);display:grid;place-items:center;transition:.2s}
 .casa.alvo{background:rgba(255,255,255,.28);box-shadow:inset 0 0 0 4px #FFD23F;animation:pulsa 1.4s ease-in-out infinite}
 .casa .peca{width:100%;height:100%;border-radius:11px;background:#FFFDF6;display:grid;place-items:center;
@@ -97,7 +104,7 @@ main{position:relative;z-index:10;flex:1;display:flex;min-height:0;padding:0 10p
 @keyframes encaixa{0%{transform:scale(1.5) translateY(-24px);opacity:0}100%{transform:none;opacity:1}}
 
 .cubos{display:flex;gap:clamp(5px,1.7vw,10px);justify-content:center;flex-wrap:wrap;width:100%}
-.cubo{width:clamp(42px,10.5vw,64px);aspect-ratio:1;border-radius:13px;background:#FFFDF6;border:3px solid #EFE4D0;
+.cubo{width:clamp(56px,14.5vw,68px);aspect-ratio:1;touch-action:none;border-radius:13px;background:#FFFDF6;border:3px solid #EFE4D0;
   display:grid;place-items:center;font-family:"Baloo 2",sans-serif;font-weight:800;
   font-size:clamp(22px,5.8vw,38px);line-height:1;
   box-shadow:0 7px 0 #D8CDBA,0 12px 18px rgba(58,43,82,.12);transition:transform .1s,box-shadow .1s,opacity .3s}
@@ -109,7 +116,7 @@ main{position:relative;z-index:10;flex:1;display:flex;min-height:0;padding:0 10p
 .cubo.dica{animation:dica 1s ease-in-out infinite;border-color:#FFD23F}
 @keyframes dica{0%,100%{transform:none;box-shadow:0 7px 0 #D8CDBA}50%{transform:translateY(-8px) scale(1.06);box-shadow:0 14px 0 #D8CDBA,0 0 0 5px rgba(255,210,63,.55)}}
 .ferramentas{display:flex;gap:clamp(10px,3vw,18px);justify-content:center;align-items:center}
-.fer{width:clamp(52px,13vw,66px);aspect-ratio:1;border-radius:50%;background:#fff;
+.fer{width:clamp(56px,13vw,66px);aspect-ratio:1;touch-action:none;border-radius:50%;background:#fff;
   display:grid;place-items:center;font-size:clamp(24px,6vw,32px);line-height:1;
   box-shadow:0 6px 0 rgba(58,43,82,.13),0 12px 20px rgba(58,43,82,.10);
   transition:transform .1s,box-shadow .1s}
@@ -144,6 +151,50 @@ main{position:relative;z-index:10;flex:1;display:flex;min-height:0;padding:0 10p
 #fx{position:fixed;inset:0;z-index:60;pointer-events:none}
 @media (prefers-reduced-motion:reduce){ .uni,.pulsa{animation:none!important} *{transition-duration:.01ms!important} }
 @media (max-height:600px){ .uni{width:52px} .balao{min-height:38px;padding:6px 10px} }
+
+/* o palco do jogo é uma grade: em pé, tudo empilhado; deitado, figura à esquerda */
+#palco{display:grid;grid-template-columns:minmax(0,1fr);justify-items:center;align-items:center;
+  grid-template-areas:"perg" "carta" "bandeja" "cubos" "fer" "cont"}
+#palco .pergunta{grid-area:perg} #palco .carta{grid-area:carta} #palco .bandeja{grid-area:bandeja}
+#palco .cubos{grid-area:cubos} #palco .ferramentas{grid-area:fer} #palco .contador{grid-area:cont}
+.selo-nivel{width:min(160px,40vw,30vh);flex:none}
+/* tela baixa em pé (Chrome com barra de endereço): aperta para não passar por baixo do rodapé */
+@media (max-height:700px) and (orientation:portrait){
+  #palco .pergunta,#palco .contador{display:none}
+  #palco .carta{width:min(190px,44vw,17vh)}
+  #palco{gap:7px}
+}
+
+/* celular deitado: pouca altura, então tudo vai para o lado */
+@media (orientation:landscape) and (max-height:540px){
+  .topo{padding-top:max(4px,env(safe-area-inset-top));padding-bottom:0}
+  .guia{padding-top:0;padding-bottom:max(4px,env(safe-area-inset-bottom))}
+  .uni{width:46px;animation:none}
+  .balao{min-height:34px;padding:4px 10px}
+  .cartao{padding:8px 12px;gap:6px;border-radius:24px}
+  #palco{grid-template-columns:auto minmax(0,1fr);column-gap:14px;row-gap:6px;
+    grid-template-areas:"carta bandeja" "carta cubos" "fer cubos"}
+  #palco .pergunta,#palco .contador{display:none}
+  #palco .carta{width:min(150px,30vh);border-width:5px;padding:4px}
+  .bandeja{padding:6px;width:min(100%,calc(var(--n,4)*52px + 8px))}
+  .cubo{width:56px}
+  .cubos{gap:7px}
+  .fer{width:56px}
+  .ferramentas{gap:8px}
+  #t-inicio.on{display:grid;grid-template-columns:auto auto;column-gap:26px;row-gap:4px;justify-content:center;
+    grid-template-areas:"capa tit" "capa sub" "capa bt"}
+  #t-inicio .carta{grid-area:capa;width:min(178px,46vh)}
+  #t-inicio .tit-jogo{grid-area:tit;font-size:clamp(26px,11vh,48px)}
+  #t-inicio .sub{grid-area:sub}
+  #t-inicio .bt{grid-area:bt;justify-self:center;font-size:24px;padding:12px 40px}
+  .niveis{grid-template-columns:repeat(6,1fr);gap:7px}
+  .ilha{padding:7px 3px 6px;gap:3px}
+  .bolha{width:clamp(40px,15vh,56px)}
+  #t-mapa .pergunta{font-size:17px}
+  #palco-festa{flex-direction:row;flex-wrap:wrap;justify-content:center}
+  .selo-nivel{width:min(120px,28vh)}
+  .diploma{padding:8px 16px}
+}
 </style>
 </head>
 <body>
@@ -183,7 +234,7 @@ main{position:relative;z-index:10;flex:1;display:flex;min-height:0;padding:0 10p
   <footer class="guia">
     <div class="uni" id="uni"></div>
     <div class="balao vazio" id="balao"><p id="fala"></p></div>
-    <button class="mini" id="btRepetir" aria-label="Ouvir de novo" style="align-self:center">
+    <button class="mini" id="btRepetir" aria-label="Ouvir de novo" style="align-self:center;touch-action:none">
       <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="#3A2B52" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11a8 8 0 10-2.3 5.7"/><path d="M20 4v7h-7"/></svg>
     </button>
   </footer>
@@ -263,14 +314,19 @@ const SFX={
    (pasta "voz/"). Isso não depende da síntese do navegador, que
    estava muda aqui. Se faltar algum clipe, cai na voz do navegador.
    ------------------------------------------------------------------ */
-let clipeAtual = null;
+let clipeAtual = null, fimClipe = null;
 function temClipe(t){ return !!(window.VOZ && window.VOZ[t]); }
 function tocaClipe(trecho, op){
   return new Promise(res=>{
     const nome = window.VOZ[trecho];
     const a = new Audio("voz/" + nome + ".m4a");
-    let pronto = false;
-    const fim = ()=>{ if(!pronto){ pronto = true; if(clipeAtual===a) clipeAtual=null; res(); } };
+    let pronto = false, teto = null;
+    const fim = ()=>{
+      if(pronto) return;
+      pronto = true; clearTimeout(teto);
+      if(clipeAtual===a){ clipeAtual=null; fimClipe=null; }
+      res();
+    };
     a.onended = fim;
     a.onerror = fim;
     try{
@@ -279,14 +335,33 @@ function tocaClipe(trecho, op){
       a.playbackRate = Math.max(.55, Math.min(1.5, r));
     }catch(e){}
     pararClipe();
-    clipeAtual = a;
+    clipeAtual = a; fimClipe = fim;
     const pr = a.play();
     if(pr && pr.catch) pr.catch(()=>fim());
-    setTimeout(fim, 16000);
+    teto = setTimeout(fim, 16000);
   });
 }
+/* CORREÇÃO: pausar um clipe não dispara "ended", então quem esperava por ele
+   ficava pendurado até 16 s e depois continuava a fala antiga na tela errada.
+   Agora parar o clipe também avisa na hora quem estava esperando. */
 function pararClipe(){
-  if(clipeAtual){ try{ clipeAtual.pause(); clipeAtual.currentTime = 0; }catch(e){} clipeAtual = null; }
+  const a = clipeAtual, f = fimClipe;
+  clipeAtual = null; fimClipe = null;
+  if(a){ try{ a.onended = null; a.onerror = null; a.pause(); }catch(e){} }
+  if(f) f();
+}
+/* deixa os clipes das próximas falas já carregados (resposta mais rápida no celular) */
+const aquecidos = {};
+function aquece(textos){
+  try{
+    textos.forEach(t=>{
+      partesComNome(humaniza(t)).concat([t]).forEach(c=>{
+        if(!temClipe(c) || aquecidos[c]) return;
+        const a = new Audio(); a.preload = "auto"; a.src = "voz/" + window.VOZ[c] + ".m4a";
+        aquecidos[c] = a;
+      });
+    });
+  }catch(e){}
 }
 
 /* ---- DESTRAVA DA VOZ ------------------------------------------
@@ -386,7 +461,9 @@ function partesComNome(t){
   t.split(nome).forEach((frag,i)=>{
     if(i) saida.push(nome);
     frag=frag.trim().replace(/^[,;]\s*/,"");
-    if(frag) pedacos(frag).forEach(c=>saida.push(c));
+    /* CORREÇÃO: sobra só de pontuação ("!" depois do nome) não tem clipe e
+       caía na voz do navegador, que aqui é muda e acendia o aviso de erro */
+    if(frag && /[0-9A-Za-zÀ-ÿ]/.test(frag)) pedacos(frag).forEach(c=>saida.push(c));
   });
   return saida.length?saida:pedacos(t);
 }
@@ -437,39 +514,79 @@ function dizNavegador(trecho, op){
   });
 }
 
+const temSintese = "speechSynthesis" in window;
 function diz(trecho, op){
   op = op || {};
   if(temClipe(trecho)) return tocaClipe(trecho, op);
+  /* sem clipe e sem síntese: segue em silêncio em vez de dar erro */
+  if(!temSintese) return espera(Math.min(900, 250+trecho.length*30));
   return dizNavegador(trecho, op);
 }
 
+/* falar() devolve true se a fala foi até o fim e false se foi interrompida
+   (toque novo, troca de tela, outra fala). Quem encadeia falas PRECISA
+   olhar esse retorno, senão a sequência antiga continua na tela errada.
+   A fala nova toma a vez na hora: corta a anterior, nunca enfileira. */
 let falaId = 0;
 async function falar(txt, opts){
   opts = opts || {};
+  const meu = ++falaId;
+  pararClipe();
   if(opts.balao !== false) mostraBalao(txt);
   const limpo = humaniza(txt);
-  if(!S.voz || !("speechSynthesis" in window) || !limpo){
+  if(!S.voz || !limpo){
     await espera(opts.pausa === undefined ? 600 : opts.pausa);
-    return;
+    return meu === falaId;
   }
   const chunks = partesComNome(limpo);
-  if(!chunks.every(temClipe)) await esperaVozes();
-  const meu = ++falaId;
+  if(!chunks.every(temClipe) && temSintese){
+    await esperaVozes();
+    if(meu !== falaId) return false;
+  }
   try{
-    if(speechSynthesis.speaking || speechSynthesis.pending){
+    if(temSintese && (speechSynthesis.speaking || speechSynthesis.pending)){
       speechSynthesis.cancel();
       await espera(140);
     }
   }catch(e){}
-  for(const trecho of chunks){
-    if(meu !== falaId) return;
-    await diz(trecho, opts);
-    if(meu !== falaId) return;
-    await espera(opts.gap === undefined ? 170 : opts.gap);
+  for(let i=0;i<chunks.length;i++){
+    if(meu !== falaId) return false;
+    await diz(chunks[i], opts);
+    if(meu !== falaId) return false;
+    if(i < chunks.length-1) await espera(opts.gap === undefined ? 170 : opts.gap);
   }
+  if(meu !== falaId) return false;
   await espera(opts.pausa === undefined ? 420 : opts.pausa);
+  return meu === falaId;
+}
+/* um trecho só (palavra, letra), com a mesma regra de interrupção do falar() */
+async function dizSo(trecho, op){
+  const meu = ++falaId;
+  pararClipe();
+  if(!S.voz) return true;
+  await diz(trecho, op);
+  return meu === falaId;
 }
 function calar(){ falaId++; pararClipe(); try{ speechSynthesis.cancel(); }catch(e){} }
+
+/* toque imediato: reage no encostar do dedo (pointerdown), sem esperar o
+   "click" — que o Android cancela quando o dedo escorrega um pouquinho.
+   O click continua valendo para mouse/teclado, sem contar duas vezes. */
+function aoTocar(el, fn){
+  let ult = 0;
+  el.addEventListener("pointerdown", e=>{
+    if(e.button > 0) return;
+    ult = Date.now(); fn(e);
+  });
+  /* dedo demorado: o click só chega depois de soltar, então conta a partir daí */
+  const solta = ()=>{ if(ult) ult = Date.now(); };
+  el.addEventListener("pointerup", solta);
+  el.addEventListener("pointercancel", solta);
+  el.addEventListener("click", e=>{
+    if(Date.now() - ult < 700) return;
+    fn(e);
+  });
+}
 
 
 /* --- desenhos das palavras que não têm foto --- */
@@ -564,7 +681,11 @@ function laco(){
 
 /* diz a palavra letra por letra */
 async function soletra(p){
-  for(const l of p.split("")){ await diz(l,{rate:.7}); await espera(190); }
+  for(const l of p.split("")){
+    if(!(await dizSo(l,{rate:.7}))) return false;
+    await espera(150);
+  }
+  return true;
 }
 
 /* ==========================================================
@@ -585,7 +706,7 @@ const ARTIGO = {SOL:"um",MAR:"o",RIO:"um",LUA:"a",OVO:"um",BOLA:"uma",PATO:"um",
   CENOURA:"uma",TESOURA:"uma"};
 function figura(p){
   return COM_FOTO.indexOf(p) >= 0
-    ? `<img src="imagens/${p}.jpg" alt="">`
+    ? `<img src="imagens/${p}.jpg" alt="" draggable="false">`
     : (DES[p] || DES.BOLA);
 }
 
@@ -611,6 +732,11 @@ const MARCO = "LETRAS";
    ========================================================== */
 let nivel=0, indice=0, lista=[], travado=false;
 let palavra="", pos=0, errosNaCasa=0, primeiraDoNivel=true;
+/* "rodada" muda a cada troca de tela ou de palavra. Toda sequência com espera
+   guarda o número e desiste se ele mudou: nada de fala ou troca de palavra
+   atrasada aparecendo depois que a criança já saiu dali. */
+let rodada=0;
+const ULTIMAS={};   /* palavras da última vez em cada nível, para não repetir logo em seguida */
 
 function tela(id){
   $$(".tela").forEach(t=>t.classList.remove("on"));
@@ -636,13 +762,13 @@ function montaMapa(){
     </button>`;
   }).join("");
   $$("#niveis .ilha").forEach(b=>b.addEventListener("click",()=>{
-    const i=+b.dataset.n; SFX.toque(); calar();
+    const i=+b.dataset.n; SFX.toque();
     if(i>=liberados()) return falar("Esse ainda está trancado. Termina o de antes que ele abre!");
     abreNivel(i);
   }));
 }
 function irMapa(){
-  calar(); nivel=-1;
+  calar(); nivel=-1; rodada++; travado=false;
   montaMapa(); pintaMarco(); tela("mapa");
   const f=PROG.filter(p=>p>=1).length;
   falar(f===0 ? "Escolhe por onde começar!"
@@ -650,10 +776,22 @@ function irMapa(){
       : "Muito bem! Qual é o próximo?");
 }
 function abreNivel(i){
-  nivel=i; indice=0; PROG[i]=0; salvar(); pintaMarco();
+  /* CORREÇÃO: jogar de novo um nível já ganho apagava a estrela (e a letra) dele */
+  nivel=i; indice=0; if(PROG[i]<1) PROG[i]=0; salvar(); pintaMarco();
   const N=NIVEIS[i];
   const pool = (POR_TAMANHO[N.tam]||[]).slice();
-  lista = embaralha(pool).slice(0, Math.min(N.n, pool.length));   /* sem repetir dentro do nível */
+  /* sem repetir dentro do nível; e, ao jogar de novo, primeiro as palavras
+     que não saíram da última vez */
+  const antes = ULTIMAS[i] || [];
+  const novas = embaralha(pool.filter(p=>antes.indexOf(p)<0));
+  const velhas = embaralha(pool.filter(p=>antes.indexOf(p)>=0));
+  lista = novas.concat(velhas).slice(0, Math.min(N.n, pool.length));
+  if(novas.length < lista.length){
+    lista = embaralha(lista);
+    /* a primeira de agora não pode ser a última que ela acabou de escrever */
+    if(lista.length>1 && lista[0]===antes[antes.length-1]) lista.push(lista.shift());
+  }
+  ULTIMAS[i] = lista.slice();
   primeiraDoNivel = true;
   tela("jogo");
   montaPalavra();
@@ -663,7 +801,9 @@ function abreNivel(i){
    6. MONTAR A PALAVRA
    ========================================================== */
 function montaPalavra(){
+  if(nivel<0) return;
   if(indice>=lista.length) return festa();
+  rodada++;
   palavra=lista[indice]; pos=0; errosNaCasa=0; travado=false;
   const N=NIVEIS[nivel];
   const letras=palavra.split("");
@@ -673,7 +813,7 @@ function montaPalavra(){
   $("#palco").innerHTML=`
     <p class="pergunta">Qual é a palavra?</p>
     <div class="carta" id="carta">${figura(palavra)}</div>
-    <div class="bandeja" id="bandeja">
+    <div class="bandeja" id="bandeja" style="--n:${letras.length}">
       ${letras.map((_,i)=>`<div class="casa ${i===0?"alvo":""}" data-i="${i}"></div>`).join("")}
     </div>
     <div class="cubos" id="cubos">
@@ -686,18 +826,34 @@ function montaPalavra(){
     </div>
     <p class="contador">${indice+1} de ${lista.length}</p>`;
 
-  $$("#cubos .cubo").forEach(b=>b.addEventListener("click",()=>tocaCubo(b)));
-  $("#btOuvir").addEventListener("click",()=>{ SFX.toque(); calar(); apresenta(false); });
-  $("#btDica").addEventListener("click",()=>{ SFX.toque(); calar(); daDica(true); });
-  $("#btApagar").addEventListener("click",()=>{ SFX.toque(); calar(); apaga(); });
+  $$("#cubos .cubo").forEach(b=>aoTocar(b,()=>tocaCubo(b)));
+  /* durante a comemoração (travado) as ferramentas não fazem nada */
+  aoTocar($("#btOuvir"),()=>{ if(travado) return; SFX.toque(); apresenta(false); });
+  aoTocar($("#btDica"),()=>{ if(travado) return; SFX.toque(); daDica(true); });
+  aoTocar($("#btApagar"),()=>{ if(travado) return; SFX.toque(); apaga(); });
+  /* tocar na figura também repete o nome dela */
+  aoTocar($("#carta"),()=>{ if(travado) return; SFX.toque(); apresenta(false); });
+  /* foto que não carregar vira desenho (quando existe) em vez de quadro quebrado */
+  const im=$("#carta img");
+  if(im && DES[palavra]){ const p=palavra; im.onerror=()=>{ if(palavra===p) $("#carta").innerHTML=DES[p]; }; }
+  /* adianta o carregamento do que vem logo depois */
+  const prox=lista[indice+1];
+  aquece(letras.concat([palavra, indice%2 ? "Isso!" : "Muito bem!"],
+    N.ajuda==="nomeia" ? letras.map(l=>`Agora o ${l}.`) : [],
+    prox ? [`Olha! É ${ARTIGO[prox]} ${prox}.`, `Vamos escrever ${prox}.`] : []));
+  if(prox && COM_FOTO.indexOf(prox)>=0){ const pre=new Image(); pre.src=`imagens/${prox}.jpg`; }
   apresenta(primeiraDoNivel);
   primeiraDoNivel=false;
 }
+/* cada fala só segue para a próxima se não foi interrompida: se a criança
+   já tocou num cubo (ou saiu da tela), a apresentação para ali mesmo */
 async function apresenta(comInstrucao){
-  if(comInstrucao) await falar("Olha a figura e monta a palavra com as letrinhas!");
-  await falar(`Olha! É ${ARTIGO[palavra]} ${palavra}.`);
-  await falar(`Vamos escrever ${palavra}.`);
-  if(pos===0) pedeProxima();
+  const r=rodada;
+  if(document.hidden) return;
+  if(comInstrucao && !(await falar("Olha a figura e monta a palavra com as letrinhas!",{pausa:120}))) return;
+  if(!(await falar(`Olha! É ${ARTIGO[palavra]} ${palavra}.`,{pausa:120}))) return;
+  if(!(await falar(`Vamos escrever ${palavra}.`,{pausa:100}))) return;
+  if(r===rodada && !travado) pedeProxima();
 }
 function alvoAtual(){ return palavra[pos]; }
 function marcaAlvo(){ $$("#bandeja .casa").forEach(c=>c.classList.toggle("alvo", +c.dataset.i===pos)); }
@@ -709,7 +865,7 @@ function marcaLampada(){
 }
 
 function tocaCubo(b){
-  if(travado || b.classList.contains("usado") || b.classList.contains("apagado")) return;
+  if(travado || nivel<0 || b.classList.contains("usado") || b.classList.contains("apagado")) return;
   calar();
   const L=b.dataset.l;
   if(L===alvoAtual()){
@@ -739,7 +895,7 @@ function tocaCubo(b){
 function pedeProxima(){
   const ajuda=NIVEIS[nivel].ajuda;
   if(ajuda==="nomeia") falar(`Agora o ${alvoAtual()}.`);          /* ela só procura */
-  else if(ajuda==="pisca") diz(palavra,{rate:.72});               /* ouve a palavra de novo */
+  else if(ajuda==="pisca") dizSo(palavra,{rate:.72});             /* ouve a palavra de novo */
 }
 function restauraApagados(){ $$("#cubos .cubo").forEach(c=>c.classList.remove("apagado")); }
 function apaga(){
@@ -750,7 +906,8 @@ function apaga(){
   casa.innerHTML=""; delete casa.dataset.cubo;
   const cubo=$(`#cubos .cubo[data-i="${idc}"]`);
   if(cubo) cubo.classList.remove("usado");
-  errosNaCasa=0; limpaDicas(); marcaAlvo();
+  /* a casa mudou: as letras apagadas valiam só para a casa anterior */
+  errosNaCasa=0; limpaDicas(); restauraApagados(); marcaLampada(); marcaAlvo();
   falar("Tirei. Pode tentar de novo!");
 }
 function daDica(falada){
@@ -763,17 +920,24 @@ function daDica(falada){
 /* --- terminou a palavra: comemora rápido e já vai pra próxima --- */
 async function completou(){
   travado=true;
+  const r=++rodada;
   SFX.acerto(); confete(36, innerWidth/2, innerHeight*.45);
   $("#carta").classList.add("pula");
   $$("#bandeja .casa").forEach(c=>c.classList.remove("alvo"));
-  /* a palavra inteira PRECISA ser ouvida — é o prêmio */
-  await diz(palavra,{rate:.8});
-  await espera(150);
-  falar(indice%2 ? "Muito bem!" : "Isso!");
+  /* o progresso é gravado já, antes das falas: sair no meio da comemoração
+     não perde a palavra. Nível já ganho continua ganho. */
+  const elogio = indice%2 ? "Muito bem!" : "Isso!";
   indice++;
-  PROG[nivel]=indice/lista.length; pintaMarco(); salvar();
-  await espera(900);
-  travado=false;
+  if(PROG[nivel]<1) PROG[nivel]=indice/lista.length;
+  pintaMarco(); salvar();
+  /* a palavra inteira PRECISA ser ouvida — é o prêmio */
+  /* teto de 4 s: clipe que engasgar para carregar não prende a criança na palavra */
+  await Promise.race([dizSo(palavra,{rate:.8}), espera(4000)]);
+  if(r!==rodada) return;             /* saiu da tela no meio: não monta nada */
+  await falar(elogio,{pausa:0});
+  if(r!==rodada) return;
+  await espera(180);
+  if(r!==rodada) return;
   montaPalavra();
 }
 
@@ -791,9 +955,10 @@ const FESTA_FALA=[
 async function festa(){
   PROG[nivel]=1; salvar(); pintaMarco();
   const i=nivel;
+  const r=++rodada;
   tela("festa"); SFX.nivel(); confete(90);
   $("#palco-festa").innerHTML=
-    `<svg style="width:min(160px,40vw)" viewBox="0 0 200 200">
+    `<svg class="selo-nivel" viewBox="0 0 200 200">
        <circle cx="100" cy="100" r="72" fill="${CORES[i%CORES.length]}"/>
        <circle cx="100" cy="100" r="58" fill="#fff" opacity=".22"/>
        <text x="100" y="128" font-family="Baloo 2, sans-serif" font-size="86" font-weight="800" fill="#fff" text-anchor="middle">${MARCO[i]}</text>
@@ -805,11 +970,13 @@ async function festa(){
      </div>`;
   $("#btDeNovo").addEventListener("click",()=>{SFX.toque(); calar(); abreNivel(i);});
   $("#btSeguir").addEventListener("click",()=>{SFX.toque(); calar(); PROG.every(p=>p>=1)?final():irMapa();});
-  await falar(FESTA_FALA[i]);
-  await falar(`E você ganhou a letra ${MARCO[i]}!`);
-  if(PROG.every(p=>p>=1)) setTimeout(final,200);
+  if(!(await falar(FESTA_FALA[i],{pausa:150}))) return;
+  if(!(await falar(`E você ganhou a letra ${MARCO[i]}!`,{pausa:300}))) return;
+  /* só vai sozinho para o final se ela ainda estiver nesta festa */
+  if(r===rodada && PROG.every(p=>p>=1)) final();
 }
 async function final(){
+  const r=++rodada;
   tela("final"); SFX.fanfarra(); confete(160);
   $("#palco-final").innerHTML=
     `<div class="diploma">
@@ -823,24 +990,29 @@ async function final(){
      </div>`;
   $("#btVoltarMapa").addEventListener("click",()=>{SFX.toque(); calar(); irMapa();});
   $("#btHub4").addEventListener("click",paraHub);
-  await falar(`Olha lá em cima, ${S.nome}!`);
-  await falar("Essas seis letras que você ganhou formam uma palavra.");
-  await soletra("LETRAS");
+  if(!(await falar(`Olha lá em cima, ${S.nome}!`,{pausa:150}))) return;
+  if(!(await falar("Essas seis letras que você ganhou formam uma palavra.",{pausa:150}))) return;
+  if(!(await soletra("LETRAS")) || r!==rodada) return;
   await falar("LETRAS! E agora você já sabe juntar todas elas.");
 }
 
 /* ==========================================================
    8. CONTROLES
    ========================================================== */
-const paraHub=()=>{ calar(); location.href="1-vulcao-e-arcoiris.html#hub"; };
+const paraHub=()=>{ calar(); rodada++; location.href="index.html"; };
 $("#uni").innerHTML=unicornio();
 $("#capa").innerHTML=figura("GATO");
 pintaMarco();
 if(PROG.some(p=>p>0)) $("#sub-inicio").textContent="Continue de onde você parou.";
-$("#btJogar").addEventListener("click",()=>{ audio(); SFX.brilho(); setTimeout(irMapa,120); });
+$("#btJogar").addEventListener("click",()=>{ audio(); SFX.brilho(); irMapa(); });
 $("#btCasa").addEventListener("click",()=>{SFX.toque(); calar(); irMapa();});
 $("#btHub").addEventListener("click",paraHub);
-$("#btRepetir").addEventListener("click",()=>{ if(ultimaFala) falar(ultimaFala); });
+aoTocar($("#btRepetir"),()=>{
+  if(travado) return;
+  /* no meio de uma palavra, "ouvir de novo" repete a figura e o pedido da letra */
+  if($("#t-jogo").classList.contains("on") && nivel>=0) return apresenta(false);
+  if(ultimaFala) falar(ultimaFala);
+});
 $("#btSom").addEventListener("click",()=>{
   S.voz=!S.voz; salvar(); calar();
   $("#btSom").classList.toggle("off",!S.voz);
@@ -848,7 +1020,13 @@ $("#btSom").addEventListener("click",()=>{
   if(S.voz) falar("Voz ligada!");
 });
 $("#btSom").classList.toggle("off",!S.voz);
-document.addEventListener("visibilitychange",()=>{ if(document.hidden) calar(); });
+document.addEventListener("visibilitychange",()=>{
+  if(document.hidden) return calar();
+  /* voltou para o jogo no meio de uma palavra: lembra qual é a figura */
+  if($("#t-jogo").classList.contains("on") && nivel>=0 && !travado) apresenta(false);
+});
+/* segurar o dedo não abre menu de contexto no Android */
+document.addEventListener("contextmenu",e=>e.preventDefault());
 })();
 </script>
 </body>

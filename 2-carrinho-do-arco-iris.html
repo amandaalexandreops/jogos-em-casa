@@ -5,19 +5,22 @@
 <meta name="theme-color" content="#2E86AB">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icone-192.png">
+<link rel="icon" href="icone-192.png">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no">
 <meta name="theme-color" content="#BFE9FF">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>O Carrinho do Arco-Íris</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;800&display=swap">
+<!-- a fonte carrega sem travar a primeira pintura (no celular sem internet a página abria em branco esperando) -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;800&display=swap" media="print" onload="this.media='all'">
 <style>
 /* ============================================================
    O CARRINHO DO ARCO-ÍRIS  —  jogo 2 da série
    Cocô = diversão pura. Raiva acumulada = o que atrapalha.
-   Setas do teclado (ou arrastar o dedo na pista). Ninguém perde.
+   Arrastar o dedo na pista (ou setas do teclado). Ninguém perde.
    ============================================================ */
 :root{
   --ceu-1:#BFE9FF; --ceu-2:#FFE3F2; --ceu-3:#FFF7DE;
@@ -29,7 +32,7 @@
   --sombra:0 14px 34px rgba(58,43,82,.16);
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%;overflow:hidden}
+html,body{height:100%;overflow:hidden;overscroll-behavior:none;touch-action:none}
 body{
   background:linear-gradient(178deg,var(--ceu-1) 0%,#DFF0FF 34%,var(--ceu-2) 76%,var(--ceu-3) 100%);
   color:var(--tinta);
@@ -43,9 +46,10 @@ img{max-width:100%}
 h1,h2{font-family:"Baloo 2",ui-rounded,system-ui,sans-serif;font-weight:800;line-height:1.06;text-wrap:balance}
 
 /* ---------- HUD ---------- */
-.hud{position:relative;z-index:5;display:flex;align-items:center;gap:8px;padding:max(8px,env(safe-area-inset-top)) 12px 8px}
+.hud{position:relative;z-index:5;display:flex;flex-wrap:wrap;align-items:center;gap:8px;
+  padding:max(8px,env(safe-area-inset-top)) max(10px,env(safe-area-inset-right)) 8px max(10px,env(safe-area-inset-left))}
 .placar{
-  background:var(--nuvem);border-radius:999px;padding:6px 16px;
+  background:var(--nuvem);border-radius:999px;padding:6px 14px 6px 10px;min-height:44px;
   box-shadow:0 5px 0 rgba(58,43,82,.13);display:flex;align-items:center;gap:8px;
 }
 .placar .n{
@@ -54,27 +58,28 @@ h1,h2{font-family:"Baloo 2",ui-rounded,system-ui,sans-serif;font-weight:800;line
 }
 .placar .n.pulo{animation:pulo .3s}
 @keyframes pulo{50%{transform:scale(1.32)}}
-.espaco{flex:1}
+.espaco{flex:1 1 0;min-width:0}
 
 .raivometro{
-  width:clamp(84px,24vw,160px);height:26px;border-radius:999px;
+  flex:1 1 60px;max-width:170px;min-width:60px;height:28px;border-radius:999px;
   background:var(--nuvem);box-shadow:0 5px 0 rgba(58,43,82,.13);
   overflow:hidden;position:relative;display:flex;align-items:center;
 }
 .raivometro i{
-  position:absolute;left:0;top:0;bottom:0;width:0%;
+  position:absolute;left:0;top:0;bottom:0;width:100%;
   background:linear-gradient(90deg,var(--c3),var(--c2) 45%,var(--c1));
-  transition:width .25s;
+  transform:scaleX(0);transform-origin:left center;   /* escala em vez de largura: não refaz o layout */
+  transition:transform .25s;
 }
 .raivometro span{position:relative;margin-left:8px;font-size:16px;z-index:2}
 .raivometro.alto{animation:tremer .3s infinite}
 @keyframes tremer{0%,100%{transform:none}25%{transform:translateX(-3px)}75%{transform:translateX(3px)}}
 
-.tempo{width:clamp(60px,16vw,120px);height:13px;border-radius:999px;background:rgba(255,255,255,.65);overflow:hidden;box-shadow:inset 0 2px 4px rgba(58,43,82,.12)}
-.tempo i{display:block;height:100%;width:100%;background:var(--c5);transition:width .25s linear}
+.tempo{order:9;flex:0 0 100%;height:10px;border-radius:999px;background:rgba(255,255,255,.65);overflow:hidden;box-shadow:inset 0 2px 4px rgba(58,43,82,.12)}
+.tempo i{display:block;height:100%;width:100%;background:var(--c5);border-radius:999px;transform-origin:left center;transition:transform .5s linear}
 
 .mini{
-  width:44px;height:44px;flex:none;display:grid;place-items:center;
+  width:56px;height:56px;flex:none;display:grid;place-items:center;
   background:var(--nuvem);border-radius:50%;box-shadow:0 5px 0 rgba(58,43,82,.14);
   transition:transform .1s,box-shadow .1s;
 }
@@ -82,16 +87,28 @@ h1,h2{font-family:"Baloo 2",ui-rounded,system-ui,sans-serif;font-weight:800;line
 .mini.off{opacity:.4}
 
 /* ---------- pista ---------- */
-.palco{position:relative;flex:1;min-height:0;margin:0 8px max(8px,env(safe-area-inset-bottom));border-radius:28px;overflow:hidden;box-shadow:var(--sombra);touch-action:none}
+.palco{position:relative;flex:1;min-height:0;
+  margin:0 max(8px,env(safe-area-inset-right)) max(8px,env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-left));
+  border-radius:28px;overflow:hidden;box-shadow:var(--sombra);touch-action:none}
 #tela{display:block;width:100%;height:100%}
+/* setas grandes e translúcidas: só uma dica visual, o toque passa direto para a pista */
+.seta{position:absolute;bottom:14px;z-index:3;width:clamp(72px,19vmin,132px);aspect-ratio:1;border-radius:50%;
+  display:grid;place-items:center;pointer-events:none;
+  background:rgba(255,255,255,.26);border:3px solid rgba(255,255,255,.62);
+  transition:transform .08s,background .08s}
+.seta svg{width:54%;height:54%}
+.seta.esq{left:14px} .seta.dir{right:14px}
+.seta.on{background:rgba(255,255,255,.78);transform:scale(1.1)}
 
 /* ---------- telas sobrepostas ---------- */
-.cena{position:absolute;inset:0;z-index:20;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(40,28,60,.5);backdrop-filter:blur(7px)}
-.cena.on{display:flex;animation:aparece .35s both}
+/* sem backdrop-filter: o desfoque sobre o canvas pesa demais em celular médio */
+.cena{position:absolute;inset:0;z-index:20;display:none;align-items:center;justify-content:center;padding:12px;background:rgba(40,28,60,.62)}
+.cena.on{display:flex;animation:aparece .2s both}
 @keyframes aparece{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:none}}
 .folha{
   background:var(--creme);border-radius:34px;padding:clamp(16px,3.6vw,30px);
-  width:100%;max-width:520px;max-height:96%;overflow-y:auto;
+  width:100%;max-width:520px;max-height:100%;overflow-y:auto;
+  touch-action:pan-y;overscroll-behavior:contain;
   display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;
   box-shadow:0 30px 70px rgba(30,18,48,.4);
 }
@@ -110,7 +127,8 @@ h1,h2{font-family:"Baloo 2",ui-rounded,system-ui,sans-serif;font-weight:800;line
 }
 .bt:active{transform:translateY(7px);box-shadow:0 1px 0 var(--dark)}
 .bt.claro{--bg:#fff;--dark:rgba(58,43,82,.16);color:var(--tinta)}
-.bt.pequeno{font-size:16px;padding:11px 22px}
+.bt.pequeno{font-size:16px;padding:11px 22px;min-height:56px}
+.topo{display:flex;flex-direction:column;align-items:center;gap:12px}
 .bt:focus-visible,.mini:focus-visible{outline:4px solid var(--c6);outline-offset:4px}
 .pulsa{animation:pulsa 1.7s ease-in-out infinite}
 @keyframes pulsa{0%,100%{transform:scale(1)}50%{transform:scale(1.055)}}
@@ -121,7 +139,7 @@ h1,h2{font-family:"Baloo 2",ui-rounded,system-ui,sans-serif;font-weight:800;line
 .item b{font-family:"Baloo 2",sans-serif;font-size:clamp(14px,3.6vw,17px);display:block;line-height:1.1}
 .item small{font-size:clamp(11.5px,2.9vw,13.5px);color:var(--tinta-2);line-height:1.25;display:block}
 
-.florzona{position:relative;width:min(190px,46vw);aspect-ratio:1;display:grid;place-items:center;touch-action:none}
+.florzona{position:relative;width:min(190px,46vw,52vh);aspect-ratio:1;flex:none;display:grid;place-items:center;touch-action:none}
 .anel{position:absolute;inset:12%;border-radius:50%;border:9px solid var(--c4);opacity:.5;transform:scale(.55)}
 .anel.enche{transition:transform 3s linear,opacity 3s linear;transform:scale(1.3);opacity:.95}
 .anel.esvazia{transition:transform 1.6s ease-out,opacity 1.6s ease-out;transform:scale(.5);opacity:.35}
@@ -136,7 +154,7 @@ h1,h2{font-family:"Baloo 2",ui-rounded,system-ui,sans-serif;font-weight:800;line
 .cartinha{background:#fff;border-radius:18px;padding:9px 16px;box-shadow:0 5px 0 rgba(58,43,82,.09);min-width:88px}
 .cartinha b{display:block;font-family:"Baloo 2",sans-serif;font-size:clamp(22px,5.6vw,32px);color:var(--c6);font-variant-numeric:tabular-nums;line-height:1}
 .cartinha small{font-size:11.5px;color:var(--tinta-2);font-weight:800}
-.linha{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.linha{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;align-items:center}
 
 
 /* ---------- escolher o cenário ---------- */
@@ -148,6 +166,59 @@ h1,h2{font-family:"Baloo 2",ui-rounded,system-ui,sans-serif;font-weight:800;line
   box-shadow:inset 0 0 0 3px rgba(58,43,82,.10)}
 .cen-txt b{font-family:"Baloo 2",sans-serif;font-size:clamp(16px,4.2vw,22px);display:block;line-height:1.05;color:var(--tinta)}
 .cen-txt small{font-size:clamp(11.5px,3vw,14px);color:var(--tinta-2);font-weight:800;display:block;margin-top:2px}
+
+/* ---------- celular deitado: a barra flutua sobre o céu e as folhas viram duas colunas ---------- */
+@media (orientation:landscape) and (max-height:520px){
+  .hud{position:absolute;left:0;right:0;top:0;z-index:auto;flex-wrap:nowrap;pointer-events:none}
+  .hud>*{position:relative;z-index:5;pointer-events:auto}
+  #btHub{z-index:30}                       /* a casinha continua por cima das folhas */
+  .tempo{order:0;flex:0 1 150px;height:13px}
+  .palco{margin-top:max(8px,env(safe-area-inset-top))}
+  .cena{padding:8px 10px 8px 72px}
+  .folha{max-width:none;border-radius:26px;padding:12px 16px;gap:8px}
+  .folha h1{font-size:clamp(24px,8vh,40px)}
+  .folha h2{font-size:clamp(20px,7.5vh,32px)}
+  .bt{padding:10px 30px;font-size:clamp(18px,6.5vh,26px)}
+  /* início: título + botão à esquerda (sempre à vista), legenda rolando à direita */
+  #c-inicio .folha{flex-direction:row;flex-wrap:wrap;align-items:flex-start;justify-content:center}
+  #c-inicio .topo{flex:0 0 34%;position:sticky;top:0;gap:8px}
+  #c-inicio .legenda{flex:1 1 50%;gap:6px}
+  #c-inicio .folha>p{flex:0 0 100%;max-width:none}
+  #ic-carro{width:60px!important;height:72px!important}
+  /* cenários lado a lado */
+  .cenarios{flex-direction:row}
+  .cen{flex:1 1 0;flex-direction:column;text-align:center;gap:6px;min-width:0}
+  .cen-mini{width:100%;max-height:36vh}
+  /* respirar: texto à esquerda, flor à direita */
+  #c-respira .folha{display:grid;grid-template-columns:1fr auto;align-items:center;justify-items:center;column-gap:18px}
+  #florzona{grid-column:2;grid-row:1 / span 3}
+  /* fim: botões à esquerda, resumo à direita */
+  #c-fim .folha{display:grid;grid-template-columns:auto 1fr;align-items:center;justify-items:center;gap:14px 18px}
+  #tit-fim{grid-column:1;grid-row:1} #medalhas{grid-column:1;grid-row:2}
+  #btDeNovo{grid-column:1;grid-row:3} #btHub3{grid-column:1;grid-row:4}
+  #resumo{grid-column:2;grid-row:1 / span 2} #elogio{grid-column:2;grid-row:3 / span 2}
+  .estrela{width:clamp(34px,11vh,50px)}
+  .cartinha{padding:6px 12px;min-width:76px}
+}
+/* ---------- tablet: tudo que se toca tem pelo menos 72px ---------- */
+@media (min-width:700px) and (min-height:700px){
+  .mini{width:72px;height:72px}
+  .mini svg{transform:scale(1.35)}
+  .placar{min-height:60px;padding:8px 20px 8px 14px}
+  .raivometro{max-width:260px;height:38px}
+  .raivometro span{font-size:22px}
+  .tempo{height:14px}
+  .folha{max-width:660px;gap:16px}
+  .folha p{font-size:19px}
+  .bt{min-height:76px;padding:18px 48px}
+  .bt.pequeno{min-height:72px;font-size:21px;padding:14px 30px}
+  .cen{padding:14px 16px;min-height:96px}
+  .item canvas{width:54px;height:54px}
+  .item b{font-size:20px} .item small{font-size:15.5px}
+  .florzona{width:min(280px,46vw,48vh)}
+  .cartinha{padding:12px 20px;min-width:110px}
+  .cartinha small{font-size:13.5px}
+}
 @media (prefers-reduced-motion:reduce){ *{animation-duration:.01ms!important} }
 </style>
 </head>
@@ -162,9 +233,6 @@ h1,h2{font-family:"Baloo 2",ui-rounded,system-ui,sans-serif;font-weight:800;line
     <div class="espaco"></div>
     <div class="tempo"><i id="barraTempo"></i></div>
     <div class="raivometro" id="raivometro"><i id="barraRaiva"></i><span>🌋</span></div>
-    <button class="mini" id="btMusica" aria-label="Ligar ou desligar a música">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="#3A2B52"><path d="M9 18V5l10-2v13"/><circle cx="6.5" cy="18" r="3"/><circle cx="16.5" cy="16" r="3"/></svg>
-    </button>
     <button class="mini" id="btSom" hidden aria-label="Ligar ou desligar a voz">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3A2B52" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="#3A2B52"/><path class="ondas" d="M16.5 8.5a5 5 0 010 7M19.5 6a9 9 0 010 12"/></svg>
     </button>
@@ -175,11 +243,16 @@ h1,h2{font-family:"Baloo 2",ui-rounded,system-ui,sans-serif;font-weight:800;line
 
   <div class="palco" id="palco">
     <canvas id="tela"></canvas>
+    <div class="seta esq" id="setaE" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#3A2B52" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></div>
+    <div class="seta dir" id="setaD" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#3A2B52" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></div>
 
     <div class="cena on" id="c-inicio">
       <div class="folha">
-        <h1><span class="l1">O Carrinho</span><span class="l2">do Arco-Íris</span></h1>
-        <canvas id="ic-carro" width="200" height="240" style="width:88px;height:106px"></canvas>
+        <div class="topo">
+          <h1><span class="l1">O Carrinho</span><span class="l2">do Arco-Íris</span></h1>
+          <canvas id="ic-carro" width="200" height="240" style="width:80px;height:96px;border-radius:16px"></canvas>
+          <button class="bt pulsa" id="btComecar">VAMOS!</button>
+        </div>
         <div class="legenda">
           <div class="item"><canvas id="ic-coco" width="88" height="88"></canvas><div><b>Cocô 💩</b><small>Pura diversão! Faz puuum, dá 5 pontos e uma risada. Só isso.</small></div></div>
           <div class="item"><canvas id="ic-cora" width="88" height="88"></canvas><div><b>Sentimentos</b><small>10 pontos. A alegria e a calma deixam o vulcão mais vazio.</small></div></div>
@@ -187,8 +260,7 @@ h1,h2{font-family:"Baloo 2",ui-rounded,system-ui,sans-serif;font-weight:800;line
           <div class="item"><canvas id="ic-rocha" width="88" height="88"></canvas><div><b>Pedras</b><small>Desvia também! Batendo, o carrinho roda e perde a velocidade.</small></div></div>
           <div class="item"><canvas id="ic-mag" width="88" height="88"></canvas><div><b>Magia de unicórnio</b><small>Esvazia o vulcão e dobra os pontos!</small></div></div>
         </div>
-        <button class="bt pulsa" id="btComecar">VAMOS!</button>
-        <p>Use as setas ⬅️ ➡️ do teclado — ou arraste o dedo na pista.</p>
+        <p>Toque de um lado da tela para virar ⬅️ ➡️ — ou arraste o carrinho com o dedo.</p>
       </div>
     </div>
 
@@ -224,6 +296,9 @@ h1,h2{font-family:"Baloo 2",ui-rounded,system-ui,sans-serif;font-weight:800;line
         <h2>Pausa</h2>
         <button class="bt" id="btVoltar">Continuar</button>
         <div class="linha">
+          <button class="mini" id="btMusica" aria-label="Ligar ou desligar a música">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="#3A2B52"><path d="M9 18V5l10-2v13"/><circle cx="6.5" cy="18" r="3"/><circle cx="16.5" cy="16" r="3"/></svg>
+          </button>
           <button class="bt claro pequeno" id="btRecomecar">Começar de novo</button>
           <button class="bt claro pequeno" id="btHub2">Mapa dos jogos</button>
         </div>
@@ -305,10 +380,17 @@ function notaEm(dest,f,t0,dur,tipo,vol,f2){
   o.start(t); o.stop(t+dur+.05);
 }
 const nota=(f,t0,dur,tipo,vol,f2)=>notaEm(mixEfeitos,f,t0,dur,tipo,vol,f2);
+/* cada duração de chiado é gerada uma vez e reaproveitada (antes: um buffer novo por som) */
+const ruidoBuf={};
 function ruido(dur,vol,corte,queda,dest,quando){
   const ac=audio(); if(!ac) return;
-  const n=Math.floor(ac.sampleRate*dur), buf=ac.createBuffer(1,n,ac.sampleRate), d=buf.getChannelData(0);
-  for(let i=0;i<n;i++) d[i]=(Math.random()*2-1)*(1-i/n);
+  let buf=ruidoBuf[dur];
+  if(!buf){
+    const n=Math.floor(ac.sampleRate*dur); buf=ac.createBuffer(1,n,ac.sampleRate);
+    const d=buf.getChannelData(0);
+    for(let i=0;i<n;i++) d[i]=(Math.random()*2-1)*(1-i/n);
+    ruidoBuf[dur]=buf;
+  }
   const src=ac.createBufferSource(); src.buffer=buf;
   const f=ac.createBiquadFilter(); f.type="lowpass";
   const t=quando||ac.currentTime;
@@ -384,11 +466,18 @@ function musicaLiga(){
   agendaMusica();
 }
 function musicaPara(){ clearInterval(musTimer); musTimer=null; }
-function musicaVolume(v){
+/* O volume tem uma BASE (corrida .5, pausa .15, respirar .12) e um "abaixa"
+   enquanto a voz fala. Antes, o fim de qualquer fala devolvia .5 mesmo na
+   pausa ou na tela de respirar. */
+let musBase=.5, musBaixa=false;
+function aplicaMusica(){
   if(!mixMusica||!AC) return;
+  const v = !S.musica ? 0 : (musBaixa ? Math.min(musBase,.18) : musBase);
   mixMusica.gain.cancelScheduledValues(AC.currentTime);
-  mixMusica.gain.setTargetAtTime(S.musica? v : 0, AC.currentTime, .12);
+  mixMusica.gain.setTargetAtTime(v, AC.currentTime, .12);
 }
+function musicaVolume(v){ musBase=v; aplicaMusica(); }
+function musicaAbaixa(sim){ musBaixa=!!sim; aplicaMusica(); }
 
 
 /* ---- TOCADOR DE VOZ GRAVADA -------------------------------------
@@ -396,14 +485,19 @@ function musicaVolume(v){
    (pasta "voz/"). Isso não depende da síntese do navegador, que
    estava muda aqui. Se faltar algum clipe, cai na voz do navegador.
    ------------------------------------------------------------------ */
-let clipeAtual = null;
+let clipeAtual = null, clipeFim = null;
 function temClipe(t){ return !!(window.VOZ && window.VOZ[t]); }
 function tocaClipe(trecho, op){
   return new Promise(res=>{
     const nome = window.VOZ[trecho];
     const a = new Audio("voz/" + nome + ".m4a");
-    let pronto = false;
-    const fim = ()=>{ if(!pronto){ pronto = true; if(clipeAtual===a) clipeAtual=null; res(); } };
+    let pronto = false, guarda16 = 0;
+    const fim = ()=>{ if(!pronto){ pronto = true; clearTimeout(guarda16);
+      if(clipeAtual===a){ clipeAtual=null; clipeFim=null; }
+      /* solta o arquivo de áudio na hora: em aparelho com pouca memória os
+         tocadores antigos se acumulavam até o coletor de lixo passar */
+      try{ a.onended=null; a.onerror=null; a.pause(); a.removeAttribute("src"); a.load(); }catch(e){}
+      res(); } };
     a.onended = fim;
     a.onerror = fim;
     try{
@@ -412,14 +506,19 @@ function tocaClipe(trecho, op){
       a.playbackRate = Math.max(.55, Math.min(1.5, r));
     }catch(e){}
     pararClipe();
-    clipeAtual = a;
+    clipeAtual = a; clipeFim = fim;
     const pr = a.play();
     if(pr && pr.catch) pr.catch(()=>fim());
-    setTimeout(fim, 16000);
+    guarda16 = setTimeout(fim, 16000);
   });
 }
+/* parar um clipe também resolve a promessa dele: antes a fala cortada
+   ficava pendurada 16 s (pause() não dispara "ended") */
 function pararClipe(){
-  if(clipeAtual){ try{ clipeAtual.pause(); clipeAtual.currentTime = 0; }catch(e){} clipeAtual = null; }
+  const a = clipeAtual, f = clipeFim;
+  clipeAtual = null; clipeFim = null;
+  if(a){ try{ a.pause(); a.currentTime = 0; }catch(e){} }
+  if(f) f();
 }
 
 /* ---- DESTRAVA DA VOZ ------------------------------------------
@@ -431,11 +530,16 @@ let vozDestravada = false;
 function destravaVoz(){
   if(vozDestravada || !("speechSynthesis" in window)) return;
   vozDestravada = true;
-  try{
-    const u = new SpeechSynthesisUtterance("oi");
-    u.volume = 0; u.rate = 2; u.lang = "pt-BR";
-    speechSynthesis.speak(u);
-  }catch(e){}
+  /* No Android o Chrome ignora volume=0 da síntese e o "oi" pode sair em voz
+     alta no primeiro toque. Com o pacote de clipes carregado ele não é preciso. */
+  const android = /Android/i.test(navigator.userAgent||"");
+  if(!(android && window.VOZ)){
+    try{
+      const u = new SpeechSynthesisUtterance("oi");
+      u.volume = 0; u.rate = 2; u.lang = "pt-BR";
+      speechSynthesis.speak(u);
+    }catch(e){}
+  }
   try{ speechSynthesis.getVoices(); }catch(e){}
   try{ const a=new Audio(); a.muted=true; const p=a.play(); if(p&&p.catch) p.catch(()=>{}); }catch(e){}
 }
@@ -520,27 +624,33 @@ function partesComNome(t){
   return saida.length?saida:pedacos(t);
 }
 
+/* op.leve = exclamação curta ("Puuum!", "Alegria!"): não corta uma
+   explicação que ainda está sendo falada. Sem isso, cada cocô pego
+   interrompia a fala do monstro da raiva no meio. */
+let fila=0, falando=false, falaForte=false;
+function temFala(t){ return partesComNome(humaniza(t)).every(temClipe); }
 function falar(t,op){
   op=op||{};
   if(!S.voz||!t) return;
+  if(op.leve && falando && falaForte) return;
   const limpo=humaniza(t);
-  fila = ++fila;                       /* invalida a fala anterior */
-  const meu = fila;
+  const meu = ++fila;                  /* invalida a fala anterior */
   pararClipe();
   try{speechSynthesis.cancel();}catch(e){}
-  musicaVolume(.18);
+  falando=true; falaForte=!op.leve;
+  musicaAbaixa(true);
   (async ()=>{
-    for(const trecho of partesComNome(limpo)){
+    const partes=partesComNome(limpo);
+    for(let i=0;i<partes.length;i++){
       if(meu!==fila) return;
-      await diz(trecho,op);
+      await diz(partes[i],op);
       if(meu!==fila) return;
-      await new Promise(r=>setTimeout(r,150));
+      if(i<partes.length-1) await new Promise(r=>setTimeout(r,150));
     }
-    if(meu===fila) musicaVolume(.5);
+    if(meu===fila){ falando=false; musicaAbaixa(false); }
   })();
 }
-let fila=0;
-const calar=()=>{ fila++; pararClipe(); try{speechSynthesis.cancel();}catch(e){} musicaVolume(.5); };
+const calar=()=>{ fila++; falando=false; pararClipe(); try{speechSynthesis.cancel();}catch(e){} musicaAbaixa(false); };
 
 function rrect(c,x,y,w,h,r){
   c.beginPath(); c.moveTo(x+r,y);
@@ -562,12 +672,22 @@ function coracaoPath(c,x,y,t){
   c.closePath();
 }
 
+/* gradientes criados uma vez por contexto, em coordenadas "raio = 1"
+   (antes eram criados de novo para cada monstro, a cada quadro) */
+const gradCache=new WeakMap();
+function grads(c){ let g=gradCache.get(c); if(!g){ g={}; gradCache.set(c,g); } return g; }
+
 function desenhaCoco(c,x,y,r,giro){
   c.save(); c.translate(x,y); c.rotate(giro||0); c.scale(r/26,r/26);
   c.fillStyle="#7A542E"; c.beginPath(); c.ellipse(0,16,26,12,0,0,7); c.fill();
   c.fillStyle="#8C6136"; c.beginPath(); c.ellipse(0,2,20,11,0,0,7); c.fill();
   c.fillStyle="#9A6B3F"; c.beginPath(); c.ellipse(0,-11,13,10,0,0,7); c.fill();
   c.beginPath(); c.moveTo(-5,-19); c.quadraticCurveTo(0,-30,6,-19); c.fill();
+  c.fillStyle="rgba(255,255,255,.20)";                       /* brilho: dá volume */
+  c.beginPath(); c.ellipse(-10,11,9,3.4,-.2,0,7); c.fill();
+  c.beginPath(); c.ellipse(-8,-1,7,2.8,-.2,0,7); c.fill();
+  c.fillStyle="rgba(40,20,5,.18)";
+  c.beginPath(); c.ellipse(4,23,18,4,0,0,7); c.fill();
   c.fillStyle="#fff";
   c.beginPath(); c.arc(-7,-9,4.6,0,7); c.fill();
   c.beginPath(); c.arc(6,-9,4.6,0,7); c.fill();
@@ -587,11 +707,16 @@ const SENTIMENTOS=[
 ];
 
 /* --- O MONSTRO DA RAIVA: espinhoso, pulsando, olhos que seguem o carro --- */
-function desenhaMonstro(c,x,y,r,t,mira){
-  c.save(); c.translate(x,y);
-  const g=c.createRadialGradient(0,0,r*.4,0,0,r*2.1);
-  g.addColorStop(0,"rgba(210,20,45,.55)"); g.addColorStop(1,"rgba(110,0,28,0)");
-  c.fillStyle=g; c.beginPath(); c.arc(0,0,r*2.1,0,7); c.fill();
+function desenhaMonstro(c,x,y,raio,t,mira){
+  c.save(); c.translate(x,y); c.scale(raio,raio);
+  const r=1, G=grads(c);
+  if(!G.monHalo){
+    G.monHalo=c.createRadialGradient(0,0,.4,0,0,2.1);
+    G.monHalo.addColorStop(0,"rgba(210,20,45,.55)"); G.monHalo.addColorStop(1,"rgba(110,0,28,0)");
+    G.monCorpo=c.createLinearGradient(0,-1,0,1);
+    G.monCorpo.addColorStop(0,"#FF3B3B"); G.monCorpo.addColorStop(.55,"#B3132F"); G.monCorpo.addColorStop(1,"#5C0718");
+  }
+  c.fillStyle=G.monHalo; c.beginPath(); c.arc(0,0,r*2.1,0,7); c.fill();
 
   const pontas=11;
   c.beginPath();
@@ -602,10 +727,8 @@ function desenhaMonstro(c,x,y,r,t,mira){
     i?c.lineTo(px,py):c.moveTo(px,py);
   }
   c.closePath();
-  const lg=c.createLinearGradient(0,-r,0,r);
-  lg.addColorStop(0,"#FF3B3B"); lg.addColorStop(.55,"#B3132F"); lg.addColorStop(1,"#5C0718");
-  c.fillStyle=lg; c.fill();
-  c.strokeStyle="#33000E"; c.lineWidth=r*.11; c.stroke();
+  c.fillStyle=G.monCorpo; c.fill();
+  c.strokeStyle="#33000E"; c.lineWidth=r*.11; c.lineJoin="miter"; c.stroke();
 
   const m=Math.max(-1,Math.min(1,mira||0));
   const ox=r*.33, oy=-r*.14, po=m*r*.10;
@@ -635,6 +758,8 @@ function desenhaRocha(c,x,y,r,giro){
   c.moveTo(-r,.2*r); c.lineTo(-.62*r,-.72*r); c.lineTo(.18*r,-r);
   c.lineTo(.92*r,-.4*r); c.lineTo(r,.44*r); c.lineTo(.3*r,r); c.lineTo(-.55*r,.82*r);
   c.closePath(); c.fill();
+  c.fillStyle="#757187";                                     /* face de baixo, na sombra */
+  c.beginPath(); c.moveTo(-r,.2*r); c.lineTo(.05*r,.15*r); c.lineTo(r,.44*r); c.lineTo(.3*r,r); c.lineTo(-.55*r,.82*r); c.closePath(); c.fill();
   c.fillStyle="#A9A5B8";
   c.beginPath(); c.moveTo(-.62*r,-.72*r); c.lineTo(.18*r,-r); c.lineTo(.1*r,-.2*r); c.closePath(); c.fill();
   c.strokeStyle="#6B6779"; c.lineWidth=r*.11; c.lineCap="round";
@@ -678,17 +803,20 @@ function desenhaCoracao(c,x,y,r,s,bob,brilho){
   }
   c.restore();
 }
-function desenhaMagia(c,x,y,r,t){
-  c.save(); c.translate(x,y); c.rotate(t*.9);
-  const g=c.createRadialGradient(0,0,r*.2,0,0,r*1.5);
-  g.addColorStop(0,"rgba(255,255,255,.9)"); g.addColorStop(1,"rgba(155,107,242,0)");
-  c.fillStyle=g; c.beginPath(); c.arc(0,0,r*1.5,0,7); c.fill();
-  const lg=c.createLinearGradient(0,-r,0,r);
-  lg.addColorStop(0,"#9B6BF2"); lg.addColorStop(.5,"#FF7EB6"); lg.addColorStop(1,"#FFC93C");
-  c.fillStyle=lg; c.strokeStyle="#fff"; c.lineWidth=r*.13;
+function desenhaMagia(c,x,y,raio,t){
+  const r=1, G=grads(c);
+  if(!G.magHalo){
+    G.magHalo=c.createRadialGradient(0,0,.2,0,0,1.5);
+    G.magHalo.addColorStop(0,"rgba(255,255,255,.9)"); G.magHalo.addColorStop(1,"rgba(155,107,242,0)");
+    G.magCorpo=c.createLinearGradient(0,-1,0,1);
+    G.magCorpo.addColorStop(0,"#9B6BF2"); G.magCorpo.addColorStop(.5,"#FF7EB6"); G.magCorpo.addColorStop(1,"#FFC93C");
+  }
+  c.save(); c.translate(x,y); c.rotate(t*.9); c.scale(raio,raio);
+  c.fillStyle=G.magHalo; c.beginPath(); c.arc(0,0,r*1.5,0,7); c.fill();
+  c.fillStyle=G.magCorpo; c.strokeStyle="#fff"; c.lineWidth=r*.13; c.lineJoin="miter";
   estrelaPath(c,0,0,r,5); c.fill(); c.stroke();
   c.restore();
-  c.save(); c.translate(x,y); c.fillStyle="rgba(255,255,255,.95)";
+  c.save(); c.translate(x,y); c.scale(raio,raio); c.fillStyle="rgba(255,255,255,.95)";
   for(let i=0;i<3;i++){ const a=t*2+i*2.1; estrelaPath(c,Math.cos(a)*r*1.35,Math.sin(a)*r*1.35,r*.2,4); c.fill(); }
   c.restore();
 }
@@ -704,63 +832,81 @@ const ZCAM = 13, ZFAR = 250, ZBAT = 7, FAIXA = 4;
 const proj  = z => ZCAM/(z+ZCAM);              /* 0 no horizonte, 1 no carro */
 let HORIZ = 0;
 const telaY  = p => HORIZ + p*(A-HORIZ);
-const meia   = p => L*(0.035 + p*0.44);        /* meia largura da pista */
-const centro = p => L/2 + J.curva*(1-p)*(1-p)*L*0.26;   /* era 1.15: a pista voava pra fora */
+/* LP = largura de referência da pista. Em pé é a largura da tela; deitado
+   é limitada pela altura, senão pista, kart e itens ficavam gigantes. */
+const meia   = p => LP*(0.035 + p*0.44);       /* meia largura da pista */
+const centro = p => L/2 + J.curva*(1-p)*(1-p)*LP*0.26;  /* era 1.15: a pista voava pra fora */
 
 const CENARIOS = [
   { id:"campo", nome:"Campo Florido", dica:"Verdinho e tranquilo",
     ceu:["#8FD8FF","#DFF3FF"], chao:["#74D4A0","#6ECE9A"], pista:["#EFE7F7","#EBE2F0"],
-    borda:["#FF5A6E","#FFFFFF"], vel:235, prop:"flor", astro:"sol" },
+    borda:["#FF5A6E","#FFFFFF"], vel:260, prop:"flor", astro:"sol",
+    fundo:["#9CCBE6","#58BE8A"], faixa:"rgba(110,90,150,.26)" },
   { id:"deserto", nome:"Deserto do Sol", dica:"Quente e rapidinho",
     ceu:["#FFB36B","#FFE3B0"], chao:["#EDC286","#E8BC80"], pista:["#FFF3E2","#FBEEDA"],
-    borda:["#C9556B","#FFFFFF"], vel:290, prop:"cacto", astro:"sol" },
+    borda:["#C9556B","#FFFFFF"], vel:315, prop:"cacto", astro:"sol",
+    fundo:["#E9A77E","#D9955F"], faixa:"rgba(150,100,60,.26)" },
   { id:"noite", nome:"Noite Estrelada", dica:"Escurinho e mágico",
     ceu:["#241B4A","#4A3E80"], chao:["#3A3070","#362C6A"], pista:["#8579C4","#8074BE"],
-    borda:["#FFC93C","#FFFFFF"], vel:340, prop:"estrela", astro:"lua" }
+    borda:["#FFC93C","#FFFFFF"], vel:365, prop:"estrela", astro:"lua",
+    fundo:["#3A2F70","#2A2158"], faixa:"rgba(255,255,255,.30)" }
 ];
 let CEN = CENARIOS[0];
 
-/* --- o kart visto por trás --- */
-function desenhaKart(c,x,y,esc,giro,magia,rf){
-  c.save(); c.translate(x,y); c.rotate(giro||0); c.scale(esc,esc);
-  if(magia>0){
-    c.save(); c.globalAlpha=.5;
-    for(let i=0;i<6;i++){ c.fillStyle=CORES[i]; c.fillRect(-36+i*12,-96,11,-(40+Math.sin(Date.now()/90+i)*20)); }
-    c.restore();
+/* --- o kart visto por trás ---
+   O desenho pesado (degradês, cabelo, coroa) é feito UMA vez num canvas à
+   parte (kartCv) e só copiado a cada quadro. Ao vivo ficam apenas a sombra
+   no chão, as ranhuras dos pneus girando e a inclinação nas curvas. */
+const KW=176, KH=176, KOX=88, KOY=164;       /* caixa do desenho; a origem é o chão, no meio do eixo */
+function pintaKart(c){
+  let g;
+  c.fillStyle="#1B1530"; rrect(c,-50,-24,100,22,6); c.fill();          /* fundo do carro, na sombra */
+  for(let lado=-1;lado<=1;lado+=2){                                     /* pneus traseiros, roliços */
+    const x0 = lado<0 ? -74 : 46;
+    g=c.createLinearGradient(x0,0,x0+28,0);
+    g.addColorStop(0,"#120D1C"); g.addColorStop(.35,"#433C5E"); g.addColorStop(.7,"#2C2440"); g.addColorStop(1,"#100B19");
+    c.fillStyle=g; rrect(c,x0,-48,28,54,10); c.fill();
   }
-  c.save(); c.globalAlpha=.22; c.fillStyle="#1B1230";
-  c.beginPath(); c.ellipse(0,10,66,15,0,0,7); c.fill(); c.restore();
-  /* rodas traseiras, bem largas */
-  c.fillStyle="#2C2440"; rrect(c,-72,-46,26,52,10); c.fill(); rrect(c,46,-46,26,52,10); c.fill();
-  c.fillStyle="#57506E"; rrect(c,-68,-38,10,36,5); c.fill(); rrect(c,58,-38,10,36,5); c.fill();
-  /* corpo trapezoidal */
+  /* corpo */
   c.fillStyle=S.vestido;
   c.beginPath(); c.moveTo(-52,0); c.lineTo(-40,-58); c.lineTo(40,-58); c.lineTo(52,0); c.closePath(); c.fill();
-  c.fillStyle="rgba(255,255,255,.22)";
-  c.beginPath(); c.moveTo(-52,0); c.lineTo(-40,-58); c.lineTo(-20,-58); c.lineTo(-28,0); c.closePath(); c.fill();
+  g=c.createLinearGradient(0,-58,0,0);
+  g.addColorStop(0,"rgba(255,255,255,.36)"); g.addColorStop(.45,"rgba(255,255,255,0)"); g.addColorStop(1,"rgba(20,8,40,.32)");
+  c.fillStyle=g; c.fill();
+  c.fillStyle="rgba(255,255,255,.20)";
+  c.beginPath(); c.moveTo(-52,0); c.lineTo(-40,-58); c.lineTo(-24,-58); c.lineTo(-32,0); c.closePath(); c.fill();
+  c.fillStyle="rgba(255,255,255,.92)"; estrelaPath(c,0,-36,11,5); c.fill();
+  /* para-choque, escapamentos e lanternas */
+  c.fillStyle="rgba(20,8,40,.40)"; rrect(c,-54,-10,108,13,6); c.fill();
+  c.fillStyle="#17112A";
+  c.beginPath(); c.arc(-9,-3,4.5,0,7); c.fill(); c.beginPath(); c.arc(9,-3,4.5,0,7); c.fill();
+  c.fillStyle="#D91F2E"; rrect(c,-42,-22,22,11,5); c.fill(); rrect(c,20,-22,22,11,5); c.fill();
+  c.fillStyle="#FF8A8A"; rrect(c,-39,-20,10,4,2); c.fill(); rrect(c,23,-20,10,4,2); c.fill();
   /* aerofólio */
   c.fillStyle="#2C2440"; rrect(c,-46,-74,92,12,6); c.fill();
   rrect(c,-34,-64,9,10,3); c.fill(); rrect(c,25,-64,9,10,3); c.fill();
+  c.fillStyle="rgba(255,255,255,.22)"; rrect(c,-42,-73,84,3.5,2); c.fill();
   /* encosto + a PRINCESA de costas */
   c.fillStyle="#2C2440"; rrect(c,-24,-92,48,36,12); c.fill();
-  /* cabelo comprido caindo pelas costas */
   c.fillStyle=S.cabelo;
   c.beginPath();
   c.moveTo(-27,-104); c.quadraticCurveTo(-34,-72,-26,-52);
   c.lineTo(26,-52); c.quadraticCurveTo(34,-72,27,-104); c.closePath(); c.fill();
-  c.save(); c.globalAlpha=.22; c.fillStyle="#fff";
+  c.fillStyle="rgba(255,255,255,.20)";
   c.beginPath(); c.moveTo(-14,-100); c.quadraticCurveTo(-18,-76,-13,-56);
-  c.lineTo(-5,-56); c.quadraticCurveTo(-9,-78,-5,-100); c.closePath(); c.fill(); c.restore();
-  /* cabeça */
+  c.lineTo(-5,-56); c.quadraticCurveTo(-9,-78,-5,-100); c.closePath(); c.fill();
   c.fillStyle=S.cabelo; c.beginPath(); c.arc(0,-108,26,0,7); c.fill();
-  /* marias-chiquinhas com laço */
-  [[-30,-104],[30,-104]].forEach(([px,py],i)=>{
+  g=c.createRadialGradient(-9,-118,2,0,-108,26);
+  g.addColorStop(0,"rgba(255,255,255,.28)"); g.addColorStop(1,"rgba(255,255,255,0)");
+  c.fillStyle=g; c.beginPath(); c.arc(0,-108,26,0,7); c.fill();
+  for(let i=0;i<2;i++){                                                 /* marias-chiquinhas com laço */
+    const px=i?30:-30, py=-104, d=i?-1:1;
     c.fillStyle=S.cabelo; c.beginPath(); c.arc(px,py,12,0,7); c.fill();
     c.fillStyle=S.vestido;
-    c.beginPath(); c.ellipse(px-6*(i?-1:1),py-8,7,5,(i?-.5:.5),0,7); c.fill();
-    c.beginPath(); c.ellipse(px+6*(i?-1:1),py-8,7,5,(i?.5:-.5),0,7); c.fill();
+    c.beginPath(); c.ellipse(px-6*d,py-8,7,5,(i?-.5:.5),0,7); c.fill();
+    c.beginPath(); c.ellipse(px+6*d,py-8,7,5,(i?.5:-.5),0,7); c.fill();
     c.fillStyle="#fff"; c.beginPath(); c.arc(px,py-8,3.2,0,7); c.fill();
-  });
+  }
   /* COROA */
   c.fillStyle="#FFC93C"; c.strokeStyle="#D9A400"; c.lineWidth=3; c.lineJoin="round";
   c.beginPath();
@@ -771,18 +917,55 @@ function desenhaKart(c,x,y,esc,giro,magia,rf){
   c.fillStyle="#FF5A6E"; c.beginPath(); c.arc(0,-123,4,0,7); c.fill();
   c.fillStyle="#3FA9F5"; c.beginPath(); c.arc(-11,-123,3,0,7); c.fill();
   c.beginPath(); c.arc(11,-123,3,0,7); c.fill();
-  c.fillStyle="#FFF3B0";
-  c.beginPath(); c.arc(0,-148,3.4,0,7); c.fill();
-  /* lanternas */
-  c.fillStyle="#FF3B3B"; rrect(c,-40,-16,20,10,5); c.fill(); rrect(c,20,-16,20,10,5); c.fill();
+  c.fillStyle="#FFF3B0"; c.beginPath(); c.arc(0,-148,3.4,0,7); c.fill();
+}
+/* kart parado, para o ícone da tela inicial */
+function desenhaKartParado(c,x,y,esc){
+  c.save(); c.translate(x,y); c.scale(esc,esc);
+  c.globalAlpha=.22; c.fillStyle="#1B1230"; c.beginPath(); c.ellipse(0,8,66,13,0,0,7); c.fill(); c.globalAlpha=1;
+  pintaKart(c); c.restore();
+}
+let kartCv=null, sombraCv=null;
+function fazKart(){
+  if(!(ESC>0)) return;
+  if(!kartCv) kartCv=document.createElement("canvas");
+  const e=ESC*DPR;
+  kartCv.width=Math.max(2,Math.ceil(KW*e)); kartCv.height=Math.max(2,Math.ceil(KH*e));
+  const k=kartCv.getContext("2d");
+  k.setTransform(e,0,0,e,KOX*e,KOY*e);
+  pintaKart(k);
+  if(!sombraCv){                                   /* sombra macia, usada sob o kart e sob os itens */
+    sombraCv=document.createElement("canvas"); sombraCv.width=96; sombraCv.height=96;
+    const q=sombraCv.getContext("2d");
+    const g=q.createRadialGradient(48,48,6,48,48,48);
+    g.addColorStop(0,"rgba(20,12,40,.50)"); g.addColorStop(.6,"rgba(20,12,40,.26)"); g.addColorStop(1,"rgba(20,12,40,0)");
+    q.fillStyle=g; q.fillRect(0,0,96,96);
+  }
+}
+function desenhaKart(c,x,y,esc,giro,magia,rf,roda){
+  if(!kartCv) return;
+  c.drawImage(sombraCv,x-84*esc,y-12*esc,168*esc,40*esc);      /* a sombra fica no chão, não inclina */
+  c.save(); c.translate(x,y); c.rotate(giro||0); c.scale(esc,esc);
+  if(magia>0){
+    c.globalAlpha=.5;
+    for(let i=0;i<6;i++){ c.fillStyle=CORES[i]; c.fillRect(-36+i*12,-96,11,-(40+Math.sin(J.t*11+i)*20)); }
+    c.globalAlpha=1;
+  }
+  c.drawImage(kartCv,-KOX,-KOY,KW,KH);
+  /* ranhuras dos pneus descendo: a roda gira na velocidade da corrida */
+  c.fillStyle="rgba(140,132,170,.55)";
+  for(let i=0;i<4;i++){
+    const yy=-44+((roda+i*13)%52);
+    if(yy<1){ c.fillRect(-70,yy,20,3.5); c.fillRect(50,yy,20,3.5); }
+  }
   if(rf>.45){
     const q=(rf-.45)/.55;
-    c.save(); c.globalAlpha=.35+q*.4; c.fillStyle="#FF3B3B";
+    c.globalAlpha=.35+q*.4; c.fillStyle="#FF3B3B";
     c.beginPath(); c.moveTo(-52,0); c.lineTo(-40,-58); c.lineTo(40,-58); c.lineTo(52,0); c.closePath(); c.fill();
     c.globalAlpha=.5*q; c.fillStyle="#fff";
-    for(let i=0;i<3;i++){ const t=(Date.now()/500+i*.6)%1;
+    for(let i=0;i<3;i++){ const t=(J.t*2+i*.6)%1;
       c.beginPath(); c.ellipse(-26+i*26,-96-t*40,11-t*5,8-t*4,0,0,7); c.fill(); }
-    c.restore();
+    c.globalAlpha=1;
   }
   if(magia>0){ c.strokeStyle="rgba(255,255,255,.95)"; c.lineWidth=5;
     c.beginPath(); c.moveTo(-56,2); c.lineTo(-43,-62); c.lineTo(43,-62); c.lineTo(56,2); c.closePath(); c.stroke(); }
@@ -809,76 +992,166 @@ function desenhaProp(c,x,y,p,lado,i){
   c.restore();
 }
 
-/* --- céu do cenário --- */
+/* --- céu do cenário ---
+   O céu parado (degradê, sol/lua, estrelas) é pintado UMA vez num canvas à
+   parte e só copiado a cada quadro; as nuvens e os morros andam por cima. */
+let ceuCv=null, ceuSujo=true;
 function desenhaCeu(c){
-  const g=c.createLinearGradient(0,0,0,HORIZ);
-  g.addColorStop(0,CEN.ceu[0]); g.addColorStop(1,CEN.ceu[1]);
-  c.fillStyle=g; c.fillRect(0,0,L,HORIZ+2);
-  if(CEN.astro==="sol"){
-    c.fillStyle= CEN.id==="deserto" ? "#FFF0B0" : "#FFE066";
-    c.beginPath(); c.arc(L*.76, HORIZ*.42, Math.min(L,A)*.075, 0, 7); c.fill();
-  } else {
-    c.fillStyle="#FFE9A8";
-    c.beginPath(); c.arc(L*.76, HORIZ*.38, Math.min(L,A)*.07, 0, 7); c.fill();
-    c.fillStyle=CEN.ceu[0];
-    c.beginPath(); c.arc(L*.79, HORIZ*.34, Math.min(L,A)*.062, 0, 7); c.fill();
-    c.fillStyle="rgba(255,255,255,.9)";
-    for(let i=0;i<26;i++){
-      const sx=((i*137.5)%100)/100*L, sy=((i*61.8)%100)/100*HORIZ*.9;
-      c.globalAlpha=.35+((i*7)%5)/8;
-      c.beginPath(); c.arc(sx,sy,1.6+((i*3)%3)*.7,0,7); c.fill();
-    }
-    c.globalAlpha=1;
+  if(ceuSujo || !ceuCv){
+    ceuSujo=false;
+    if(!ceuCv) ceuCv=document.createElement("canvas");
+    ceuCv.width=Math.max(1,Math.round(L*DPR)); ceuCv.height=Math.max(1,Math.round((HORIZ+2)*DPR));
+    const k=ceuCv.getContext("2d");
+    k.setTransform(DPR,0,0,DPR,0,0);
+    pintaCeuParado(k);
   }
+  c.drawImage(ceuCv,0,0,L,HORIZ+2);
   if(CEN.id!=="noite"){
     c.fillStyle="rgba(255,255,255,.85)";
     for(let k=0;k<3;k++){
-      const cx=((k*0.37+ (J.dist*0.00012))%1.3-0.15)*L, cy=HORIZ*(.22+k*.16), r=Math.min(L,A)*(.032+k*.006);
+      const cx=((k*0.37+ (J.dist*0.00012))%1.3-0.15)*L, cy=HORIZ*(.20+k*.14), r=Math.min(L,A)*(.032+k*.006);
       c.beginPath(); c.ellipse(cx,cy,r*2.1,r,0,0,7); c.fill();
       c.beginPath(); c.ellipse(cx-r,cy+r*.3,r*1.2,r*.8,0,0,7); c.fill();
       c.beginPath(); c.ellipse(cx+r*1.1,cy+r*.35,r*1.1,r*.7,0,0,7); c.fill();
     }
   }
+  /* horizonte em duas camadas: a de longe anda devagar, a de perto mais rápido (parallax) */
+  for(let i=0;i<2;i++){
+    const f=fundoCv[i]; if(!f) continue;
+    const w=fundoL, h=fundoA[i];
+    let o=(J.fundo*(i?1:.38))%1; if(o<0) o+=1;
+    const x=Math.round(-o*w), y=Math.round(HORIZ-h+1);   /* inteiro + 1px de sobra: sem risco na emenda */
+    c.drawImage(f,x,y,w,h);
+    c.drawImage(f,x+w-1,y,w,h);
+  }
+}
+/* silhuetas do horizonte, pintadas uma vez por cenário/tamanho (em resolução
+   1x: estão longe, não precisam de nitidez e gastam pouca memória) */
+const fundoCv=[null,null], fundoA=[0,0]; let fundoL=0;
+function fazFundo(){
+  if(!(L>0)) return;
+  fundoL=Math.max(2,Math.round(L));
+  const DOIS_PI=Math.PI*2;
+  for(let i=0;i<2;i++){
+    const h=Math.max(2,Math.round(HORIZ*(i?.20:.40)));
+    fundoA[i]=h;
+    if(!fundoCv[i]) fundoCv[i]=document.createElement("canvas");
+    const f=fundoCv[i]; f.width=fundoL; f.height=h;
+    const k=f.getContext("2d");
+    k.clearRect(0,0,fundoL,h);
+    k.fillStyle=CEN.fundo[i];
+    k.beginPath(); k.moveTo(0,h);
+    for(let x=0;x<=fundoL;x+=4){
+      const u=x/fundoL*DOIS_PI;             /* só períodos inteiros: a emenda não aparece */
+      const m = i ? .50+.26*Math.sin(u*3+1.3)+.16*Math.sin(u*8+.4)
+                  : .46+.30*Math.sin(u*2+.6)+.20*Math.sin(u*5+2.1)+.08*Math.sin(u*11);
+      k.lineTo(x,h*(1-Math.max(.06,Math.min(.98,m))));
+    }
+    k.lineTo(fundoL,h); k.closePath(); k.fill();
+    if(!i){                                 /* luz no topo dos morros de longe */
+      const g=k.createLinearGradient(0,0,0,h);
+      g.addColorStop(0,"rgba(255,255,255,.30)"); g.addColorStop(1,"rgba(255,255,255,0)");
+      k.globalCompositeOperation="source-atop"; k.fillStyle=g; k.fillRect(0,0,fundoL,h);
+      k.globalCompositeOperation="source-over";
+    }
+  }
+  /* névoa de distância sobre o chão, perto do horizonte */
+  if(!nevoaCv){ nevoaCv=document.createElement("canvas"); nevoaCv.width=2; nevoaCv.height=48; }
+  const n=nevoaCv.getContext("2d");
+  n.clearRect(0,0,2,48);
+  const g=n.createLinearGradient(0,0,0,48);
+  g.addColorStop(0,CEN.ceu[1]); g.addColorStop(1,"rgba(255,255,255,0)");
+  n.globalAlpha=.75; n.fillStyle=g; n.fillRect(0,0,2,48); n.globalAlpha=1;
+}
+let nevoaCv=null;
+function pintaCeuParado(c){
+  const g=c.createLinearGradient(0,0,0,HORIZ);
+  g.addColorStop(0,CEN.ceu[0]); g.addColorStop(1,CEN.ceu[1]);
+  c.fillStyle=g; c.fillRect(0,0,L,HORIZ+2);
+  const u=Math.min(L,A);
+  if(CEN.astro==="sol"){
+    const sx=L*.76, sy=HORIZ*.36, sr=u*.075;
+    const h=c.createRadialGradient(sx,sy,sr*.6,sx,sy,sr*2.6);       /* halo do sol */
+    h.addColorStop(0,"rgba(255,244,190,.75)"); h.addColorStop(1,"rgba(255,244,190,0)");
+    c.fillStyle=h; c.beginPath(); c.arc(sx,sy,sr*2.6,0,7); c.fill();
+    c.fillStyle= CEN.id==="deserto" ? "#FFF0B0" : "#FFE066";
+    c.beginPath(); c.arc(sx,sy,sr,0,7); c.fill();
+  } else {
+    c.fillStyle="#FFE9A8";
+    c.beginPath(); c.arc(L*.76, HORIZ*.34, u*.07, 0, 7); c.fill();
+    c.fillStyle=CEN.ceu[0];
+    c.beginPath(); c.arc(L*.79, HORIZ*.30, u*.062, 0, 7); c.fill();
+    c.fillStyle="rgba(255,255,255,.9)";
+    for(let i=0;i<26;i++){
+      const sx=((i*137.5)%100)/100*L, sy=((i*61.8)%100)/100*HORIZ*.7;
+      c.globalAlpha=.35+((i*7)%5)/8;
+      c.beginPath(); c.arc(sx,sy,1.6+((i*3)%3)*.7,0,7); c.fill();
+    }
+    c.globalAlpha=1;
+  }
 }
 
-/* --- a pista --- */
+/* --- a pista ---
+   Cada faixa é um trapézio entre duas distâncias projetadas (perspectiva
+   de verdade: a zebra e os tracejados encolhem com a distância). As contas
+   vão para vetores fixos e cada cor é pintada de uma vez só: eram ~250
+   preenchimentos por quadro, agora são ~25, sem criar nenhum objeto. */
+const NS=Math.ceil(ZFAR/FAIXA)+1;
+const sY0=new Float32Array(NS), sY1=new Float32Array(NS), sC0=new Float32Array(NS), sC1=new Float32Array(NS),
+      sM0=new Float32Array(NS), sM1=new Float32Array(NS), sP0=new Float32Array(NS), sOk=new Uint8Array(NS);
+function trap(c,k,a,b){                     /* trapézio da fração a até b da meia-pista */
+  const y1=sY1[k]-.7;                       /* sobe um tiquinho: sem risco de fresta entre faixas */
+  c.moveTo(sC1[k]+sM1[k]*a,y1); c.lineTo(sC1[k]+sM1[k]*b,y1);
+  c.lineTo(sC0[k]+sM0[k]*b,sY0[k]); c.lineTo(sC0[k]+sM0[k]*a,sY0[k]); c.closePath();
+}
 function desenhaPista(c){
   const base = Math.floor(J.dist/FAIXA);
   const desl = J.dist % FAIXA;
-  for(let k=Math.ceil(ZFAR/FAIXA); k>=0; k--){
+  for(let k=0;k<NS;k++){
     const z0 = k*FAIXA - desl, z1 = z0 + FAIXA;
+    sOk[k]=0;
     if(z1 <= 0.2) continue;
     const p0 = proj(Math.max(z0,0.05)), p1 = proj(z1);
     const y0 = telaY(p0), y1 = telaY(p1);
     if(y0 - y1 < 0.4) continue;
-    const idx = (base + k) % 2;
-    const c0 = centro(p0), c1 = centro(p1);
-    const m0 = meia(p0),  m1 = meia(p1);
-    /* chão */
-    c.fillStyle = idx ? CEN.chao[0] : CEN.chao[1];
-    c.fillRect(0, y1, L, y0-y1+1);
-    /* zebrado da borda */
-    c.fillStyle = idx ? CEN.borda[0] : CEN.borda[1];
-    c.beginPath();
-    c.moveTo(c1-m1*1.16,y1); c.lineTo(c1+m1*1.16,y1);
-    c.lineTo(c0+m0*1.16,y0); c.lineTo(c0-m0*1.16,y0); c.closePath(); c.fill();
-    /* asfalto */
-    c.fillStyle = idx ? CEN.pista[0] : CEN.pista[1];
-    c.beginPath();
-    c.moveTo(c1-m1,y1); c.lineTo(c1+m1,y1);
-    c.lineTo(c0+m0,y0); c.lineTo(c0-m0,y0); c.closePath(); c.fill();
-    /* tracejado arco-íris no meio */
-    if((base+k)%4===0){
-      c.fillStyle = CORES[(base+k)%6];
-      c.beginPath();
-      c.moveTo(c1-m1*.05,y1); c.lineTo(c1+m1*.05,y1);
-      c.lineTo(c0+m0*.05,y0); c.lineTo(c0-m0*.05,y0); c.closePath(); c.fill();
-    }
-    /* enfeites na beira */
-    if((base+k)%4===0 && p0>0.055){
-      desenhaProp(c, c0-m0*1.42, y0, p0, -1, base+k);
-      desenhaProp(c, c0+m0*1.42, y0, p0, 1, base+k+3);
-    }
+    sOk[k]=1; sP0[k]=p0; sY0[k]=y0; sY1[k]=y1;
+    sC0[k]=centro(p0); sC1[k]=centro(p1); sM0[k]=meia(p0); sM1[k]=meia(p1);
+  }
+  /* chão: uma cor de fundo + as faixas da outra cor */
+  c.fillStyle=CEN.chao[1]; c.fillRect(0,HORIZ,L,A-HORIZ);
+  c.fillStyle=CEN.chao[0]; c.beginPath();
+  for(let k=0;k<NS;k++) if(sOk[k] && (base+k)%2) c.rect(0,sY1[k],L,sY0[k]-sY1[k]);
+  c.fill();
+  for(let q=0;q<2;q++){                     /* zebrado da borda */
+    c.fillStyle = q ? CEN.borda[0] : CEN.borda[1]; c.beginPath();
+    for(let k=0;k<NS;k++) if(sOk[k] && (base+k)%2===q) trap(c,k,-1.16,1.16);
+    c.fill();
+  }
+  for(let q=0;q<2;q++){                     /* asfalto */
+    c.fillStyle = q ? CEN.pista[0] : CEN.pista[1]; c.beginPath();
+    for(let k=0;k<NS;k++) if(sOk[k] && (base+k)%2===q) trap(c,k,-1,1);
+    c.fill();
+  }
+  /* sombra da beirada + tracejado das duas faixas: é o que dá a sensação de velocidade */
+  c.fillStyle=CEN.faixa; c.beginPath();
+  for(let k=0;k<NS;k++){
+    if(!sOk[k]) continue;
+    trap(c,k,-1,-.95); trap(c,k,.95,1);
+    if((base+k)%4<2){ trap(c,k,-.37,-.33); trap(c,k,.33,.37); }
+  }
+  c.fill();
+  for(let k=NS-1;k>=0;k--){
+    if(!sOk[k] || (base+k)%4!==0) continue;
+    c.fillStyle = CORES[(base+k)%6];        /* tracejado arco-íris no meio */
+    c.beginPath(); trap(c,k,-.05,.05); c.fill();
+  }
+  /* névoa de distância */
+  if(nevoaCv) c.drawImage(nevoaCv,0,HORIZ,L,(A-HORIZ)*.2);
+  /* enfeites na beira, do mais longe para o mais perto */
+  for(let k=NS-1;k>=0;k--){
+    if(!sOk[k] || (base+k)%4!==0 || !(sP0[k]>0.055)) continue;
+    desenhaProp(c, sC0[k]-sM0[k]*1.42, sY0[k], sP0[k], -1, base+k);
+    desenhaProp(c, sC0[k]+sM0[k]*1.42, sY0[k], sP0[k], 1, base+k+3);
   }
 }
 
@@ -886,43 +1159,83 @@ function desenhaPista(c){
    4. ESTADO E CORRIDA
    ========================================================== */
 const cv=$("#tela"), ctx=cv.getContext("2d");
-let L=0,A=0,DPR=1;
+const palco=$("#palco");
+let L=0,A=0,DPR=1,LP=0,ESC=1,palcoEsq=0,palcoTopo=0;
+/* Só mexe no canvas quando o tamanho muda de verdade (no Android o "resize"
+   dispara à toa e trocar width/height apaga o desenho).
+   Resolução interna: no máximo ~1280px no lado maior e DPR 1,5 em tablet —
+   canvas maior que isso só gasta memória e bateria. */
 function redimensiona(){
   const r=cv.getBoundingClientRect();
-  DPR=Math.min(devicePixelRatio||1,2);
+  let dpr=Math.min(window.devicePixelRatio||1, 2, 1280/Math.max(1,r.width,r.height));
+  if(Math.min(r.width,r.height)>=600) dpr=Math.min(dpr,1.5);
+  dpr=Math.max(.75,dpr);
+  palcoEsq=r.left; palcoTopo=r.top;
+  if(r.width===L && r.height===A && dpr===DPR && cv.width>1){ return; }
+  DPR=dpr;
   cv.width=Math.max(1,Math.round(r.width*DPR));
   cv.height=Math.max(1,Math.round(r.height*DPR));
   ctx.setTransform(DPR,0,0,DPR,0,0);
   L=r.width; A=r.height; HORIZ=A*0.33;
+  LP=Math.min(L,A*1.45); ESC=Math.min(1.5,LP/560);   /* o kart acompanha a largura da pista (no tablet ficava miúdo) */
+  arcoGrad=null; vinQ=-1;
+  preparaCenario();
+  redesenha();
 }
+/* tudo o que é pintado uma vez só (céu, morros, névoa, kart) */
+function preparaCenario(){ ceuSujo=true; fazFundo(); fazKart(); }
+let arcoGrad=null;
 addEventListener("resize",redimensiona);
+addEventListener("orientationchange",()=>setTimeout(redimensiona,120));
+if(window.ResizeObserver){ try{ new ResizeObserver(()=>redimensiona()).observe(palco); }catch(e){} }
 
 const DURACAO=90, KARTP=0.90;
-let J={};
+let J={itens:[]};
 function novoJogo(){
+  for(let i=0;i<J.itens.length;i++) if(itensLivres.length<40) itensLivres.push(J.itens[i]);   /* devolve à reserva */
+  nPart=0; nFlut=0;
   J={rodando:false,fim:false,t:0,restante:DURACAO,
-     dist:0,vel:CEN.vel,velAlvo:CEN.vel,
-     kf:0,kv:0,curva:0,curvaAlvo:0,giro:0,flash:0,
-     itens:[],particulas:[],flutuantes:[],
+     dist:0,vel:CEN.vel*.55,velAlvo:CEN.vel,          /* larga devagar e acelera sozinho */
+     kf:0,kv:0,incl:0,roda:0,fundo:0,curva:0,curvaAlvo:0,giro:0,flash:0,
+     itens:[],
      pontos:0,raiva:0,magia:0,
      pegouCoco:0,pegouCora:0,bateuRaiva:0,bateuRocha:0,pegouMagia:0,respirou:0,
      proxDist:40,tremor:0,avisou:false,explicouRaiva:false,turbo:0};
   atualizaHUD();
 }
+/* A barra só toca no DOM quando o número muda (antes eram 4 escritas de
+   estilo por quadro, com transição de largura = layout a cada quadro). */
+const elPontos=$("#pontos"), elRaiva=$("#barraRaiva"), elRaivometro=$("#raivometro"), elTempo=$("#barraTempo");
+const elSetaE=$("#setaE"), elSetaD=$("#setaD");
+const hudVisto={p:null,r:null,t:null,alto:null,seta:0};
 function atualizaHUD(){
-  $("#pontos").textContent=J.pontos;
-  $("#barraRaiva").style.width=J.raiva+"%";
-  $("#raivometro").classList.toggle("alto",J.raiva>=70);
-  $("#barraTempo").style.width=Math.max(0,J.restante/DURACAO*100)+"%";
+  if(J.pontos!==hudVisto.p){ hudVisto.p=J.pontos; elPontos.textContent=J.pontos; }
+  const r=Math.round(J.raiva);
+  if(r!==hudVisto.r){ hudVisto.r=r; elRaiva.style.transform="scaleX("+(r/100)+")"; }
+  const alto=J.raiva>=70;
+  if(alto!==hudVisto.alto){ hudVisto.alto=alto; elRaivometro.classList.toggle("alto",alto); }
+  const t=Math.ceil(Math.max(0,J.restante)*2);
+  if(t!==hudVisto.t){ hudVisto.t=t; elTempo.style.transform="scaleX("+Math.min(1,t/(DURACAO*2))+")"; }
 }
-function pontinho(){ const e=$("#pontos"); e.classList.remove("pulo"); void e.offsetWidth; e.classList.add("pulo"); }
+function acendeSeta(lado){
+  if(lado===hudVisto.seta) return;
+  hudVisto.seta=lado;
+  elSetaE.classList.toggle("on",lado<0); elSetaD.classList.toggle("on",lado>0);
+}
+const PULO=[{transform:"scale(1)"},{transform:"scale(1.32)"},{transform:"scale(1)"}], PULO_OP={duration:300};
+function pontinho(){ if(elPontos.animate && !reduzir) elPontos.animate(PULO,PULO_OP); }
 
-/* ---------- controles ---------- */
+/* ---------- controles ----------
+   A TELA INTEIRA É O VOLANTE: tocar ou segurar do lado esquerdo vira para a
+   esquerda, do lado direito vira para a direita. Começar o toque em cima do
+   carrinho = arrastar o carrinho com o dedo. O carro acelera sozinho.
+   Vários dedos: manda o ÚLTIMO que tocou. Dedo esquecido parado na tela por
+   mais de 2,5 s deixa de contar, então nunca bloqueia o outro. */
 const teclas={esq:false,dir:false,cima:false,baixo:false};
 addEventListener("keydown",e=>{
   const k=e.key;
-  if(k==="ArrowLeft"){teclas.esq=true; J.alvoToque=null; e.preventDefault();}
-  else if(k==="ArrowRight"){teclas.dir=true; J.alvoToque=null; e.preventDefault();}
+  if(k==="ArrowLeft"){teclas.esq=true; e.preventDefault();}
+  else if(k==="ArrowRight"){teclas.dir=true; e.preventDefault();}
   else if(k==="ArrowUp"){teclas.cima=true; e.preventDefault();}
   else if(k==="ArrowDown"){teclas.baixo=true; e.preventDefault();}
   else if(k===" "){ e.preventDefault(); if($("#c-respira").classList.contains("on")) inicioSopro(); }
@@ -936,18 +1249,84 @@ addEventListener("keyup",e=>{
   else if(k==="ArrowDown") teclas.baixo=false;
   else if(k===" "){ if($("#c-respira").classList.contains("on")) fimSopro(); }
 });
-const palco=$("#palco");
-function toqueX(e){
-  const r=palco.getBoundingClientRect();
-  J.alvoToque=Math.max(-1,Math.min(1,((e.clientX-r.left)/r.width-.5)*2.2));
+const MAXD=6, DEDO_ESQUECIDO=2500;
+const dId=new Int32Array(MAXD), dModo=new Int8Array(MAXD) /* -1 esquerda, 1 direita, 0 arrastando */,
+      dT=new Float64Array(MAXD), dX=new Float32Array(MAXD), dX0=new Float32Array(MAXD);
+let dN=0, arrAlvo=0;
+function dAcha(id){ for(let i=0;i<dN;i++) if(dId[i]===id) return i; return -1; }
+function dTira(i){
+  for(let j=i;j<dN-1;j++){ dId[j]=dId[j+1]; dModo[j]=dModo[j+1]; dT[j]=dT[j+1]; dX[j]=dX[j+1]; dX0[j]=dX0[j+1]; }
+  dN--;
 }
-palco.addEventListener("pointerdown",e=>{ if(J.rodando){ toqueX(e); palco.setPointerCapture(e.pointerId);} });
-palco.addEventListener("pointermove",e=>{ if(J.rodando && J.alvoToque!==null) toqueX(e); });
-["pointerup","pointercancel"].forEach(ev=>palco.addEventListener(ev,()=>{ J.alvoToque=null; }));
+function soltaDedo(){
+  dN=0; acendeSeta(0);
+  teclas.esq=teclas.dir=teclas.cima=teclas.baixo=false;
+}
+palco.addEventListener("pointerdown",e=>{
+  if(!J.rodando) return;
+  let i=dAcha(e.pointerId); if(i>=0) dTira(i);
+  if(dN===MAXD) dTira(0);
+  const x=e.clientX-palcoEsq, y=e.clientY-palcoTopo;
+  const kx=centro(KARTP)+J.kf*meia(KARTP)*.9;
+  const noCarro = Math.abs(x-kx) < 84*ESC+14 && y > telaY(KARTP)-170*ESC;
+  i=dN++;
+  dId[i]=e.pointerId; dModo[i]= noCarro ? 0 : (x<L/2 ? -1 : 1);
+  dT[i]=agoraMs(); dX[i]=x; dX0[i]=x;
+  try{ palco.setPointerCapture(e.pointerId); }catch(err){}
+});
+palco.addEventListener("pointermove",e=>{
+  const i=dAcha(e.pointerId); if(i<0) return;
+  const x=e.clientX-palcoEsq;
+  dX[i]=x;
+  if(Math.abs(x-dX0[i])>8){ dX0[i]=x; dT[i]=agoraMs(); }      /* mexeu: o dedo não está esquecido */
+  if(dModo[i]!==0){ const m = x<L/2 ? -1 : 1; if(m!==dModo[i]){ dModo[i]=m; dT[i]=agoraMs(); } }
+});
+["pointerup","pointercancel","lostpointercapture"].forEach(ev=>palco.addEventListener(ev,e=>{
+  const i=dAcha(e.pointerId); if(i>=0) dTira(i);
+}));
+/* devolve -1, 0, 1 (virar) ou 2 (arrastando: o alvo fica em arrAlvo) */
+function leDirecao(){
+  const ag=agoraMs();
+  for(let i=dN-1;i>=0;i--){
+    if(ag-dT[i]>DEDO_ESQUECIDO) continue;
+    if(dModo[i]===0){
+      const m=meia(KARTP)*.9;
+      arrAlvo = m>0 ? Math.max(-1,Math.min(1,(dX[i]-centro(KARTP))/m)) : 0;
+      return 2;
+    }
+    return dModo[i];
+  }
+  return (teclas.dir?1:0)-(teclas.esq?1:0);
+}
+/* segurar o dedo não pode abrir menu de contexto nem selecionar nada */
+addEventListener("contextmenu",e=>e.preventDefault());
 
-/* ---------- itens ---------- */
-function nasceItem(){
-  const r=Math.random();
+/* ---------- itens ----------
+   Tudo sai de reservas fixas: nenhuma partícula, texto ou item novo é
+   criado durante a corrida, e nada se acumula de uma partida para outra. */
+const itensLivres=[];
+function novoItem(tipo,s,f,zPos,raio){
+  const it=itensLivres.pop()||{tipo:"",s:null,f:0,zPos:0,raio:1,giro:0,fase:0};
+  it.tipo=tipo; it.s=s; it.f=f; it.zPos=zPos; it.raio=raio; it.giro=Math.random()*6; it.fase=Math.random()*6;
+  return it;
+}
+/* a lista fica sempre do mais longe para o mais perto: desenhar não
+   precisa mais de map/filter/sort (3 listas novas por quadro) */
+function poeItem(it){
+  const v=J.itens; let i=v.length; v.push(it);
+  while(i>0 && v[i-1].zPos<it.zPos){ v[i]=v[i-1]; i--; }
+  v[i]=it;
+}
+function tiraItem(i){
+  const v=J.itens, it=v[i];
+  for(let j=i;j<v.length-1;j++) v[j]=v[j+1];
+  v.length--;
+  if(itensLivres.length<40) itensLivres.push(it);
+}
+function nasceItem(z,amigo){
+  z=z||ZFAR;
+  let r=Math.random();
+  if(amigo) r*=.58;                 /* os primeiros são só cocô e sentimento */
   let tipo,s=null,raio=1;
   if(r<.34) tipo="coco";
   else if(r<.58){ tipo="coracao"; s=SENTIMENTOS[(Math.random()*SENTIMENTOS.length)|0]; }
@@ -955,43 +1334,74 @@ function nasceItem(){
   else if(r<.95) tipo="rocha";
   else { tipo="magia"; raio=.9; }
   const f=(Math.random()*1.7-.85);
-  J.itens.push({tipo,s,f,zPos:J.dist+ZFAR,raio,giro:Math.random()*6,fase:Math.random()*6});
+  poeItem(novoItem(tipo,s,f,J.dist+z,raio));
   const dobra = J.t>55 ? .42 : J.t>28 ? .26 : .12;
-  if(Math.random()<dobra){
+  if(!amigo && Math.random()<dobra){
     const t2=Math.random()<.5?"raiva":"rocha";
     let f2=Math.random()*1.7-.85;
     if(Math.abs(f2-f)<.5) f2 = f>0 ? f-.7 : f+.7;
-    J.itens.push({tipo:t2,s:null,f:Math.max(-.9,Math.min(.9,f2)),
-      zPos:J.dist+ZFAR+10+Math.random()*40,raio:t2==="raiva"?1.15:1,giro:Math.random()*6,fase:Math.random()*6});
+    poeItem(novoItem(t2,null,Math.max(-.9,Math.min(.9,f2)),J.dist+z+10+Math.random()*40,t2==="raiva"?1.15:1));
   }
 }
+/* A pista já começa povoada. Antes o primeiro item nascia no horizonte e
+   levava de 11 a 19 segundos para chegar: a corrida começava vazia. */
+function semeia(){
+  let z=48, n=0;
+  while(z<ZFAR){ nasceItem(z, n<3); n++; z+=27*(.7+Math.random()*.7); }
+  J.proxDist=Math.max(1,z-ZFAR);
+}
+const MAX_PART=48, MAX_FLUT=8;
+const PART=[], FLUT=[]; let nPart=0, nFlut=0;
+for(let i=0;i<MAX_PART;i++) PART.push({x:0,y:0,vx:0,vy:0,r:0,cor:"",vida:0});
+for(let i=0;i<MAX_FLUT;i++) FLUT.push({x:0,y:0,txt:"",cor:"",vida:0});
 function fagulhas(x,y,cor,n,forca){
-  for(let i=0;i<(reduzir?4:n);i++){
-    const a=Math.random()*6.28, v=(forca||1)*(60+Math.random()*180);
-    J.particulas.push({x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v-70,r:3+Math.random()*5,cor,vida:1});
+  n = reduzir ? 4 : Math.min(14,n);
+  for(let i=0;i<n && nPart<MAX_PART;i++){
+    const a=Math.random()*6.28, v=(forca||1)*(60+Math.random()*180), p=PART[nPart++];
+    p.x=x; p.y=y; p.vx=Math.cos(a)*v; p.vy=Math.sin(a)*v-70; p.r=3+Math.random()*5; p.cor=cor; p.vida=1;
   }
 }
-const flutua=(x,y,txt,cor)=>J.flutuantes.push({x,y,txt,cor,vida:1});
+function flutua(x,y,txt,cor){
+  let f;
+  if(nFlut<MAX_FLUT) f=FLUT[nFlut++];
+  else { f=FLUT[0]; for(let i=1;i<nFlut;i++) if(FLUT[i].vida<f.vida) f=FLUT[i]; }   /* reaproveita o mais apagado */
+  f.x=x; f.y=y; f.txt=txt; f.cor=cor; f.vida=1;
+}
+const TELA={z:0,p:0,x:0,y:0,r:0};      /* reaproveitado: sem objeto novo por item por quadro */
 function telaDoItem(it){
   const z=it.zPos-J.dist, p=proj(z);
-  return {z,p,x:centro(p)+it.f*meia(p)*.9, y:telaY(p),
-          r:Math.min(L*.085, p*L*.072*(it.raio||1))};   /* era .17: gigante */
+  TELA.z=z; TELA.p=p; TELA.x=centro(p)+it.f*meia(p)*.9; TELA.y=telaY(p);
+  TELA.r=Math.min(LP*.085, p*LP*.072*(it.raio||1));   /* era .17: gigante */
+  return TELA;
+}
+/* cocô, pedra e corações são pintados uma vez e depois só copiados */
+const SPR_R=60, SPR_T=Math.round(SPR_R*2.8), SPR={coco:null,rocha:null};
+function novoSprite(fn){
+  const k=document.createElement("canvas"); k.width=k.height=SPR_T;
+  fn(k.getContext("2d"),SPR_T/2,SPR_T/2,SPR_R); return k;
+}
+function fazSprites(){
+  if(SPR.coco) return;
+  SPR.coco=novoSprite((k,x,y,r)=>desenhaCoco(k,x,y,r,0));
+  SPR.rocha=novoSprite((k,x,y,r)=>desenhaRocha(k,x,y,r,0));
+  SENTIMENTOS.forEach(s=>{ s.spr=novoSprite((k,x,y,r)=>desenhaCoracao(k,x,y,r,s,0,false)); });
 }
 
 /* ---------- ação e reação ---------- */
-const FALAS_COCO=["Eca! Cocô!","Puuum!","Que fedor!","Cocô voador!"];
+/* "Eca! Cocô!" saiu da lista: não existe clipe gravado com esse texto. */
+const FALAS_COCO=["Puuum!","Que fedor!","Cocô voador!"];
 function mult(){ let m=J.magia>0?2:1; if(J.raiva>=70) m*=.5; return m; }
 function pegouCoco(it,t){
   const p=Math.round(5*mult()); J.pontos+=p; J.pegouCoco++;
   SFX.coco(); fagulhas(t.x,t.y,"#8C6136",18,1.2); flutua(t.x,t.y,"+"+p,"#8C6136");
   pontinho(); atualizaHUD();
-  if(Math.random()<.5) falar(FALAS_COCO[(Math.random()*FALAS_COCO.length)|0]);
+  if(Math.random()<.5) falar(FALAS_COCO[(Math.random()*FALAS_COCO.length)|0],{leve:true});
 }
 function pegouCoracao(it,t){
   const s=it.s,p=Math.round(10*mult()); J.pontos+=p; J.pegouCora++;
   SFX.coracao(); fagulhas(t.x,t.y,s.cor,18,1); flutua(t.x,t.y,"+"+p,s.cor); pontinho();
   if(s.efeito<0){ J.raiva=Math.max(0,J.raiva+s.efeito); flutua(t.x,t.y-34,"🌋 −","#3FCB8E"); }
-  falar(s.n.toUpperCase()+"!");
+  falar(s.n.toUpperCase()+"!",{leve:true});
   atualizaHUD(); if(J.raiva<50) J.avisou=false;
 }
 function bateuRaiva(it,t){
@@ -1001,11 +1411,11 @@ function bateuRaiva(it,t){
   fagulhas(t.x,t.y,"#2B0008",26,1.9); fagulhas(t.x,t.y,"#FF3B3B",20,1.5);
   flutua(t.x,t.y,"RAIVA!","#FF3B3B"); atualizaHUD();
   if(J.raiva>=100) return travou();
-  if(!J.explicouRaiva){ J.explicouRaiva=true;
-    falar("Cuidado com o monstro da raiva! Cada vez que ele pega você, o vulcão enche."); }
-  else if(Math.random()<.45) falar("Aaah! O monstro!");
-  if(J.raiva>=62 && !J.avisou){ J.avisou=true;
+  if(J.raiva>=62 && !J.avisou){ J.avisou=true; J.explicouRaiva=true;
     falar("O vulcão tá quase cheio e você quase não enxerga! Corre atrás de um coração verde!"); }
+  else if(!J.explicouRaiva){ J.explicouRaiva=true;
+    falar("Cuidado com o monstro da raiva! Cada vez que ele pega você, o vulcão enche."); }
+  else if(Math.random()<.45) falar("Aaah! O monstro!",{leve:true});
 }
 function bateuRocha(it,t){
   J.bateuRocha++; SFX.batida(); J.tremor=28;
@@ -1020,14 +1430,18 @@ function pegouMagia(it,t){
 }
 
 /* ---------- respirar ---------- */
-let soprando=false,tSopro=null,faseSopro="espera";
+let soprando=false,tSopro=null,tSolta=null,faseSopro="espera",dedoFlor=null;
 function travou(){
-  J.rodando=false; J.tremor=28; SFX.travou(); musicaVolume(.12);
-  faseSopro="espera"; soprando=false;
-  $("#anel").className="anel"; $("#flor").className="flor";
-  $("#txt-respira").textContent="Tanta raiva junta que o kart travou. Segura a florzinha e cheira bem devagar.";
+  J.rodando=false; J.tremor=0; soltaDedo(); SFX.travou(); musicaVolume(.12);
+  clearTimeout(tSopro); clearTimeout(tSolta);
+  faseSopro="espera"; soprando=false; dedoFlor=null;
+  /* a flor é um <svg>: "className=" em SVG dá erro e derrubava esta função antes
+     de a tela de respirar aparecer — o jogo ficava congelado com o vulcão cheio */
+  $("#anel").className="anel"; $("#flor").setAttribute("class","flor");
+  $("#txt-respira").textContent="Tanta raiva junta que o carrinho travou. Segura a florzinha e cheira bem devagar.";
   $("#c-respira").classList.add("on");
-  falar("O vulcão encheu e o kart travou! Quando a raiva fica grande demais, a gente para. Segura a flor e cheira devagar.");
+  /* "carrinho", e não "kart": é o texto do clipe gravado (com "kart" caía na voz do navegador) */
+  falar("O vulcão encheu e o carrinho travou! Quando a raiva fica grande demais, a gente para. Segura a flor e cheira devagar.");
 }
 function inicioSopro(){
   if(soprando||faseSopro==="soltando") return;
@@ -1045,70 +1459,96 @@ function fimSopro(){
   $("#anel").classList.remove("enche"); $("#flor").classList.remove("cresce");
   $("#anel").classList.add("esvazia");
   if(faseSopro!=="cheio"){ faseSopro="espera";
-    $("#txt-respira").textContent="Quase! Segura mais um pouquinho, bem devagar."; return; }
+    $("#txt-respira").textContent="Quase! Segura mais um pouquinho, bem devagar.";
+    /* ela não lê: o aviso precisa ser falado (o clipe já existia e não era usado) */
+    if(!document.hidden) falar("Quase! Segura mais um pouquinho, bem devagar.");
+    return; }
   faseSopro="soltando"; SFX.expira();
   $("#txt-respira").textContent="Fuuuuuu… o vulcão esvaziou!";
-  setTimeout(()=>{
-    J.raiva=0; J.respirou++; J.pontos+=30; J.tremor=0; J.avisou=false;
+  const jogo=J;
+  tSolta=setTimeout(()=>{
+    if(J!==jogo || J.fim) return;          /* a corrida foi trocada no meio da espera */
+    J.raiva=0; J.respirou++; J.pontos+=30; J.tremor=0; J.flash=0; J.avisou=false;
     SFX.calma(); atualizaHUD(); pontinho();
     $("#c-respira").classList.remove("on");
     const kx=centro(KARTP)+J.kf*meia(KARTP)*.9;
     flutua(kx,telaY(KARTP)-40,"+30 CALMA","#3FCB8E");
     fagulhas(kx,telaY(KARTP)-20,"#3FCB8E",28,1.2);
-    faseSopro="espera"; J.rodando=true; musicaVolume(.5);
+    faseSopro="espera"; musicaVolume(.5);
     falar("Isso! Você respirou e o vulcão esvaziou. Trinta pontos por se acalmar — é o que mais vale no jogo!");
+    anda();
+    if(document.hidden) pausar();          /* saiu do jogo no meio: volta em pausa */
   },1500);
 }
 const fz=$("#florzona");
-fz.addEventListener("pointerdown",e=>{e.preventDefault(); inicioSopro();});
-["pointerup","pointerleave","pointercancel"].forEach(ev=>fz.addEventListener(ev,e=>{e.preventDefault(); fimSopro();}));
+fz.addEventListener("pointerdown",e=>{
+  e.preventDefault();
+  if(dedoFlor!==null) return;
+  dedoFlor=e.pointerId;
+  try{ fz.setPointerCapture(e.pointerId); }catch(err){}   /* o dedo pode escorregar sem soltar a flor */
+  inicioSopro();
+});
+["pointerup","pointercancel"].forEach(ev=>fz.addEventListener(ev,e=>{
+  e.preventDefault();
+  if(e.pointerId!==dedoFlor) return;
+  dedoFlor=null; fimSopro();
+}));
 
 /* ==========================================================
    5. LOOP
    ========================================================== */
-let ultimo=0;
+/* O laço só roda durante a corrida. Antes o requestAnimationFrame ficava
+   redesenhando 60x por segundo atrás de qualquer tela (início, pausa, fim). */
+let ultimo=0, rafId=0, sujo=true;
+function pedeQuadro(){ if(!rafId && !document.hidden) rafId=requestAnimationFrame(passo); }
+function redesenha(){ sujo=true; pedeQuadro(); }
+function anda(){ J.rodando=true; ultimo=0; pedeQuadro(); }
 function passo(agora){
-  requestAnimationFrame(passo);
-  const dt=Math.min(.05,(agora-ultimo)/1000||0); ultimo=agora;
-  if(J.rodando) atualiza(dt);
-  desenha();
+  rafId=0;
+  const dt = ultimo ? Math.min(.05,Math.max(0,(agora-ultimo)/1000)) : 0;
+  ultimo=agora;
+  if(J.rodando){ atualiza(dt); desenha(); if(J.rodando) pedeQuadro(); }
+  else if(sujo) desenha();
+  sujo=false;
 }
 function atualiza(dt){
   J.t+=dt; J.restante-=dt;
   if(J.restante<=0 && !J.fim) return terminar();
   const rf=J.raiva/100;
   if(J.raiva>0) J.raiva=Math.max(0,J.raiva-dt*1.6);
+  if(J.raiva<50) J.avisou=false;
 
-  /* acelera ao longo da corrida */
+  /* acelera sozinho, e mais ao longo da corrida */
   J.velAlvo = CEN.vel + J.t*1.3;
   if(teclas.cima) J.velAlvo*=1.45;
   if(teclas.baixo) J.velAlvo*=.6;
   if(J.magia>0) J.velAlvo*=1.14;
   J.velAlvo *= (1 - rf*.28);
-  J.vel += (J.velAlvo-J.vel)*Math.min(1,dt*3.5);
+  J.vel += (J.velAlvo-J.vel)*Math.min(1,dt*2.2);
   J.dist += J.vel*dt*0.065;
 
   /* curvas suaves da pista */
   J.curvaAlvo = Math.sin(J.dist*.010)*.55 + Math.sin(J.dist*.0041)*.35;
   J.curvaAlvo = Math.max(-.85, Math.min(.85, J.curvaAlvo));
   J.curva += (J.curvaAlvo-J.curva)*Math.min(1,dt*1.2);
+  J.fundo += J.curva*J.vel*dt*.0005;            /* o horizonte desliza nas curvas */
+  J.roda = (J.roda + J.vel*dt*.55) % 52;
 
-  /* direção */
-  const resposta = 9*(1-rf*.35);
-  if(J.alvoToque!==null && J.alvoToque!==undefined){
-    J.kf += (J.alvoToque-J.kf)*Math.min(1,dt*resposta);
-  } else {
-    let alvo=0;
-    if(teclas.esq) alvo-=1;
-    if(teclas.dir) alvo+=1;
-    /* a seta move o kart direto, sem inércia escorregadia */
-    J.kv += (alvo*1.25-J.kv)*Math.min(1,dt*14);
-    J.kf += J.kv*dt;
-    if(!alvo) J.kv*=Math.pow(.02,dt);
-  }
+  /* direção: o toque pede uma VELOCIDADE lateral e o kart chega nela com
+     uma inércia leve — desliza de um lado para o outro, sem pular de faixa */
+  const lado=leDirecao();
+  let alvoV;
+  if(lado===2) alvoV=Math.max(-2.6,Math.min(2.6,(arrAlvo-J.kf)*7));
+  else alvoV=lado*1.9*(1-rf*.3);
+  J.kv += (alvoV-J.kv)*Math.min(1,dt*(alvoV!==0?10:8));
+  J.kf += J.kv*dt;
   /* sem empurrão lateral: para criança, curva que puxa o kart confunde */
   if(rf>.6) J.kf += Math.sin(J.t*7.5)*dt*.35*rf;
-  J.kf=Math.max(-1,Math.min(1,J.kf));
+  if(J.kf>1){ J.kf=1; if(J.kv>0) J.kv=0; }
+  else if(J.kf<-1){ J.kf=-1; if(J.kv<0) J.kv=0; }
+  J.incl += (J.kv/2.2-J.incl)*Math.min(1,dt*9);  /* o carro deita um pouco para o lado em que vira */
+  acendeSeta(lado===2 ? (Math.abs(J.kv)>.25 ? (J.kv<0?-1:1) : 0) : lado);
+
   J.giro += (0-J.giro)*Math.min(1,dt*3.2);
   if(J.magia>0) J.magia=Math.max(0,J.magia-dt);
   if(J.tremor>0) J.tremor=Math.max(0,J.tremor-dt*40);
@@ -1121,7 +1561,7 @@ function atualiza(dt){
 
   for(let i=J.itens.length-1;i>=0;i--){
     const it=J.itens[i], z=it.zPos-J.dist;
-    if(z<-6){ J.itens.splice(i,1); continue; }
+    if(z<-6){ tiraItem(i); continue; }
     if(z<2.2 && z>-2 && Math.abs(it.f-J.kf)<.34){
       const t=telaDoItem(it);
       if(it.tipo==="coco") pegouCoco(it,t);
@@ -1129,17 +1569,18 @@ function atualiza(dt){
       else if(it.tipo==="raiva") bateuRaiva(it,t);
       else if(it.tipo==="rocha") bateuRocha(it,t);
       else pegouMagia(it,t);
-      J.itens.splice(i,1);
+      tiraItem(i);
+      if(!J.rodando) return;               /* o vulcão encheu: o resto do quadro fica para depois */
     }
   }
-  for(let i=J.particulas.length-1;i>=0;i--){
-    const p=J.particulas[i];
+  for(let i=nPart-1;i>=0;i--){
+    const p=PART[i];
     p.vy+=620*dt; p.x+=p.vx*dt; p.y+=p.vy*dt; p.vida-=dt*1.1;
-    if(p.vida<=0) J.particulas.splice(i,1);
+    if(p.vida<=0){ nPart--; PART[i]=PART[nPart]; PART[nPart]=p; }
   }
-  for(let i=J.flutuantes.length-1;i>=0;i--){
-    const f=J.flutuantes[i]; f.y-=60*dt; f.vida-=dt*.85;
-    if(f.vida<=0) J.flutuantes.splice(i,1);
+  for(let i=nFlut-1;i>=0;i--){
+    const f=FLUT[i]; f.y-=60*dt; f.vida-=dt*.85;
+    if(f.vida<=0){ nFlut--; FLUT[i]=FLUT[nFlut]; FLUT[nFlut]=f; }
   }
   atualizaHUD();
 }
@@ -1148,7 +1589,6 @@ function desenha(){
   if(!L) return;
   const rf=J.raiva/100;
   const tr=J.tremor>0?(Math.random()-.5)*J.tremor*.5:0;
-  ctx.clearRect(0,0,L,A);
   ctx.save(); ctx.translate(tr,tr*.6);
   desenhaCeu(ctx);
   desenhaPista(ctx);
@@ -1160,54 +1600,72 @@ function desenha(){
       ctx.fillRect(c0-m, y-(6-i)*p*22, m*2, p*22); }
   }
 
-  /* itens: dos mais longe para os mais perto */
-  J.itens.map(it=>({it,t:telaDoItem(it)}))
-    .filter(o=>o.t.p>.03 && o.t.z>-4)
-    .sort((a,b)=>b.t.z-a.t.z)
-    .forEach(({it,t})=>{
-      const bob=Math.sin(it.fase+J.t*3)*t.r*.12;
-      ctx.save(); ctx.globalAlpha=.20; ctx.fillStyle="#1B1230";
-      ctx.beginPath(); ctx.ellipse(t.x,t.y,t.r*.8,t.r*.24,0,0,7); ctx.fill(); ctx.restore();
-      const y=t.y-t.r*.85+bob;
-      if(it.tipo==="coco") desenhaCoco(ctx,t.x,y,t.r,Math.sin(it.fase*.5)*.2);
-      else if(it.tipo==="coracao") desenhaCoracao(ctx,t.x,y,t.r,it.s,0, it.s.efeito<0 && J.raiva>60);
-      else if(it.tipo==="raiva") desenhaMonstro(ctx,t.x,y,t.r,J.t,(J.kf-it.f)*1.4);
-      else if(it.tipo==="rocha") desenhaRocha(ctx,t.x,y,t.r,it.giro*.5);
-      else desenhaMagia(ctx,t.x,y,t.r,it.giro);
-    });
+  /* itens: a lista já está do mais longe para o mais perto */
+  for(let i=0;i<J.itens.length;i++){
+    const it=J.itens[i], t=telaDoItem(it);
+    if(!(t.p>.03 && t.z>-4)) continue;
+    const x=t.x, r=t.r, bob=Math.sin(it.fase+J.t*3)*r*.12, y=t.y-r*.85+bob;
+    if(sombraCv) ctx.drawImage(sombraCv,x-r*1.05,t.y-r*.3,r*2.1,r*.6);
+    if(it.tipo==="coco") ctx.drawImage(SPR.coco,x-r*1.4,y-r*1.4,r*2.8,r*2.8);
+    else if(it.tipo==="coracao"){
+      if(it.s.efeito<0 && J.raiva>60) desenhaCoracao(ctx,x,y,r,it.s,0,true);     /* piscando: é o que acalma */
+      else ctx.drawImage(it.s.spr,x-r*1.4,y-r*1.4,r*2.8,r*2.8);
+    }
+    else if(it.tipo==="raiva") desenhaMonstro(ctx,x,y,r,J.t,(J.kf-it.f)*1.4);
+    else if(it.tipo==="rocha") ctx.drawImage(SPR.rocha,x-r*1.4,y-r*1.4,r*2.8,r*2.8);
+    else desenhaMagia(ctx,x,y,r,it.giro+J.t);
+  }
 
-  /* o kart */
+  /* o kart: deita na curva e treme de leve com a velocidade */
   const kx=centro(KARTP)+J.kf*meia(KARTP)*.9;
-  desenhaKart(ctx,kx,telaY(KARTP),Math.min(.95,L/560),J.giro+J.curva*.10,J.magia,rf);
+  const ky=telaY(KARTP)+(J.rodando?Math.sin(J.dist*1.7)*1.1*ESC:0);
+  desenhaKart(ctx,kx,ky,ESC,J.giro+J.curva*.08+J.incl*.15,J.magia,rf,J.roda);
 
-  J.particulas.forEach(p=>{
+  for(let i=0;i<nPart;i++){ const p=PART[i];
     ctx.globalAlpha=Math.max(0,p.vida); ctx.fillStyle=p.cor;
     ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,7); ctx.fill();
-  });
+  }
   ctx.globalAlpha=1;
-  ctx.textAlign="center"; ctx.textBaseline="middle";
-  J.flutuantes.forEach(f=>{
-    ctx.globalAlpha=Math.max(0,f.vida);
-    ctx.font="800 30px 'Baloo 2', system-ui, sans-serif";
+  if(nFlut){
+    ctx.textAlign="center"; ctx.textBaseline="middle";
+    ctx.font=FONTE_FLUT;
     ctx.lineWidth=7; ctx.strokeStyle="#fff"; ctx.lineJoin="round";
-    ctx.strokeText(f.txt,f.x,f.y); ctx.fillStyle=f.cor; ctx.fillText(f.txt,f.x,f.y);
-  });
-  ctx.globalAlpha=1;
+    for(let i=0;i<nFlut;i++){ const f=FLUT[i];
+      ctx.globalAlpha=Math.max(0,f.vida);
+      ctx.strokeText(f.txt,f.x,f.y); ctx.fillStyle=f.cor; ctx.fillText(f.txt,f.x,f.y);
+    }
+    ctx.globalAlpha=1;
+  }
   if(J.magia>0){
-    ctx.save(); ctx.globalAlpha=.13+Math.sin(J.t*8)*.05;
-    const rg=ctx.createLinearGradient(0,0,L,A);
-    CORES.forEach((c,i)=>rg.addColorStop(i/5,c));
-    ctx.fillStyle=rg; ctx.fillRect(0,0,L,A); ctx.restore();
+    if(!arcoGrad){ arcoGrad=ctx.createLinearGradient(0,0,L,A);
+      for(let i=0;i<6;i++) arcoGrad.addColorStop(i/5,CORES[i]); }
+    ctx.globalAlpha=.13+Math.sin(J.t*8)*.05;
+    ctx.fillStyle=arcoGrad; ctx.fillRect(0,0,L,A); ctx.globalAlpha=1;
   }
   ctx.restore();
-  if(J.flash>0){ ctx.fillStyle="rgba(255,45,55,"+(J.flash*.55)+")"; ctx.fillRect(0,0,L,A); }
-  if(rf>.25){
-    const q=(rf-.25)/.75;
-    const vg=ctx.createRadialGradient(L/2,A*.7,Math.max(10,Math.min(L,A)*(.62-q*.36)),L/2,A*.7,Math.max(L,A)*.82);
+  if(J.flash>0){ ctx.globalAlpha=J.flash*.55; ctx.fillStyle="#FF2D37"; ctx.fillRect(0,0,L,A); ctx.globalAlpha=1; }
+  if(rf>.25) desenhaVinheta((rf-.25)/.75);
+}
+const FONTE_FLUT="800 30px 'Baloo 2', system-ui, sans-serif";
+/* A névoa vermelha da raiva era um degradê radial de tela cheia criado e
+   pintado em resolução total a cada quadro. Agora é pintada num canvas de
+   1/4 do tamanho, refeita só quando a raiva muda um degrau, e esticada. */
+let vinCv=null, vinQ=-1;
+function desenhaVinheta(q){
+  const qq=Math.round(Math.max(0,Math.min(1,q))*30);
+  if(qq!==vinQ || !vinCv){
+    vinQ=qq;
+    const w=Math.max(2,Math.round(L/4)), h=Math.max(2,Math.round(A/4)), f=qq/30;
+    if(!vinCv) vinCv=document.createElement("canvas");
+    if(vinCv.width!==w) vinCv.width=w;
+    if(vinCv.height!==h) vinCv.height=h;
+    const v=vinCv.getContext("2d");
+    const vg=v.createRadialGradient(w/2,h*.7,Math.max(2.5,Math.min(w,h)*(.62-f*.36)),w/2,h*.7,Math.max(w,h)*.82);
     vg.addColorStop(0,"rgba(255,60,60,0)");
-    vg.addColorStop(1,"rgba(190,20,40,"+(.30+q*.45)+")");
-    ctx.fillStyle=vg; ctx.fillRect(0,0,L,A);
+    vg.addColorStop(1,"rgba(190,20,40,"+(.30+f*.45)+")");
+    v.clearRect(0,0,w,h); v.fillStyle=vg; v.fillRect(0,0,w,h);
   }
+  ctx.drawImage(vinCv,0,0,L,A);
 }
 
 /* ==========================================================
@@ -1245,31 +1703,58 @@ function montaCenarios(){
     if(el) miniCenario(el.getContext("2d"),el,c);
   });
   $$("#lista-cenarios .cen").forEach(b=>b.addEventListener("click",()=>{
+    if(travado()) return;
     CEN=CENARIOS[+b.dataset.i]; SFX.toque(); comecar();
   }));
 }
+/* Trava curtinha contra o toque duplo: o segundo toque caía no botão da
+   tela seguinte (ex.: "Jogar de novo" já escolhia um cenário sem querer). */
+let travaAte=0;
+const agoraMs=()=>(window.performance&&performance.now)?performance.now():Date.now();
+function trava(ms){ travaAte=agoraMs()+ms; }
+const travado=()=>agoraMs()<travaAte;
+let cenariosMontados=false, tElogio=null, musQuer=false;
 function escolherCenario(){
+  clearTimeout(tElogio); clearTimeout(tSopro); clearTimeout(tSolta);
+  J.rodando=false; soltaDedo();
   document.querySelectorAll(".cena").forEach(c=>c.classList.remove("on"));
   $("#c-cenarios").classList.add("on");
-  montaCenarios();
+  if(!cenariosMontados){ montaCenarios(); cenariosMontados=true; }
+  trava(350);
   falar("Escolhe onde você quer correr!");
 }
 function comecar(){
   audio();
+  clearTimeout(tElogio);
   document.querySelectorAll(".cena").forEach(c=>c.classList.remove("on"));
-  novoJogo(); redimensiona();
+  novoJogo(); semeia(); redimensiona(); preparaCenario();
+  aquece();
+  musQuer=true;
   if(S.musica) musicaLiga();
   musicaVolume(.5);
-  J.rodando=true;
+  anda();
   falar("Vai, "+S.nome+"! Pega os cocôs e os sentimentos. E fica de olho no vulcão!");
+}
+/* Pinta um quadro "com tudo ligado" (névoa da raiva, arco-íris da magia,
+   clarão, texto) antes da largada. A primeira vez que cada efeito aparece o
+   navegador prepara a pintura dele e isso dava uma travadinha no meio da
+   corrida; assim a preparação acontece aqui, escondida na troca de tela. */
+function aquece(){
+  if(!L) return;
+  J.raiva=80; J.magia=1; J.flash=.4;
+  fagulhas(-50,-50,"#fff",2,1); flutua(-80,-80,"+10","#fff");
+  desenha();
+  J.raiva=0; J.magia=0; J.flash=0; nPart=0; nFlut=0;
+  hudVisto.r=null;
 }
 function pausar(){
   if(!J.rodando) return;
-  J.rodando=false; calar(); musicaVolume(.15);
+  J.rodando=false; soltaDedo(); calar(); musicaVolume(.15);
   $("#c-pausa").classList.add("on");
 }
 function terminar(){
-  J.fim=true; J.rodando=false; SFX.fim(); calar(); musicaVolume(.15);
+  J.fim=true; J.rodando=false; soltaDedo(); SFX.fim(); calar(); musicaVolume(.15);
+  trava(600);
   const rec=J.pontos>RECORDE;
   if(rec){ RECORDE=J.pontos; try{ localStorage.setItem("carrinho-recorde",String(RECORDE)); }catch(e){} }
   const est=J.pontos>=300?3:J.pontos>=160?2:1;
@@ -1290,21 +1775,33 @@ function terminar(){
     elogio=`O monstro da raiva te pegou ${J.bateuRaiva} vezes e mesmo assim você não deixou o vulcão encher. Foi equilibrando com calma e alegria!`;
   else
     elogio=`Você foi até o fim da estrada sem desistir. Da próxima vez vai pegar ainda mais cocô!`;
+  /* só existem clipes até 6 respiradas / 6 monstros: acima disso usa o elogio geral */
+  if(window.VOZ && !temFala(elogio))
+    elogio=`Você foi até o fim da estrada sem desistir. Da próxima vez vai pegar ainda mais cocô!`;
   $("#elogio").textContent=elogio;
   $("#c-fim").classList.add("on");
-  setTimeout(()=>falar(elogio),700);
+  clearTimeout(tElogio);
+  tElogio=setTimeout(()=>falar(elogio),400);   /* cancelado se ela já tocar em "Jogar de novo" */
 }
 
 /* ==========================================================
    7. BOTÕES
    ========================================================== */
-const paraHub=()=>{ calar(); musicaPara(); location.href="1-vulcao-e-arcoiris.html#hub"; };
+let saindo=false;
+const paraHub=()=>{
+  if(saindo || travado()) return;
+  saindo=true;
+  clearTimeout(tElogio); clearTimeout(tSopro); clearTimeout(tSolta);
+  if(J.rodando) pausar();                /* se voltar pelo "voltar" do celular, encontra o jogo em pausa */
+  calar(); musQuer=false; musicaPara();
+  location.href="index.html";
+};
 $("#btComecar").addEventListener("click",()=>{SFX.toque(); escolherCenario();});
-$("#btDeNovo").addEventListener("click",()=>{SFX.toque(); escolherCenario();});
+$("#btDeNovo").addEventListener("click",()=>{ if(travado()) return; SFX.toque(); escolherCenario();});
 $("#btRecomecar").addEventListener("click",()=>{SFX.toque(); escolherCenario();});
 $("#btVoltar").addEventListener("click",()=>{
   SFX.toque(); $("#c-pausa").classList.remove("on");
-  if(!J.fim){ J.rodando=true; musicaVolume(.5); }
+  if(!J.fim && !J.rodando){ musicaVolume(.5); anda(); }
 });
 $("#btPausa").addEventListener("click",()=>{SFX.toque(); pausar();});
 ["btHub","btHub2","btHub3"].forEach(id=>{ const b=document.getElementById(id); if(b) b.addEventListener("click",paraHub); });
@@ -1320,8 +1817,28 @@ $("#btMusica").addEventListener("click",()=>{
 });
 $("#btSom").classList.toggle("off",!S.voz);
 $("#btMusica").classList.toggle("off",!S.musica);
+/* Saiu da tela (outra aba, botão home, tela apagada): para tudo de verdade —
+   voz, música, relógio da música e o próprio motor de áudio. Ao voltar, o
+   jogo está em pausa e o som retorna no volume que estava. */
 document.addEventListener("visibilitychange",()=>{
-  if(document.hidden){ calar(); musicaVolume(0); if(J.rodando) pausar(); }
+  if(document.hidden){
+    if(soprando){ dedoFlor=null; fimSopro(); }
+    calar(); if(J.rodando) pausar();
+    musicaPara();
+    if(AC && AC.suspend && AC.state==="running"){ try{ AC.suspend(); }catch(e){} }
+  } else {
+    if(AC && AC.resume){ try{ AC.resume(); }catch(e){} }
+    if(musQuer && S.musica) musicaLiga();
+    aplicaMusica();
+    redimensiona(); redesenha();
+  }
+});
+/* voltou pelo histórico (página guardada inteira pelo navegador) */
+addEventListener("pageshow",e=>{
+  if(!e.persisted) return;
+  saindo=false;
+  if(J.rodando) pausar();
+  redimensiona(); redesenha();
 });
 
 /* ícones da tela inicial */
@@ -1337,10 +1854,11 @@ pintaIcone("ic-mag",(c,v)=>desenhaMagia(c,v.width/2,v.height/2,26,.4));
 pintaIcone("ic-placar",(c,v)=>desenhaMagia(c,v.width/2,v.height/2,20,.4));
 pintaIcone("ic-carro",(c,v)=>{ const g=c.createLinearGradient(0,0,0,v.height);
   g.addColorStop(0,"#BFE9FF"); g.addColorStop(1,"#7FDCA8"); c.fillStyle=g; c.fillRect(0,0,v.width,v.height);
-  desenhaKart(c,v.width/2,v.height*.88,.62,0,0,0); });
+  desenhaKartParado(c,v.width/2,v.height*.88,.62); });
 
-novoJogo(); redimensiona();
-requestAnimationFrame(passo);
+fazSprites(); novoJogo(); redimensiona(); redesenha();
+/* a fonte dos números do canvas chega depois: redesenha quando chegar */
+if(document.fonts && document.fonts.ready && document.fonts.ready.then) document.fonts.ready.then(redesenha).catch(()=>{});
 })();
 </script>
 </body>

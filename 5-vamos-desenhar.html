@@ -1,0 +1,637 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#2E86AB">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icone-192.png">
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no">
+<meta name="theme-color" content="#BDF3E4">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="icon" href="icone-192.png">
+<title>Vamos Desenhar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@600;800&display=swap">
+<style>
+/* ============================================================
+   VAMOS DESENHAR — aula de desenho passo a passo.
+   Tela dividida em duas: de um lado o modelo crescendo a cada
+   passo, do outro a folha da criança. Tudo falado, nada de ler.
+   ============================================================ */
+:root{color-scheme:light;--tinta:#3A2B52;--tinta-2:#6E5C90;--verde:#3FCB8E;--verde-e:#2AA372;--rosa:#FF4F93}
+*{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
+html,body{height:100%}
+body{
+  font-family:"Nunito",ui-rounded,system-ui,sans-serif;color:var(--tinta);background:#D9F7EE;overflow:hidden;
+  -webkit-tap-highlight-color:transparent;-webkit-font-smoothing:antialiased;
+  user-select:none;-webkit-user-select:none;touch-action:manipulation;overscroll-behavior:none;
+}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;touch-action:manipulation}
+svg{display:block}
+#app{
+  position:fixed;inset:0;display:flex;flex-direction:column;
+  padding:max(8px,env(safe-area-inset-top)) max(10px,env(safe-area-inset-right))
+          max(8px,env(safe-area-inset-bottom)) max(10px,env(safe-area-inset-left));
+  background:linear-gradient(175deg,#BDF3E4 0%,#E4F8FF 50%,#FFF3DE 100%);
+}
+.tela{display:none;flex:1;min-height:0;flex-direction:column}
+.tela.on{display:flex}
+.mini{
+  flex:none;width:56px;height:56px;border-radius:50%;display:grid;place-items:center;background:#fff;
+  box-shadow:0 4px 0 rgba(58,43,82,.14),0 8px 16px rgba(58,43,82,.14);transition:transform .1s;
+}
+.mini:active{transform:translateY(3px) scale(.95)}
+.mini.ligado{background:#DCEBFF;box-shadow:0 4px 0 #9CC2F2,0 8px 16px rgba(58,43,82,.14)}
+
+/* ---------- menu de aulas ---------- */
+.topo{display:flex;align-items:center;gap:10px;flex:none;min-height:60px}
+.topo h1{
+  flex:1;font-family:"Baloo 2",ui-rounded,system-ui,sans-serif;font-weight:800;font-size:clamp(22px,6.6vw,34px);line-height:1;
+  color:#fff;-webkit-text-stroke:1.2px #16967B;paint-order:stroke fill;text-shadow:0 2px 0 #16967B,0 5px 12px rgba(22,150,123,.3);
+}
+#aulas{
+  flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;touch-action:pan-y;
+  display:grid;grid-template-columns:repeat(2,1fr);gap:12px;padding:8px 2px 12px;align-content:start;
+}
+.aula{
+  position:relative;background:#fff;border-radius:24px;padding:8px 8px 4px;
+  box-shadow:0 5px 0 rgba(58,43,82,.12),0 10px 20px rgba(58,43,82,.12);
+  display:flex;flex-direction:column;align-items:center;transition:transform .12s;
+}
+.aula:active{transform:scale(.95)}
+.aula svg{width:100%;height:auto;aspect-ratio:1}
+.aula b{font-family:"Baloo 2",ui-rounded,system-ui,sans-serif;font-weight:800;font-size:clamp(15px,4.2vw,20px);line-height:1.3}
+.aula .feito{position:absolute;top:6px;right:8px;font-size:22px}
+.aula.livre{background:linear-gradient(160deg,#FFF6C9,#FFD9EC)}
+#galeria{flex:none;display:flex;gap:10px;overflow-x:auto;touch-action:pan-x;padding:6px 2px 4px;min-height:0}
+#galeria img{
+  flex:none;width:84px;height:84px;border-radius:14px;background:#fff;border:4px solid #fff;
+  box-shadow:0 4px 10px rgba(58,43,82,.2);object-fit:cover;
+}
+
+/* ---------- aula: modelo + folha ---------- */
+#t-aula{gap:8px}
+#palco{flex:1;min-width:0;min-height:0;display:flex;flex-direction:column;gap:8px}
+.painel{flex:1 1 0;min-width:0;min-height:0;position:relative;display:flex;align-items:center;justify-content:center}
+.folha{
+  position:relative;background:#fff;border-radius:22px;overflow:hidden;
+  box-shadow:0 5px 0 rgba(58,43,82,.1),0 10px 22px rgba(58,43,82,.14);
+  flex:none;width:200px;height:200px;   /* o tamanho certo vem do ajusta() */
+}
+#folha-modelo{background:#FFFDF5;border:4px dashed #BFE7DA}
+#modelo{position:absolute;inset:0;width:100%;height:100%}
+#modelo .feito{stroke:#3A2B52;stroke-width:5;fill:none;stroke-linecap:round;stroke-linejoin:round}
+#modelo .novo{stroke:var(--rosa);stroke-width:6.5;fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1;animation:risca 1.1s ease-out forwards}
+#modelo .cheio{fill:#3A2B52}
+#modelo .novo.cheio{fill:var(--rosa);animation:risca 1.1s ease-out forwards, surge .5s ease-out both}
+@keyframes risca{to{stroke-dashoffset:0}}
+@keyframes surge{from{fill-opacity:0}to{fill-opacity:1}}
+#pontos{position:absolute;left:0;right:0;bottom:6px;display:flex;justify-content:center;gap:5px;pointer-events:none}
+#pontos i{width:9px;height:9px;border-radius:50%;background:#D9D2E6}
+#pontos i.on{background:var(--rosa)}
+#pontos i.ja{background:var(--verde)}
+#tela{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:crosshair}
+#guia{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+#guia path{stroke:#7DB8FF;stroke-width:5;fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:3 11;opacity:.85}
+.etq{
+  position:absolute;top:8px;left:8px;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;
+  background:rgba(255,255,255,.9);box-shadow:0 2px 6px rgba(58,43,82,.16);pointer-events:none;
+}
+
+/* ---------- comandos ---------- */
+#passos{flex:none;display:flex;align-items:center;justify-content:center;gap:14px}
+#btProx{
+  width:auto;min-width:118px;height:64px;border-radius:999px;padding:0 26px;background:var(--verde);color:#fff;
+  box-shadow:0 6px 0 var(--verde-e),0 12px 20px rgba(42,163,114,.3);display:grid;place-items:center;transition:transform .1s;
+}
+#btProx:active{transform:translateY(4px)}
+#btProx.chama{animation:chama 1s ease-in-out infinite}
+@keyframes chama{50%{transform:scale(1.07)}}
+#barra{flex:none;display:flex;flex-direction:column;gap:6px}
+.linha{display:flex;align-items:center;justify-content:center;gap:clamp(3px,1vw,8px)}
+.cor{
+  flex:0 1 46px;min-width:0;aspect-ratio:1;border-radius:50%;background:var(--c);
+  border:3px solid #fff;box-shadow:0 2px 6px rgba(58,43,82,.25);transition:transform .1s;
+}
+.cor.sel{transform:scale(1.2);border-color:#3A2B52}
+.cor.borracha{background:#fff;display:grid;place-items:center}
+.ferr{width:52px;height:52px}
+.ferr i{display:block;border-radius:50%;background:#3A2B52}
+
+/* deitado (tablet): modelo à esquerda, folha à direita, comandos na lateral */
+@media (orientation:landscape){
+  #t-aula{flex-direction:row}
+  #palco{flex-direction:row}
+  #lado{flex:none;display:flex;flex-direction:column;justify-content:space-between;gap:6px;width:clamp(120px,17vw,190px)}
+  #passos{flex-wrap:wrap;gap:8px}
+  #btProx{min-width:0;width:100%}
+  #barra .linha{flex-wrap:wrap}
+  .cor{flex:0 0 clamp(34px,4.6vw,48px)}
+  #aulas{grid-template-columns:repeat(4,1fr)}
+}
+/* celular deitado: pouca altura, então tudo encolhe para caber */
+@media (orientation:landscape) and (max-height:520px){
+  #lado{width:200px;gap:4px}
+  #lado .mini{width:44px;height:44px}
+  #btProx{height:48px}
+  #passos{gap:6px}
+  #barra{gap:4px}
+  .cor{flex:0 0 34px}
+}
+@media (orientation:portrait){
+  #lado{display:contents}
+  #passos{order:1}
+  #palco{order:0}
+  #barra{order:2}
+  #t-aula > .topo{order:-1}
+  @media (min-width:600px){ #aulas{grid-template-columns:repeat(3,1fr)} }
+}
+
+/* ---------- final ---------- */
+#t-fim{align-items:center;justify-content:center;gap:16px;text-align:center}
+#quadro{
+  width:min(74vw,52vh);aspect-ratio:1;border-radius:18px;background:#fff;object-fit:cover;
+  border:12px solid #F7C948;box-shadow:inset 0 0 0 3px #C98A12,0 14px 30px rgba(58,43,82,.28);
+  animation:entra .6s cubic-bezier(.2,1.5,.4,1) both;
+}
+@keyframes entra{from{transform:scale(.4) rotate(-8deg);opacity:0}}
+.linha-fim{display:flex;gap:14px}
+.btg{
+  height:66px;min-width:66px;border-radius:999px;padding:0 24px;background:#fff;display:grid;place-items:center;
+  box-shadow:0 6px 0 rgba(58,43,82,.14),0 12px 20px rgba(58,43,82,.14);
+}
+.btg.v{background:var(--verde);box-shadow:0 6px 0 var(--verde-e)}
+.btg:active{transform:translateY(4px)}
+#ver{position:fixed;inset:0;z-index:50;background:rgba(58,43,82,.7);display:none;place-items:center}
+#ver.on{display:grid}
+#ver img{width:min(88vw,80vh);aspect-ratio:1;border-radius:18px;background:#fff;border:10px solid #fff}
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- MENU -->
+  <section class="tela on" id="t-menu">
+    <div class="topo">
+      <button class="mini" id="btSair" aria-label="Voltar para os jogos">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#3A2B52" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+      </button>
+      <h1>Vamos Desenhar</h1>
+      <button class="mini" id="btOuvirMenu" aria-label="Ouvir">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="#3A2B52"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16.5 8.5a5 5 0 010 7" fill="none" stroke="#3A2B52" stroke-width="2.4" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div id="aulas"></div>
+    <div id="galeria"></div>
+  </section>
+
+  <!-- AULA -->
+  <section class="tela" id="t-aula">
+    <div id="palco">
+      <div class="painel" id="p-modelo">
+        <div class="folha" id="folha-modelo">
+          <svg id="modelo" viewBox="0 0 300 300"></svg>
+          <span class="etq"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3A2B52" stroke-width="2.4" stroke-linecap="round"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3" fill="#3A2B52"/></svg></span>
+          <div id="pontos"></div>
+        </div>
+      </div>
+      <div class="painel" id="p-folha">
+        <div class="folha" id="folha-minha">
+          <canvas id="tela"></canvas>
+          <svg id="guia" viewBox="0 0 300 300"></svg>
+          <span class="etq"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3A2B52" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l1-5L16 4l4 4L9 19z"/></svg></span>
+        </div>
+      </div>
+    </div>
+    <div id="lado">
+      <div id="passos">
+        <button class="mini" id="btCasa" aria-label="Escolher outro desenho">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#3A2B52" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+        </button>
+        <button class="mini" id="btVolta" aria-label="Passo anterior">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#3A2B52" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
+        </button>
+        <button class="mini" id="btOuvir" aria-label="Ouvir de novo">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="#3A2B52"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16.5 8.5a5 5 0 010 7" fill="none" stroke="#3A2B52" stroke-width="2.4" stroke-linecap="round"/></svg>
+        </button>
+        <button id="btProx" aria-label="Próximo passo">
+          <svg id="icoProx" width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </button>
+      </div>
+      <div id="barra">
+        <div class="linha" id="cores"></div>
+        <div class="linha">
+          <button class="mini ferr" data-g="4" aria-label="Lápis fino"><i style="width:8px;height:8px"></i></button>
+          <button class="mini ferr" data-g="11" aria-label="Lápis médio"><i style="width:16px;height:16px"></i></button>
+          <button class="mini ferr" data-g="26" aria-label="Pincel grosso"><i style="width:28px;height:28px"></i></button>
+          <button class="mini ferr" id="btDesfaz" aria-label="Desfazer">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#3A2B52" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 5L3 10l5 5"/><path d="M3 10h11a6 6 0 010 12h-3"/></svg>
+          </button>
+          <button class="mini ferr" id="btLimpa" aria-label="Apagar tudo">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3A2B52" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg>
+          </button>
+          <button class="mini ferr ligado" id="btGuia" aria-label="Mostrar ou esconder a linha de ajuda">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#3F8BE8" stroke-width="2.8" stroke-linecap="round" stroke-dasharray="1.5 5"><circle cx="12" cy="12" r="8"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FIM -->
+  <section class="tela" id="t-fim">
+    <img id="quadro" alt="Seu desenho">
+    <div class="linha-fim">
+      <button class="btg" id="btMais" aria-label="Continuar pintando">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#3A2B52" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l1-5L16 4l4 4L9 19z"/></svg>
+      </button>
+      <button class="btg v" id="btOutro" aria-label="Fazer outro desenho">
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </button>
+    </div>
+  </section>
+
+  <div id="ver"><img alt=""></div>
+</div>
+
+<script src="voz-pacote.js"></script>
+<script src="comum.js"></script>
+<script>
+(function(){
+"use strict";
+const {le, grava, $, $$, SFX, falar, calar, prepara, confete} = Nina;
+
+/* ---------- formas ---------- */
+const el = (cx,cy,rx,ry,rot)=>{
+  if(!rot) return `M${cx-rx},${cy} a${rx},${ry} 0 1,0 ${2*rx},0 a${rx},${ry} 0 1,0 ${-2*rx},0`;
+  const a = rot*Math.PI/180, dx = +(rx*Math.cos(a)).toFixed(1), dy = +(rx*Math.sin(a)).toFixed(1);
+  return `M${cx-dx},${cy-dy} a${rx},${ry} ${rot} 1,0 ${2*dx},${2*dy} a${rx},${ry} ${rot} 1,0 ${-2*dx},${-2*dy}`;
+};
+const ci = (cx,cy,r)=>el(cx,cy,r,r);
+
+/* Cada passo: fala (curta!) + traços. Num traço: d = caminho;
+   f = cor de pintura no modelo colorido; cheio = bolinha pintada (olho). */
+const AULAS = [
+ { id:"flor", nome:"Flor", abre:"Vamos desenhar uma flor!", passos:[
+   {fala:"Faz uma bolinha no meio. É o miolo da flor.", t:[{d:ci(150,112,24), f:"#FFC93C"}]},
+   {fala:"Agora as pétalas. Uma bolinha em cima e uma de cada lado.", t:[{d:ci(150,58,27),f:"#FF7EB6"},{d:ci(98,96,27),f:"#FF7EB6"},{d:ci(202,96,27),f:"#FF7EB6"}]},
+   {fala:"Mais duas pétalas embaixo.", t:[{d:ci(118,157,27),f:"#FF7EB6"},{d:ci(182,157,27),f:"#FF7EB6"}]},
+   {fala:"Puxa um risco comprido pra baixo. É o cabinho.", t:[{d:"M150,182 Q142,235 150,288"}]},
+   {fala:"Duas folhinhas no cabinho.", t:[{d:"M148,238 Q105,205 92,232 Q112,258 148,238z",f:"#3FCB8E"},{d:"M150,252 Q195,222 208,248 Q188,274 150,252z",f:"#3FCB8E"}]},
+   {fala:"E uma carinha feliz no miolo!", t:[{d:ci(142,107,3),cheio:1},{d:ci(158,107,3),cheio:1},{d:"M140,117 Q150,127 160,117"}]}
+ ]},
+ { id:"gatinha", nome:"Gatinha", abre:"Vamos desenhar a Hello Kitty!", passos:[
+   {fala:"Faz uma bola bem grande e meio deitada. É a cabeça.", t:[{d:el(150,165,98,76), f:"#FFFFFF"}]},
+   {fala:"Duas orelhinhas pontudas em cima.", t:[{d:"M66,128 Q62,84 76,64 Q104,72 118,94",f:"#FFFFFF",fundo:1},{d:"M182,94 Q196,72 224,64 Q238,84 234,128",f:"#FFFFFF",fundo:1}]},
+   {fala:"O laço! Uma bolinha perto da orelha.", t:[{d:ci(204,92,13), f:"#FF3B5C"}]},
+   {fala:"Agora os dois lados do laço, igual asa de borboleta.", t:[{d:"M193,86 Q162,58 158,88 Q158,116 194,100",f:"#FF3B5C"},{d:"M215,84 Q246,56 252,86 Q252,116 215,100",f:"#FF3B5C"}]},
+   {fala:"Dois olhinhos. Duas bolinhas em pé.", t:[{d:el(108,172,7,10),cheio:1},{d:el(192,172,7,10),cheio:1}]},
+   {fala:"O nariz é uma bolinha deitada, bem no meio.", t:[{d:el(150,188,9,6), f:"#FFC93C"}]},
+   {fala:"Três risquinhos de bigode de cada lado. Pronto!", t:[{d:"M62,160 L24,150"},{d:"M58,176 L20,176"},{d:"M62,192 L24,202"},{d:"M238,160 L276,150"},{d:"M242,176 L280,176"},{d:"M238,192 L276,202"}]}
+ ]},
+ { id:"borboleta", nome:"Borboleta", abre:"Vamos desenhar uma borboleta!", passos:[
+   {fala:"Faz uma bolinha em cima. É a cabeça.", t:[{d:ci(150,92,17), f:"#FFC93C"}]},
+   {fala:"Embaixo, um corpinho comprido, igual um feijão.", t:[{d:el(150,165,11,56), f:"#9B6BF2"}]},
+   {fala:"Uma asa bem grande de cada lado, em cima.", t:[{d:"M160,138 Q226,36 262,96 Q282,150 161,168",f:"#FF7EB6"},{d:"M140,138 Q74,36 38,96 Q18,150 139,168",f:"#FF7EB6"}]},
+   {fala:"Duas asas menores embaixo.", t:[{d:"M161,172 Q256,176 232,232 Q198,268 160,206",f:"#3FA9F5"},{d:"M139,172 Q44,176 68,232 Q102,268 140,206",f:"#3FA9F5"}]},
+   {fala:"Duas anteninhas com bolinha na ponta.", t:[{d:"M144,77 Q132,46 116,44"},{d:"M156,77 Q168,46 184,44"},{d:ci(113,43,5),cheio:1},{d:ci(187,43,5),cheio:1}]},
+   {fala:"Enfeita as asas com bolinhas. E uma carinha!", t:[{d:ci(212,108,15),f:"#FFF3A6"},{d:ci(88,108,15),f:"#FFF3A6"},{d:ci(204,212,10),f:"#FFFFFF"},{d:ci(96,212,10),f:"#FFFFFF"},{d:ci(144,90,2.6),cheio:1},{d:ci(156,90,2.6),cheio:1},{d:"M143,97 Q150,104 157,97"}]}
+ ]},
+ { id:"boneca", nome:"Boneca", abre:"Vamos desenhar uma boneca!", passos:[
+   {fala:"Faz uma bola em cima. É a cabeça da boneca.", t:[{d:ci(150,82,46), f:"#F5C9A6"}]},
+   {fala:"O cabelo é um arco na testa, de um lado até o outro.", t:[{d:"M106,72 Q150,54 194,72 Q186,34 150,34 Q114,34 106,72z", f:"#6B3E1F"}]},
+   {fala:"Duas chuquinhas. Uma bolinha de cada lado.", t:[{d:ci(92,84,18),f:"#6B3E1F",fundo:1},{d:ci(208,84,18),f:"#6B3E1F",fundo:1}]},
+   {fala:"Olhinhos, e um sorriso bem grande.", t:[{d:ci(134,88,4.5),cheio:1},{d:ci(166,88,4.5),cheio:1},{d:"M132,102 Q150,120 168,102"}]},
+   {fala:"O vestido parece um sino. Abre bem embaixo.", t:[{d:"M132,126 L88,232 Q150,250 212,232 L168,126", f:"#FF5A6E", fundo:1}]},
+   {fala:"Dois braços abertos, com mãozinhas.", t:[{d:"M122,152 L78,186"},{d:"M178,152 L222,186"},{d:ci(72,191,8),f:"#F5C9A6"},{d:ci(228,191,8),f:"#F5C9A6"}]},
+   {fala:"Duas perninhas e os sapatos. Ficou linda!", t:[{d:"M134,242 L134,270"},{d:"M166,242 L166,270"},{d:el(126,277,15,8),f:"#9B6BF2"},{d:el(174,277,15,8),f:"#9B6BF2"}]}
+ ]},
+ { id:"stitch", nome:"Stitch", abre:"Vamos desenhar o Stitch!", passos:[
+   {fala:"Faz uma bola grande e deitada. É a cabeça.", t:[{d:el(150,160,82,66), f:"#5B9BF0"}]},
+   {fala:"Duas orelhas bem compridas, abertas para os lados.", t:[{d:"M84,122 Q26,44 14,112 Q14,172 72,182",f:"#5B9BF0",fundo:1},{d:"M216,122 Q274,44 286,112 Q286,172 228,182",f:"#5B9BF0",fundo:1}]},
+   {fala:"Um risco dentro de cada orelha.", t:[{d:"M70,140 Q40,104 30,124 Q32,156 66,164",f:"#F5A8C8"},{d:"M230,140 Q260,104 270,124 Q268,156 234,164",f:"#F5A8C8"}]},
+   {fala:"Dois olhos grandões, deitadinhos.", t:[{d:el(114,150,19,26,20),f:"#BFE0FF"},{d:el(186,150,19,26,-20),f:"#BFE0FF"}]},
+   {fala:"Pinta uma bolinha preta dentro de cada olho.", t:[{d:el(117,153,10,15,20),cheio:1},{d:el(183,153,10,15,-20),cheio:1}]},
+   {fala:"Um narigão bem no meio.", t:[{d:el(150,178,22,15), f:"#2C4FA8"}]},
+   {fala:"Um sorrisão embaixo do nariz.", t:[{d:"M96,200 Q150,238 204,200"}]},
+   {fala:"Três fiapos de cabelo em cima. Ficou igualzinho!", t:[{d:"M138,96 Q142,72 148,95"},{d:"M148,95 Q154,68 158,95"},{d:"M158,95 Q166,76 166,98"}]}
+ ]},
+ { id:"unicornio", nome:"Unicórnio", abre:"Vamos desenhar um unicórnio!", passos:[
+   {fala:"Faz uma bola bem grande. É a cabeça.", t:[{d:ci(150,178,72), f:"#FFFFFF"}]},
+   {fala:"Duas orelhinhas pontudas.", t:[{d:"M92,136 L96,86 L128,112",f:"#FFFFFF",fundo:1},{d:"M172,112 L204,86 L208,136",f:"#FFFFFF",fundo:1}]},
+   {fala:"O chifre! Um triângulo comprido no meio.", t:[{d:"M134,108 L150,28 L166,108", f:"#FFC93C", fundo:1}]},
+   {fala:"Risquinhos no chifre.", t:[{d:"M140,84 L161,76"},{d:"M144,62 L157,56"}]},
+   {fala:"Olhos fechados, sorrindo. Dois arquinhos.", t:[{d:"M104,172 Q117,156 130,172"},{d:"M170,172 Q183,156 196,172"}]},
+   {fala:"O focinho é uma bola deitada, com dois furinhos.", t:[{d:el(150,214,40,25),f:"#FFD9EC"},{d:ci(137,212,3.4),cheio:1},{d:ci(163,212,3.4),cheio:1}]},
+   {fala:"A crina! Faz ondinhas descendo de um lado.", t:[{d:"M90,140 Q46,146 64,184 Q36,202 64,230 Q56,256 96,248", f:"#9B6BF2", fundo:1}]}
+ ]}
+];
+const FALAS = {
+  menu:"O que você quer desenhar hoje?",
+  dica:"Olha o desenho, e faz igual na sua folha. Pode passar o dedo por cima dos pontinhos azuis.",
+  pintar:"Uau! Você desenhou tudinho! Agora pinta do seu jeito, e aperta o botão verde.",
+  livre:"Desenho livre! Desenha o que você quiser.",
+  guardei:"Ficou lindo! Guardei na sua galeria.",
+  semGuia:"Agora é sem ajuda. Você consegue!",
+  comGuia:"Os pontinhos azuis voltaram."
+};
+window.TODAS_FALAS = ()=>{
+  const pt = Object.values(FALAS);
+  AULAS.forEach(a=>{ pt.push(a.abre); a.passos.forEach(p=>pt.push(p.fala)); });
+  return {pt, en:[]};
+};
+
+/* ---------- desenho do modelo ---------- */
+function svgAula(a, ate, colorido){
+  /* ate = quantos passos mostrar; colorido = com as pinturas */
+  /* pintura "fundo" vai por baixo de tudo; as outras cobrem os riscos
+     de antes, como quando a gente pinta por cima no papel */
+  let fundo = "", resto = "";
+  a.passos.slice(0, ate).forEach(p=>p.t.forEach(t=>{
+    if(colorido && t.f){
+      if(t.fundo) fundo += `<path d="${t.d}" fill="${t.f}" stroke="none"/>`;
+      else resto += `<path d="${t.d}" fill="${t.f}" stroke="none"/>`;
+    }
+    resto += `<path d="${t.d}" class="feito${t.cheio?" cheio":""}"/>`;
+  }));
+  return fundo + resto;
+}
+function mini(a){
+  return `<svg viewBox="0 0 300 300"><g fill="none" stroke="#3A2B52" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">${
+    svgAula(a, a.passos.length, true).replace(/class="feito cheio"/g,'fill="#3A2B52"').replace(/class="feito"/g,"")}</g></svg>`;
+}
+
+/* ---------- estado ---------- */
+let aula = null, passo = 0, fase = "menu";     /* fase: menu | passos | pintar | livre */
+let feitos = le("desenhar-feitos", {});
+let galeria = le("desenhar-galeria", []);
+if(!Array.isArray(galeria)) galeria = [];
+let guiaLigada = le("desenhar-guia", true) !== false;
+
+function tela(id){
+  $$(".tela").forEach(t=>t.classList.toggle("on", t.id === "t-"+id));
+}
+
+/* ---------- menu ---------- */
+function montaMenu(){
+  $("#aulas").innerHTML = AULAS.map((a,i)=>
+    `<button class="aula" data-i="${i}" aria-label="${a.nome}">${feitos[a.id]?`<span class="feito">⭐</span>`:""}${mini(a)}<b>${a.nome}</b></button>`
+  ).join("") +
+  `<button class="aula livre" data-i="-1" aria-label="Desenho livre"><svg viewBox="0 0 300 300">
+     <path d="M40,220 C80,120 110,260 150,170 S230,90 262,150" fill="none" stroke="#FF5A6E" stroke-width="12" stroke-linecap="round"/>
+     <path d="M52,110 q30,-50 60,0 t60,0" fill="none" stroke="#3FA9F5" stroke-width="12" stroke-linecap="round"/>
+     <circle cx="222" cy="226" r="26" fill="#FFC93C"/><path d="M70,250 l14,-30 14,30z" fill="#9B6BF2"/></svg><b>Livre</b></button>`;
+  $$("#aulas .aula").forEach(b=>b.addEventListener("click", ()=>{ SFX.pop(); abre(+b.dataset.i); }));
+  $("#galeria").innerHTML = galeria.slice().reverse().map(g=>`<img src="${g}" alt="Desenho guardado">`).join("");
+  $$("#galeria img").forEach(im=>im.addEventListener("click", ()=>{ SFX.toque(); $("#ver img").src = im.src; $("#ver").classList.add("on"); }));
+}
+function irMenu(falaJunto){
+  calar(); aula = null; fase = "menu";
+  montaMenu(); tela("menu");
+  if(falaJunto) falar(FALAS.menu);
+}
+
+/* ---------- folha da criança ---------- */
+const cv = $("#tela"), cx = cv.getContext("2d");
+let riscos = [];            /* {cor, g, pts:[x,y,...] em 0..1}  ou {limpa:true} */
+let atual = null, dedo = null, lado = 0, escala = 1;
+let cor = "#3A2B52", grossura = 4;
+
+function ajusta(){
+  /* cada folha é o maior quadrado que cabe no seu painel */
+  $$(".painel").forEach(p=>{
+    if(p.hidden) return;
+    const f = p.firstElementChild;
+    f.style.width = f.style.height = "0px";
+    const l = Math.floor(Math.min(p.clientWidth, p.clientHeight));
+    f.style.width = f.style.height = l + "px";
+  });
+  const r = $("#folha-minha").getBoundingClientRect();
+  if(!r.width) return;
+  /* tablet com pouca memória: no máximo 1,5x e 1100 px de lado */
+  escala = Math.min(window.devicePixelRatio||1, 1.5, 1100/r.width);
+  lado = r.width;
+  const px = Math.round(lado*escala);
+  if(cv.width !== px){ cv.width = px; cv.height = px; }
+  redesenha();
+}
+function tracaRisco(c, r, L){
+  const p = r.pts;
+  c.strokeStyle = r.cor; c.fillStyle = r.cor;
+  c.lineWidth = r.g*L/300; c.lineCap = "round"; c.lineJoin = "round";
+  if(p.length <= 2){ c.beginPath(); c.arc(p[0]*L, p[1]*L, c.lineWidth/2, 0, 6.3); c.fill(); return; }
+  c.beginPath(); c.moveTo(p[0]*L, p[1]*L);
+  for(let i=2;i<p.length-2;i+=2){
+    const mx = (p[i]+p[i+2])/2, my = (p[i+1]+p[i+3])/2;
+    c.quadraticCurveTo(p[i]*L, p[i+1]*L, mx*L, my*L);
+  }
+  c.lineTo(p[p.length-2]*L, p[p.length-1]*L);
+  c.stroke();
+}
+function pinta(c, L){
+  c.fillStyle = "#fff"; c.fillRect(0,0,L,L);
+  let ini = 0;
+  for(let i=riscos.length-1;i>=0;i--){ if(riscos[i].limpa){ ini = i+1; break; } }
+  for(let i=ini;i<riscos.length;i++) tracaRisco(c, riscos[i], L);
+}
+function redesenha(){ pinta(cx, cv.width); }
+
+function ponto(e){
+  const r = cv.getBoundingClientRect();
+  return [Math.max(0,Math.min(1,(e.clientX-r.left)/r.width)), Math.max(0,Math.min(1,(e.clientY-r.top)/r.height))];
+}
+cv.addEventListener("pointerdown", e=>{
+  if(dedo !== null) return;                    /* um dedo esquecido na tela não atrapalha */
+  dedo = e.pointerId;
+  try{ cv.setPointerCapture(dedo); }catch(x){}
+  const [x,y] = ponto(e);
+  atual = {cor, g:grossura, pts:[x,y]};
+  tracaRisco(cx, atual, cv.width);
+  e.preventDefault();
+});
+cv.addEventListener("pointermove", e=>{
+  if(e.pointerId !== dedo || !atual) return;
+  const evs = e.getCoalescedEvents ? e.getCoalescedEvents() : [e];
+  const L = cv.width, p = atual.pts;
+  cx.strokeStyle = atual.cor; cx.lineWidth = atual.g*L/300; cx.lineCap = "round"; cx.lineJoin = "round";
+  (evs.length ? evs : [e]).forEach(ev=>{
+    const [x,y] = ponto(ev), n = p.length;
+    if(Math.abs(x-p[n-2]) + Math.abs(y-p[n-1]) < .004) return;
+    /* liga o meio do trecho anterior ao meio do novo: curva suave */
+    const ax = n >= 4 ? (p[n-4]+p[n-2])/2 : p[n-2], ay = n >= 4 ? (p[n-3]+p[n-1])/2 : p[n-1];
+    const bx = (p[n-2]+x)/2, by = (p[n-1]+y)/2;
+    cx.beginPath(); cx.moveTo(ax*L, ay*L); cx.quadraticCurveTo(p[n-2]*L, p[n-1]*L, bx*L, by*L); cx.stroke();
+    p.push(x,y);
+  });
+  e.preventDefault();
+});
+function solta(e){
+  if(e.pointerId !== dedo) return;
+  dedo = null;
+  if(atual){
+    riscos.push(atual); atual = null;
+    if(riscos.length > 700) riscos.splice(0, riscos.length-700);
+    redesenha();                                /* fecha a pontinha do traço */
+    if(fase === "passos") $("#btProx").classList.add("chama");
+  }
+}
+cv.addEventListener("pointerup", solta);
+cv.addEventListener("pointercancel", solta);
+cv.addEventListener("lostpointercapture", solta);
+
+/* ---------- ferramentas ---------- */
+const CORES = ["#3A2B52","#FF3B5C","#FF9A3D","#FFC93C","#3FCB8E","#3FA9F5","#9B6BF2","#FF7EB6","#8A5A3C"];
+$("#cores").innerHTML = CORES.map((c,i)=>`<button class="cor${i?"":" sel"}" data-c="${c}" style="--c:${c}" aria-label="Cor"></button>`).join("") +
+  `<button class="cor borracha" data-c="#ffffff" aria-label="Borracha"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M4 15l8-9 8 7-7 8H8z" fill="#FF9CB4" stroke="#3A2B52" stroke-width="2" stroke-linejoin="round"/><path d="M8 11l8 7" stroke="#3A2B52" stroke-width="2"/></svg></button>`;
+let grossuraLapis = 4;
+$$("#cores .cor").forEach(b=>b.addEventListener("click", ()=>{
+  $$("#cores .cor").forEach(x=>x.classList.remove("sel")); b.classList.add("sel");
+  cor = b.dataset.c; SFX.toque();
+  /* a borracha é sempre grossa; voltar para uma cor devolve o lápis escolhido */
+  grossura = b.classList.contains("borracha") ? 30 : grossuraLapis;
+}));
+function marcaGrossura(){
+  $$(".ferr[data-g]").forEach(b=>b.classList.toggle("ligado", +b.dataset.g === grossuraLapis));
+}
+$$(".ferr[data-g]").forEach(b=>b.addEventListener("click", ()=>{
+  grossuraLapis = +b.dataset.g; SFX.toque(); marcaGrossura();
+  if(!$("#cores .borracha").classList.contains("sel")) grossura = grossuraLapis;
+}));
+$("#btDesfaz").addEventListener("click", ()=>{ if(riscos.length){ riscos.pop(); SFX.vira(); redesenha(); } });
+$("#btLimpa").addEventListener("click", ()=>{
+  /* apagar tudo entra na pilha: o botão de desfazer traz o desenho de volta */
+  if(!riscos.length || riscos[riscos.length-1].limpa) return;
+  riscos.push({limpa:true}); SFX.tentar(); redesenha();
+});
+$("#btGuia").addEventListener("click", ()=>{
+  guiaLigada = !guiaLigada; grava("desenhar-guia", guiaLigada);
+  SFX.toque(); mostraGuia();
+  falar(guiaLigada ? FALAS.comGuia : FALAS.semGuia);
+});
+function mostraGuia(){
+  $("#btGuia").classList.toggle("ligado", guiaLigada);
+  const g = $("#guia");
+  if(!guiaLigada || fase !== "passos" || !aula){ g.innerHTML = ""; return; }
+  g.innerHTML = aula.passos[passo].t.map(t=>`<path d="${t.d}"/>`).join("");
+}
+
+/* ---------- aula ---------- */
+const SETA = `<path d="M5 12h14M13 6l6 6-6 6"/>`, CERTO = `<path d="M5 12.5l5 5L19 7"/>`;
+function abre(i){
+  calar();
+  riscos = []; atual = null; dedo = null;
+  cor = CORES[0]; grossuraLapis = 4; grossura = 4;
+  $$("#cores .cor").forEach((x,k)=>x.classList.toggle("sel", k===0));
+  marcaGrossura();
+  if(i < 0){
+    aula = null; fase = "livre";
+    $("#p-modelo").hidden = true; $("#btVolta").hidden = true; $("#btGuia").hidden = true;
+    $("#icoProx").innerHTML = CERTO;
+    grossuraLapis = 11; grossura = 11; marcaGrossura();
+    tela("aula"); ajusta(); mostraGuia();
+    falar(FALAS.livre);
+    return;
+  }
+  aula = AULAS[i]; passo = 0; fase = "passos";
+  $("#p-modelo").hidden = false; $("#btVolta").hidden = false; $("#btGuia").hidden = false;
+  tela("aula"); ajusta();
+  mostraPasso(true);
+}
+async function mostraPasso(primeiro){
+  const p = aula.passos[passo];
+  $("#icoProx").innerHTML = SETA;
+  $("#btProx").classList.remove("chama");
+  $("#modelo").innerHTML = svgAula(aula, passo, false) +
+    p.t.map(t=>`<path d="${t.d}" pathLength="1" class="novo${t.cheio?" cheio":""}"/>`).join("");
+  $("#pontos").innerHTML = aula.passos.map((_,k)=>`<i class="${k<passo?"ja":k===passo?"on":""}"></i>`).join("");
+  mostraGuia();
+  if(aula.passos[passo+1]) prepara(aula.passos[passo+1].fala);
+  if(primeiro){
+    if(!await falar(aula.abre)) return;
+    if(!le("desenhar-dica", false)){ grava("desenhar-dica", true); if(!await falar(FALAS.dica)) return; }
+  }
+  falar(p.fala);
+}
+function fasePintar(){
+  fase = "pintar";
+  $("#modelo").innerHTML = svgAula(aula, aula.passos.length, true);
+  $("#pontos").innerHTML = aula.passos.map(()=>`<i class="ja"></i>`).join("");
+  $("#icoProx").innerHTML = CERTO;
+  $("#btProx").classList.remove("chama");
+  mostraGuia();
+  /* para pintar, o pincel grosso já vem escolhido */
+  grossuraLapis = 26; marcaGrossura();
+  if(!$("#cores .borracha").classList.contains("sel")) grossura = 26;
+  SFX.acerto(); confete(40);
+  feitos[aula.id] = (feitos[aula.id]||0) + 1; grava("desenhar-feitos", feitos);
+  falar(FALAS.pintar);
+}
+function guarda(){
+  /* miniatura leve (JPEG 360 px) para caber na memória do tablet */
+  const m = document.createElement("canvas"); m.width = m.height = 360;
+  pinta(m.getContext("2d"), 360);
+  let dado = "";
+  try{ dado = m.toDataURL("image/jpeg", .8); }catch(e){}
+  if(dado){
+    galeria.push(dado);
+    while(galeria.length > 20) galeria.shift();
+    /* se o navegador recusar por falta de espaço, abre mão dos mais antigos */
+    while(!grava("desenhar-galeria", galeria) && galeria.length > 1) galeria.shift();
+  }
+  return dado;
+}
+function termina(){
+  calar();
+  const dado = guarda();
+  $("#quadro").src = dado || "";
+  tela("fim");
+  SFX.fanfarra(); confete(90);
+  falar(FALAS.guardei);
+}
+let trava = 0;
+$("#btProx").addEventListener("click", ()=>{
+  const agora = Date.now(); if(agora - trava < 350) return; trava = agora;   /* toque duplo não pula passo */
+  if(fase === "passos"){
+    SFX.passo();
+    if(passo < aula.passos.length-1){ passo++; mostraPasso(false); }
+    else fasePintar();
+  } else if(fase === "pintar" || fase === "livre"){
+    if(!riscos.length || riscos[riscos.length-1].limpa){ SFX.tentar(); return; }
+    termina();
+  }
+});
+$("#btVolta").addEventListener("click", ()=>{
+  if(!aula) return;
+  SFX.vira();
+  if(fase === "pintar"){ fase = "passos"; passo = aula.passos.length-1; mostraPasso(false); }
+  else if(passo > 0){ passo--; mostraPasso(false); }
+});
+$("#btOuvir").addEventListener("click", ()=>{
+  SFX.toque();
+  if(fase === "passos") falar(aula.passos[passo].fala);
+  else if(fase === "pintar") falar(FALAS.pintar);
+  else falar(FALAS.livre);
+});
+$("#btCasa").addEventListener("click", ()=>{ SFX.toque(); irMenu(false); });
+$("#btSair").addEventListener("click", ()=>{ SFX.toque(); calar(); location.href = "index.html"; });
+$("#btOuvirMenu").addEventListener("click", ()=>{ SFX.toque(); falar(FALAS.menu); });
+$("#btMais").addEventListener("click", ()=>{
+  /* continua pintando o mesmo desenho; a cópia guardada sai para não duplicar */
+  SFX.toque(); calar(); galeria.pop(); grava("desenhar-galeria", galeria);
+  tela("aula"); ajusta();
+});
+$("#btOutro").addEventListener("click", ()=>{ SFX.pop(); irMenu(true); });
+$("#ver").addEventListener("click", ()=>$("#ver").classList.remove("on"));
+
+let tAj = null;
+addEventListener("resize", ()=>{ clearTimeout(tAj); tAj = setTimeout(ajusta, 120); });
+montaMenu();
+window.__desenhar = {AULAS, svgAula};   /* para a folha de conferência dos modelos */
+})();
+</script>
+</body>
+</html>

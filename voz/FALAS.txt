@@ -1610,3 +1610,289 @@ v2544.m4a	Você conseguiu!
 v2545.m4a	Z
 v2546.m4a	com três letras sobrando.
 v2547.m4a	sem nenhuma ajuda.
+v3000.m4a	Este é o jogo de desenhar.
+v3001.m4a	Eu te ensino o passo a passo.
+v3002.m4a	Este é o jogo de inglês.
+v3003.m4a	Vamos aprender palavras novas.
+v3004.m4a	O que você quer desenhar hoje?
+v3005.m4a	Olha o desenho, e faz igual na sua folha.
+v3006.m4a	Pode passar o dedo por cima dos pontinhos azuis.
+v3007.m4a	Uau! Você desenhou tudinho!
+v3008.m4a	Agora pinta do seu jeito,
+v3009.m4a	e aperta o botão verde.
+v3010.m4a	Desenho livre! Desenha o que você quiser.
+v3011.m4a	Ficou lindo! Guardei na sua galeria.
+v3012.m4a	Agora é sem ajuda.
+v3013.m4a	Você consegue!
+v3014.m4a	Os pontinhos azuis voltaram.
+v3015.m4a	Vamos desenhar uma flor!
+v3016.m4a	Faz uma bolinha no meio.
+v3017.m4a	É o miolo da flor.
+v3018.m4a	Agora as pétalas.
+v3019.m4a	Uma bolinha em cima e uma de cada lado.
+v3020.m4a	Mais duas pétalas embaixo.
+v3021.m4a	Puxa um risco comprido pra baixo.
+v3022.m4a	É o cabinho.
+v3023.m4a	Duas folhinhas no cabinho.
+v3024.m4a	E uma carinha feliz no miolo!
+v3025.m4a	Vamos desenhar a Hello Kitty!
+v3026.m4a	Faz uma bola bem grande e meio deitada.
+v3027.m4a	É a cabeça.
+v3028.m4a	Duas orelhinhas pontudas em cima.
+v3029.m4a	O laço! Uma bolinha perto da orelha.
+v3030.m4a	Agora os dois lados do laço,
+v3031.m4a	igual asa de borboleta.
+v3032.m4a	Dois olhinhos. Duas bolinhas em pé.
+v3033.m4a	O nariz é uma bolinha deitada,
+v3034.m4a	bem no meio.
+v3035.m4a	Três risquinhos de bigode de cada lado.
+v3036.m4a	Pronto!
+v3037.m4a	Vamos desenhar uma borboleta!
+v3038.m4a	Faz uma bolinha em cima.
+v3039.m4a	Embaixo, um corpinho comprido,
+v3040.m4a	igual um feijão.
+v3041.m4a	Uma asa bem grande de cada lado,
+v3042.m4a	em cima.
+v3043.m4a	Duas asas menores embaixo.
+v3044.m4a	Duas anteninhas com bolinha na ponta.
+v3045.m4a	Enfeita as asas com bolinhas.
+v3046.m4a	E uma carinha!
+v3047.m4a	Vamos desenhar uma boneca!
+v3048.m4a	Faz uma bola em cima.
+v3049.m4a	É a cabeça da boneca.
+v3050.m4a	O cabelo é um arco na testa,
+v3051.m4a	de um lado até o outro.
+v3052.m4a	Duas chuquinhas.
+v3053.m4a	Uma bolinha de cada lado.
+v3054.m4a	Olhinhos, e um sorriso bem grande.
+v3055.m4a	O vestido parece um sino.
+v3056.m4a	Abre bem embaixo.
+v3057.m4a	Dois braços abertos,
+v3058.m4a	com mãozinhas.
+v3059.m4a	Duas perninhas e os sapatos.
+v3060.m4a	Ficou linda!
+v3061.m4a	Vamos desenhar o Stitch!
+v3062.m4a	Faz uma bola grande e deitada.
+v3063.m4a	Duas orelhas bem compridas,
+v3064.m4a	abertas para os lados.
+v3065.m4a	Um risco dentro de cada orelha.
+v3066.m4a	Dois olhos grandões,
+v3067.m4a	deitadinhos.
+v3068.m4a	Pinta uma bolinha preta dentro de cada olho.
+v3069.m4a	Um narigão bem no meio.
+v3070.m4a	Um sorrisão embaixo do nariz.
+v3071.m4a	Três fiapos de cabelo em cima.
+v3072.m4a	Ficou igualzinho!
+v3073.m4a	Vamos desenhar um unicórnio!
+v3074.m4a	Faz uma bola bem grande.
+v3075.m4a	Duas orelhinhas pontudas.
+v3076.m4a	O chifre! Um triângulo comprido no meio.
+v3077.m4a	Risquinhos no chifre.
+v3078.m4a	Olhos fechados, sorrindo.
+v3079.m4a	Dois arquinhos.
+v3080.m4a	O focinho é uma bola deitada,
+v3081.m4a	com dois furinhos.
+v3082.m4a	A crina! Faz ondinhas descendo de um lado.
+v3083.m4a	Escolhe uma ilha pra aprender inglês!
+v3084.m4a	O Teddy só fala inglês.
+v3085.m4a	Faz igual a ele,
+v3086.m4a	e aperta o botão verde!
+v3087.m4a	Escuta a palavra nova.
+v3088.m4a	Depois fala bem alto,
+v3089.m4a	Agora escuta, e toca na figura certa.
+v3090.m4a	Jogo da memória!
+v3091.m4a	Acha os pares.
+v3092.m4a	Estoura o balão que o Teddy pedir!
+v3093.m4a	Agora uma frase inteira.
+v3094.m4a	Escuta, e toca na figura certa.
+v3095.m4a	Monta a frase! Toca nos pedaços,
+v3096.m4a	na ordem que você ouviu.
+v3097.m4a	Você aprendeu palavras novas em inglês!
+v3098.m4a	Que orgulho!
+v3099.m4a	Vamos lembrar as palavras que você já sabe.
+v3100.m4a	en:Yes!
+v3101.m4a	en:Good job!
+v3102.m4a	en:Great!
+v3103.m4a	en:Very good!
+v3104.m4a	en:Wow!
+v3105.m4a	en:Hello!
+v3106.m4a	en:Bye-bye!
+v3107.m4a	en:Try again!
+v3108.m4a	en:Your turn!
+v3109.m4a	en:Listen!
+v3110.m4a	en:Jump!
+v3111.m4a	en:Clap your hands!
+v3112.m4a	en:Turn around!
+v3113.m4a	en:Wave hello!
+v3114.m4a	en:Touch your nose!
+v3115.m4a	en:I see
+v3116.m4a	en:cat
+v3117.m4a	en:Touch the cat!
+v3118.m4a	en:Find the cat!
+v3119.m4a	en:I see a cat.
+v3120.m4a	en:a cat
+v3121.m4a	en:dog
+v3122.m4a	en:Touch the dog!
+v3123.m4a	en:Find the dog!
+v3124.m4a	en:I see a dog.
+v3125.m4a	en:a dog
+v3126.m4a	en:bird
+v3127.m4a	en:Touch the bird!
+v3128.m4a	en:Find the bird!
+v3129.m4a	en:I see a bird.
+v3130.m4a	en:a bird
+v3131.m4a	en:fish
+v3132.m4a	en:Touch the fish!
+v3133.m4a	en:Find the fish!
+v3134.m4a	en:I see a fish.
+v3135.m4a	en:a fish
+v3136.m4a	en:horse
+v3137.m4a	en:Touch the horse!
+v3138.m4a	en:Find the horse!
+v3139.m4a	en:I see a horse.
+v3140.m4a	en:a horse
+v3141.m4a	en:It is
+v3142.m4a	en:red
+v3143.m4a	en:Touch red!
+v3144.m4a	en:Find red!
+v3145.m4a	en:It is red.
+v3146.m4a	en:blue
+v3147.m4a	en:Touch blue!
+v3148.m4a	en:Find blue!
+v3149.m4a	en:It is blue.
+v3150.m4a	en:yellow
+v3151.m4a	en:Touch yellow!
+v3152.m4a	en:Find yellow!
+v3153.m4a	en:It is yellow.
+v3154.m4a	en:green
+v3155.m4a	en:Touch green!
+v3156.m4a	en:Find green!
+v3157.m4a	en:It is green.
+v3158.m4a	en:pink
+v3159.m4a	en:Touch pink!
+v3160.m4a	en:Find pink!
+v3161.m4a	en:It is pink.
+v3162.m4a	en:I like
+v3163.m4a	en:apple
+v3164.m4a	en:Touch the apple!
+v3165.m4a	en:Find the apple!
+v3166.m4a	en:I like apples.
+v3167.m4a	en:apples
+v3168.m4a	en:banana
+v3169.m4a	en:Touch the banana!
+v3170.m4a	en:Find the banana!
+v3171.m4a	en:I like bananas.
+v3172.m4a	en:bananas
+v3173.m4a	en:egg
+v3174.m4a	en:Touch the egg!
+v3175.m4a	en:Find the egg!
+v3176.m4a	en:I like eggs.
+v3177.m4a	en:eggs
+v3178.m4a	en:cake
+v3179.m4a	en:Touch the cake!
+v3180.m4a	en:Find the cake!
+v3181.m4a	en:I like cake.
+v3182.m4a	en:milk
+v3183.m4a	en:Touch the milk!
+v3184.m4a	en:Find the milk!
+v3185.m4a	en:I like milk.
+v3186.m4a	en:I have
+v3187.m4a	en:ball
+v3188.m4a	en:Touch the ball!
+v3189.m4a	en:Find the ball!
+v3190.m4a	en:I have a ball.
+v3191.m4a	en:a ball
+v3192.m4a	en:doll
+v3193.m4a	en:Touch the doll!
+v3194.m4a	en:Find the doll!
+v3195.m4a	en:I have a doll.
+v3196.m4a	en:a doll
+v3197.m4a	en:car
+v3198.m4a	en:Touch the car!
+v3199.m4a	en:Find the car!
+v3200.m4a	en:I have a car.
+v3201.m4a	en:a car
+v3202.m4a	en:book
+v3203.m4a	en:Touch the book!
+v3204.m4a	en:Find the book!
+v3205.m4a	en:I have a book.
+v3206.m4a	en:a book
+v3207.m4a	en:teddy bear
+v3208.m4a	en:Touch the teddy bear!
+v3209.m4a	en:Find the teddy bear!
+v3210.m4a	en:I have a teddy bear.
+v3211.m4a	en:a teddy bear
+v3212.m4a	en:one
+v3213.m4a	en:Touch one!
+v3214.m4a	en:Find one!
+v3215.m4a	en:two
+v3216.m4a	en:Touch two!
+v3217.m4a	en:Find two!
+v3218.m4a	en:three
+v3219.m4a	en:Touch three!
+v3220.m4a	en:Find three!
+v3221.m4a	en:four
+v3222.m4a	en:Touch four!
+v3223.m4a	en:Find four!
+v3224.m4a	en:five
+v3225.m4a	en:Touch five!
+v3226.m4a	en:Find five!
+v3227.m4a	en:sun
+v3228.m4a	en:Touch the sun!
+v3229.m4a	en:Find the sun!
+v3230.m4a	en:I see the sun.
+v3231.m4a	en:the sun
+v3232.m4a	en:moon
+v3233.m4a	en:Touch the moon!
+v3234.m4a	en:Find the moon!
+v3235.m4a	en:I see the moon.
+v3236.m4a	en:the moon
+v3237.m4a	en:star
+v3238.m4a	en:Touch the star!
+v3239.m4a	en:Find the star!
+v3240.m4a	en:I see a star.
+v3241.m4a	en:a star
+v3242.m4a	en:flower
+v3243.m4a	en:Touch the flower!
+v3244.m4a	en:Find the flower!
+v3245.m4a	en:I see a flower.
+v3246.m4a	en:a flower
+v3247.m4a	en:tree
+v3248.m4a	en:Touch the tree!
+v3249.m4a	en:Find the tree!
+v3250.m4a	en:I see a tree.
+v3251.m4a	en:a tree
+v3252.m4a	en:duck
+v3253.m4a	en:Touch the duck!
+v3254.m4a	en:Find the duck!
+v3255.m4a	en:I see a duck.
+v3256.m4a	en:a duck
+v3257.m4a	en:rabbit
+v3258.m4a	en:Touch the rabbit!
+v3259.m4a	en:Find the rabbit!
+v3260.m4a	en:I see a rabbit.
+v3261.m4a	en:a rabbit
+v3262.m4a	en:cow
+v3263.m4a	en:Touch the cow!
+v3264.m4a	en:Find the cow!
+v3265.m4a	en:I see a cow.
+v3266.m4a	en:a cow
+v3267.m4a	en:monkey
+v3268.m4a	en:Touch the monkey!
+v3269.m4a	en:Find the monkey!
+v3270.m4a	en:I see a monkey.
+v3271.m4a	en:a monkey
+v3272.m4a	en:giraffe
+v3273.m4a	en:Touch the giraffe!
+v3274.m4a	en:Find the giraffe!
+v3275.m4a	en:I see a giraffe.
+v3276.m4a	en:a giraffe
+v3277.m4a	Esse é o X.
+v3278.m4a	A próxima letra é o X.
+v3279.m4a	Aaaaah!
+v3280.m4a	Qual é a próxima?
+v3281.m4a	Muito bem! Já são 1 ilha.
+v3282.m4a	Muito bem! Já são 2 ilhas.
+v3283.m4a	Muito bem! Já são 3 ilhas.
+v3284.m4a	Muito bem! Já são 4 ilhas.
+v3285.m4a	Muito bem! Já são 5 ilhas.
